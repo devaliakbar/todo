@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:todo/core/utils/utils.dart';
+import 'package:todo/features/task/domain/entity/task_info.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({super.key});
+  final TaskInfo taskInfo;
+  const TaskCard({super.key, required this.taskInfo});
 
   @override
   Widget build(BuildContext context) {
+    final bool showDoneDate =
+        taskInfo.taskStatus == TaskStatus.done && taskInfo.doneOn != null;
+
     return AspectRatio(
       aspectRatio: 2.8,
       child: Container(
@@ -26,30 +32,30 @@ class TaskCard extends StatelessWidget {
             Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Expanded(
                       child: Text(
-                    "Title",
+                    taskInfo.taskName,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 17),
+                    style: const TextStyle(fontSize: 17),
                   )),
-                  Icon(Icons.edit, size: 17)
+                  const Icon(Icons.edit, size: 17)
                 ],
               ),
             ),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
+                children: [
+                  const Icon(
                     Icons.play_arrow_rounded,
                     size: 25,
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
                   Text(
-                    "00:00:12",
-                    style: TextStyle(fontSize: 15),
+                    Utils.getFormattedDuration(taskInfo.hours),
+                    style: const TextStyle(fontSize: 15),
                   )
                 ],
               ),
@@ -57,10 +63,15 @@ class TaskCard extends StatelessWidget {
             Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("Created: 22/06/1997", style: TextStyle(fontSize: 13)),
-                  Text("Done by: 22/06/1997", style: TextStyle(fontSize: 13)),
+                mainAxisAlignment: showDoneDate
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.center,
+                children: [
+                  Text("Created: ${Utils.getFormattedDate(taskInfo.createdOn)}",
+                      style: const TextStyle(fontSize: 13)),
+                  if (showDoneDate)
+                    Text("Done by: ${Utils.getFormattedDate(taskInfo.doneOn!)}",
+                        style: const TextStyle(fontSize: 13)),
                 ],
               ),
             ),

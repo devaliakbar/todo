@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/task/presentation/widget/home_screen/task_section/task_card.dart';
 
 class TaskSection extends StatelessWidget {
   final String title;
-  const TaskSection({super.key, required this.title});
+  final List<TaskInfo> tasks;
+  const TaskSection({super.key, required this.title, required this.tasks});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class TaskSection extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-          child: Text("$title 7"),
+          child: Text("$title ${tasks.length}"),
         ),
         CarouselSlider(
           options: CarouselOptions(
@@ -22,11 +24,7 @@ class TaskSection extends StatelessWidget {
             enableInfiniteScroll: false,
             initialPage: 1,
           ),
-          items: const [
-            TaskCard(),
-            TaskCard(),
-            TaskCard(),
-          ],
+          items: tasks.map<Widget>((task) => TaskCard(taskInfo: task)).toList(),
         )
       ],
     );
