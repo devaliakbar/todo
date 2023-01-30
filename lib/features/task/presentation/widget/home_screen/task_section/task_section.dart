@@ -9,12 +9,14 @@ class TaskSection extends StatefulWidget {
   final String title;
   final List<TaskInfo> tasks;
   final OnUpdateTaskStatus onUpdateTaskStatus;
+  final Function? onDragOver;
 
   const TaskSection(
       {super.key,
       required this.title,
       required this.tasks,
-      required this.onUpdateTaskStatus});
+      required this.onUpdateTaskStatus,
+      this.onDragOver});
 
   @override
   State<TaskSection> createState() => _TaskSectionState();
@@ -34,6 +36,10 @@ class _TaskSectionState extends State<TaskSection> {
   Widget build(BuildContext context) {
     return DragTarget(
       onWillAccept: (data) {
+        if (widget.onDragOver != null) {
+          widget.onDragOver!();
+        }
+
         if (_checkDragOverSameBody(data)) {
           return false;
         }

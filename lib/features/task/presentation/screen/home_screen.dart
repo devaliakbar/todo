@@ -14,6 +14,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   final List<TaskInfo> _todos = [
     TaskInfo(
       taskId: "1",
@@ -56,14 +64,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<TaskInfo> _inProgress = [
     TaskInfo(
-      taskId: "5",
-      taskName: "Random Task1",
-      taskDescription:
-          "Random Task Description. It must be more than 1 line. so here we go with a big description",
-      taskStatus: TaskStatus.inProgress,
-      createdOn: DateTime.now(),
-      hours: const Duration(),
-    ),
+        taskId: "5",
+        taskName: "Random Task1",
+        taskDescription:
+            "Random Task Description. It must be more than 1 line. so here we go with a big description",
+        taskStatus: TaskStatus.inProgress,
+        createdOn: DateTime.now(),
+        hours: const Duration(hours: 2, minutes: 10, seconds: 25),
+        timerStartSince: DateTime.now().toUtc()),
     TaskInfo(
       taskId: "7",
       taskName:
@@ -117,8 +125,10 @@ class _HomeScreenState extends State<HomeScreen> {
           const HomeAppBar(),
           Expanded(
             child: ListView(
+              controller: _scrollController,
               physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom + 50),
               children: [
                 const SizedBox(height: 30),
                 TaskSection(
@@ -126,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   tasks: _todos,
                   onUpdateTaskStatus: (TaskInfo taskInfo) =>
                       _updateTaskStatus(taskInfo, TaskStatus.todo),
+                  onDragOver: () => _scrollTo(isScrollToTop: true),
                 ),
                 const SizedBox(height: 35),
                 TaskSection(
@@ -140,12 +151,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   tasks: _done,
                   onUpdateTaskStatus: (TaskInfo taskInfo) =>
                       _updateTaskStatus(taskInfo, TaskStatus.done),
+                  onDragOver: () => _scrollTo(isScrollToTop: false),
                 ),
               ],
             ),
           )
         ],
       ),
+    );
+  }
+
+  void _scrollTo({required bool isScrollToTop}) {
+    _scrollController.animateTo(
+      isScrollToTop ? 0 : _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.linear,
     );
   }
 
