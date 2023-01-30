@@ -158,6 +158,10 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: Colors.yellowAccent,
+          child: const Icon(Icons.add)),
     );
   }
 

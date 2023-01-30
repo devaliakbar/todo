@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:todo/features/auth/presentation/bloc/user/user_bloc.dart';
 import 'package:todo/features/task/presentation/screen/home_screen.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -10,10 +13,26 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-            onPressed: () =>
-                Navigator.pushReplacementNamed(context, HomeScreen.routeName),
-            child: const Text("Sign in with google")),
+        child: BlocConsumer<UserBloc, UserState>(
+          listenWhen: (_, UserState current) =>
+              current is SignInFailedState || current is SignInState,
+          listener: (_, UserState state) {
+            if (state is SignInFailedState) {
+              Fluttertoast.showToast(msg: "Failed to Sign In");
+              return;
+            }
+
+            if (state is SignInState) {
+              Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+            }
+          },
+          builder: (_, UserState state) => ElevatedButton(
+              onPressed: state is SignInState || state is SignInLoadingState
+                  ? null
+                  : () => BlocProvider.of<UserBloc>(context, listen: false)
+                      .add(SignInEvent()),
+              child: const Text("Sign In with google")),
+        ),
       ),
     );
   }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "111244851465",
+    "project_id": "innoscripta-99af6",
+    "storage_bucket": "innoscripta-99af6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111244851465:android:3eb993d938f12de13ebbd8",
+        "android_client_info": {
+          "package_name": "com.aliakbar.todo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111244851465-o84tse96gjmvkdgq6jmofp11p2e1qijh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aliakbar.todo",
+            "certificate_hash": "4e7fdeee45380fc05e7e2187cdcd4c81a94cc703"
+          }
+        },
+        {
+          "client_id": "111244851465-ko34pa1n7c9hg62ph0sdtl05pm5jcqm9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKad84-lGuoT0CuGikDUaEZtkth3kNAQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111244851465-ko34pa1n7c9hg62ph0sdtl05pm5jcqm9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

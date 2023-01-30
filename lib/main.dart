@@ -1,8 +1,21 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/features/auth/presentation/bloc/user/user_bloc.dart';
 import 'core/res/app_resources.dart';
+import 'injection_container.dart' as di;
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+  await di.init();
+
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider<UserBloc>(
+      create: (context) => di.sl<UserBloc>(),
+    )
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
