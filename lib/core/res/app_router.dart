@@ -10,6 +10,20 @@ class AppRouter {
           settings: settings,
         );
 
+      case SignInScreen.routeName:
+        return PageTransition(
+          child: const SignInScreen(),
+          type: PageTransitionType.rightToLeft,
+          settings: settings,
+        );
+
+      case HomeScreen.routeName:
+        return PageTransition(
+          child: const HomeScreen(),
+          type: PageTransitionType.rightToLeft,
+          settings: settings,
+        );
+
       default:
         assert(false, 'Need to implement ${settings.name}');
         return null;
