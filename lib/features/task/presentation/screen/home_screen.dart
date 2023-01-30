@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/task/presentation/widget/home_screen/home_app_bar.dart';
 import 'package:todo/features/task/presentation/widget/home_screen/task_section/task_section.dart';
@@ -120,16 +121,53 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.zero,
               children: [
                 const SizedBox(height: 30),
-                TaskSection(title: "Todo", tasks: _todos),
+                TaskSection(
+                  title: "Todo",
+                  tasks: _todos,
+                  onUpdateTaskStatus: (TaskInfo taskInfo) =>
+                      _updateTaskStatus(taskInfo, TaskStatus.todo),
+                ),
                 const SizedBox(height: 35),
-                TaskSection(title: "In progress", tasks: _inProgress),
+                TaskSection(
+                  title: "In progress",
+                  tasks: _inProgress,
+                  onUpdateTaskStatus: (TaskInfo taskInfo) =>
+                      _updateTaskStatus(taskInfo, TaskStatus.inProgress),
+                ),
                 const SizedBox(height: 35),
-                TaskSection(title: "Done", tasks: _done),
+                TaskSection(
+                  title: "Done",
+                  tasks: _done,
+                  onUpdateTaskStatus: (TaskInfo taskInfo) =>
+                      _updateTaskStatus(taskInfo, TaskStatus.done),
+                ),
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  Future<void> _updateTaskStatus(
+      TaskInfo taskInfo, TaskStatus newStatus) async {
+    Duration hours = taskInfo.hours;
+
+    ///Checking whether timer is On
+    if (taskInfo.taskStatus == TaskStatus.inProgress &&
+        taskInfo.timerStartSince != null) {
+      hours =
+          taskInfo.hours + Utils.getTimerDuration(taskInfo.timerStartSince!);
+    }
+
+    final TaskInfo updatedTaskInfo = TaskInfo(
+        taskId: taskInfo.taskId,
+        taskName: taskInfo.taskName,
+        taskDescription: taskInfo.taskDescription,
+        taskStatus: newStatus,
+        createdOn: taskInfo.createdOn,
+        doneOn: newStatus == TaskStatus.done ? DateTime.now().toUtc() : null,
+        timerStartSince: null,
+        hours: hours);
   }
 }

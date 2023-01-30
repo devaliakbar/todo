@@ -9,6 +9,7 @@ class TaskInfo extends Equatable {
   final TaskStatus taskStatus;
   final DateTime createdOn;
   final DateTime? doneOn;
+  final DateTime? timerStartSince;
   final Duration hours;
 
   const TaskInfo(
@@ -18,9 +19,18 @@ class TaskInfo extends Equatable {
       required this.taskStatus,
       required this.createdOn,
       this.doneOn,
-      required this.hours});
+      this.timerStartSince,
+      this.hours = Duration.zero});
 
   @override
-  List<Object?> get props =>
-      [taskId, taskName, taskDescription, taskStatus, createdOn, doneOn, hours];
+  List<Object?> get props => [
+        taskId,
+        taskName,
+        taskDescription,
+        taskStatus,
+        createdOn,
+        doneOn,
+        timerStartSince,
+        hours
+      ];
 }

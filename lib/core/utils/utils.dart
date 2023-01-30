@@ -11,4 +11,8 @@ class Utils {
   static String getFormattedDate(DateTime date) {
     return DateFormat("dd MMM").format(date);
   }
+
+  static Duration getTimerDuration(DateTime timerStartSince) {
+    return DateTime.now().toUtc().difference(timerStartSince);
+  }
 }
