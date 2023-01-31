@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 
-enum TaskStatus { todo, inProgress, done }
+enum TimesheetTaskStatus { todo, inProgress, done }
 
-class TaskInfo extends Equatable {
+class TimesheetTask extends Equatable {
   final String taskId;
   final String taskName;
   final String taskDescription;
-  final TaskStatus taskStatus;
+  final TimesheetTaskStatus taskStatus;
   final DateTime createdOn;
   final DateTime? doneOn;
   final DateTime? timerStartSince;
   final Duration hours;
 
-  const TaskInfo(
+  const TimesheetTask(
       {required this.taskId,
       required this.taskName,
       required this.taskDescription,

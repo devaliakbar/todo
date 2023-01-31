@@ -1,17 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:todo/features/task/domain/entity/task_info.dart';
-import 'package:todo/features/task/presentation/widget/home_screen/task_section/task_card.dart';
+import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
+import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_section/timesheet_task_card.dart';
 
-typedef OnUpdateTaskStatus = void Function(TaskInfo taskInfo);
+typedef OnUpdateTaskStatus = void Function(TimesheetTask taskInfo);
 
-class TaskSection extends StatefulWidget {
+class TimesheetTaskSection extends StatefulWidget {
   final String title;
-  final List<TaskInfo> tasks;
+  final List<TimesheetTask> tasks;
   final OnUpdateTaskStatus onUpdateTaskStatus;
   final Function? onDragOver;
 
-  const TaskSection(
+  const TimesheetTaskSection(
       {super.key,
       required this.title,
       required this.tasks,
@@ -19,10 +19,10 @@ class TaskSection extends StatefulWidget {
       this.onDragOver});
 
   @override
-  State<TaskSection> createState() => _TaskSectionState();
+  State<TimesheetTaskSection> createState() => _TimesheetTaskSectionState();
 }
 
-class _TaskSectionState extends State<TaskSection> {
+class _TimesheetTaskSectionState extends State<TimesheetTaskSection> {
   final ValueNotifier<bool> _showMoveEffect = ValueNotifier(false);
   final CarouselController _carouselController = CarouselController();
   @override
@@ -60,8 +60,8 @@ class _TaskSectionState extends State<TaskSection> {
         _carouselController.animateToPage(0);
         _showMoveEffect.value = false;
 
-        if (data is TaskInfo) {
-          widget.onUpdateTaskStatus(data as TaskInfo);
+        if (data is TimesheetTask) {
+          widget.onUpdateTaskStatus(data as TimesheetTask);
         }
       },
       builder: (context, candidateData, rejectedData) => Column(
@@ -86,8 +86,8 @@ class _TaskSectionState extends State<TaskSection> {
                 ...widget.tasks.map<Widget>((task) {
                   final GlobalKey taskCardKey = GlobalKey();
 
-                  final Widget taskCard = TaskCard(
-                    taskInfo: task,
+                  final Widget taskCard = TimesheetTaskCard(
+                    timesheetTask: task,
                     key: taskCardKey,
                   );
 
@@ -108,7 +108,7 @@ class _TaskSectionState extends State<TaskSection> {
   }
 
   bool _checkDragOverSameBody(var data) =>
-      data is TaskInfo &&
+      data is TimesheetTask &&
       widget.tasks.isNotEmpty &&
       data.taskStatus == widget.tasks.first.taskStatus;
 }

@@ -3,17 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/utils/utils.dart';
-import 'package:todo/features/task/domain/entity/task_info.dart';
+import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 
-class TaskCard extends StatefulWidget {
-  final TaskInfo taskInfo;
-  const TaskCard({super.key, required this.taskInfo});
+class TimesheetTaskCard extends StatefulWidget {
+  final TimesheetTask timesheetTask;
+  const TimesheetTaskCard({super.key, required this.timesheetTask});
 
   @override
-  State<TaskCard> createState() => _TaskCardState();
+  State<TimesheetTaskCard> createState() => _TimesheetTaskCardState();
 }
 
-class _TaskCardState extends State<TaskCard> {
+class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
   final ValueNotifier<Duration> _taskHours = ValueNotifier(Duration.zero);
   Timer? _timer;
 
@@ -21,11 +21,11 @@ class _TaskCardState extends State<TaskCard> {
   void initState() {
     super.initState();
 
-    if (widget.taskInfo.timerStartSince == null) {
-      _taskHours.value = widget.taskInfo.hours;
+    if (widget.timesheetTask.timerStartSince == null) {
+      _taskHours.value = widget.timesheetTask.hours;
     } else {
-      _taskHours.value = widget.taskInfo.hours +
-          Utils.getTimerDuration(widget.taskInfo.timerStartSince!);
+      _taskHours.value = widget.timesheetTask.hours +
+          Utils.getTimerDuration(widget.timesheetTask.timerStartSince!);
       _startCountDown();
     }
   }
@@ -40,10 +40,11 @@ class _TaskCardState extends State<TaskCard> {
 
   @override
   Widget build(BuildContext context) {
-    final bool showDoneDate = widget.taskInfo.taskStatus == TaskStatus.done &&
-        widget.taskInfo.doneOn != null;
+    final bool showDoneDate =
+        widget.timesheetTask.taskStatus == TimesheetTaskStatus.done &&
+            widget.timesheetTask.doneOn != null;
 
-    final bool isTimerOn = widget.taskInfo.timerStartSince != null;
+    final bool isTimerOn = widget.timesheetTask.timerStartSince != null;
 
     return Container(
       padding: const EdgeInsets.all(15),
@@ -66,7 +67,7 @@ class _TaskCardState extends State<TaskCard> {
               children: [
                 Expanded(
                     child: Text(
-                  widget.taskInfo.taskName,
+                  widget.timesheetTask.taskName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 17),
@@ -75,16 +76,16 @@ class _TaskCardState extends State<TaskCard> {
               ],
             ),
           ),
-          if (widget.taskInfo.taskStatus == TaskStatus.done)
+          if (widget.timesheetTask.taskStatus == TimesheetTaskStatus.done)
             Expanded(
               child: Center(
                 child: Text(
-                  "Total Hours : ${Utils.getFormattedDuration(widget.taskInfo.hours)}",
+                  "Total Hours : ${Utils.getFormattedDuration(widget.timesheetTask.hours)}",
                   style: const TextStyle(fontSize: 15),
                 ),
               ),
             ),
-          if (widget.taskInfo.taskStatus == TaskStatus.inProgress)
+          if (widget.timesheetTask.taskStatus == TimesheetTaskStatus.inProgress)
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -115,11 +116,11 @@ class _TaskCardState extends State<TaskCard> {
                   : MainAxisAlignment.center,
               children: [
                 Text(
-                    "Created: ${Utils.getFormattedDate(widget.taskInfo.createdOn)}",
+                    "Created: ${Utils.getFormattedDate(widget.timesheetTask.createdOn)}",
                     style: const TextStyle(fontSize: 13)),
                 if (showDoneDate)
                   Text(
-                      "Done by: ${Utils.getFormattedDate(widget.taskInfo.doneOn!)}",
+                      "Done by: ${Utils.getFormattedDate(widget.timesheetTask.doneOn!)}",
                       style: const TextStyle(fontSize: 13)),
               ],
             ),
@@ -131,8 +132,8 @@ class _TaskCardState extends State<TaskCard> {
 
   void _startCountDown() {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      _taskHours.value = widget.taskInfo.hours +
-          Utils.getTimerDuration(widget.taskInfo.timerStartSince!);
+      _taskHours.value = widget.timesheetTask.hours +
+          Utils.getTimerDuration(widget.timesheetTask.timerStartSince!);
     });
   }
 
@@ -140,23 +141,23 @@ class _TaskCardState extends State<TaskCard> {
     final Duration hours;
     final DateTime? timerStartSince;
     if (isStart) {
-      hours = widget.taskInfo.hours;
+      hours = widget.timesheetTask.hours;
       timerStartSince = DateTime.now().toUtc();
     } else {
       _timer?.cancel();
 
-      hours = widget.taskInfo.hours +
-          Utils.getTimerDuration(widget.taskInfo.timerStartSince!);
+      hours = widget.timesheetTask.hours +
+          Utils.getTimerDuration(widget.timesheetTask.timerStartSince!);
       timerStartSince = null;
     }
 
-    final TaskInfo updatedTaskInfo = TaskInfo(
-        taskId: widget.taskInfo.taskId,
-        taskName: widget.taskInfo.taskName,
-        taskDescription: widget.taskInfo.taskDescription,
-        taskStatus: widget.taskInfo.taskStatus,
-        createdOn: widget.taskInfo.createdOn,
-        doneOn: widget.taskInfo.doneOn,
+    final TimesheetTask updatedTask = TimesheetTask(
+        taskId: widget.timesheetTask.taskId,
+        taskName: widget.timesheetTask.taskName,
+        taskDescription: widget.timesheetTask.taskDescription,
+        taskStatus: widget.timesheetTask.taskStatus,
+        createdOn: widget.timesheetTask.createdOn,
+        doneOn: widget.timesheetTask.doneOn,
         timerStartSince: timerStartSince,
         hours: hours);
   }

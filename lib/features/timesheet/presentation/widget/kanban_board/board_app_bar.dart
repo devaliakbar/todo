@@ -4,8 +4,8 @@ import 'package:tapped/tapped.dart';
 import 'package:todo/features/auth/presentation/bloc/user/user_bloc.dart';
 import 'package:todo/features/auth/presentation/screen/sign_in_screen.dart';
 
-class HomeAppBar extends StatelessWidget {
-  const HomeAppBar({super.key});
+class BoardAppBar extends StatelessWidget {
+  const BoardAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

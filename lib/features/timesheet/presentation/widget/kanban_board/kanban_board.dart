@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:todo/core/utils/utils.dart';
-import 'package:todo/features/task/domain/entity/task_info.dart';
-import 'package:todo/features/task/presentation/widget/home_screen/home_app_bar.dart';
-import 'package:todo/features/task/presentation/widget/home_screen/task_section/task_section.dart';
+import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
+import 'package:todo/features/timesheet/presentation/widget/kanban_board/board_app_bar.dart';
+import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_section/timesheet_task_section.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const String routeName = '/home_screen';
-
-  const HomeScreen({super.key});
+class KanbanBoard extends StatefulWidget {
+  const KanbanBoard({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<KanbanBoard> createState() => _KanbanBoardState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _KanbanBoardState extends State<KanbanBoard> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -22,94 +20,94 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  final List<TaskInfo> _todos = [
-    TaskInfo(
+  final List<TimesheetTask> _todos = [
+    TimesheetTask(
       taskId: "1",
       taskName: "Random Task1",
       taskDescription:
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
-      taskStatus: TaskStatus.todo,
+      taskStatus: TimesheetTaskStatus.todo,
       createdOn: DateTime.now(),
       hours: const Duration(),
     ),
-    TaskInfo(
+    TimesheetTask(
       taskId: "2",
       taskName: "Random Task2 with little big title",
       taskDescription:
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
-      taskStatus: TaskStatus.todo,
+      taskStatus: TimesheetTaskStatus.todo,
       createdOn: DateTime.now(),
       hours: const Duration(),
     ),
-    TaskInfo(
+    TimesheetTask(
       taskId: "3",
       taskName:
           "Random Task3 with extra big title. so here is the extra big title which probably",
       taskDescription:
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
-      taskStatus: TaskStatus.todo,
+      taskStatus: TimesheetTaskStatus.todo,
       createdOn: DateTime.now(),
       hours: const Duration(),
     ),
-    TaskInfo(
+    TimesheetTask(
       taskId: "4",
       taskName: "Random Task4",
       taskDescription:
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
-      taskStatus: TaskStatus.todo,
+      taskStatus: TimesheetTaskStatus.todo,
       createdOn: DateTime.now(),
       hours: const Duration(),
     ),
   ];
 
-  final List<TaskInfo> _inProgress = [
-    TaskInfo(
+  final List<TimesheetTask> _inProgress = [
+    TimesheetTask(
         taskId: "5",
         taskName: "Random Task1",
         taskDescription:
             "Random Task Description. It must be more than 1 line. so here we go with a big description",
-        taskStatus: TaskStatus.inProgress,
+        taskStatus: TimesheetTaskStatus.inProgress,
         createdOn: DateTime.now(),
         hours: const Duration(hours: 2, minutes: 10, seconds: 25),
         timerStartSince: DateTime.now().toUtc()),
-    TaskInfo(
+    TimesheetTask(
       taskId: "7",
       taskName:
           "Random Task3 with extra big title. so here is the extra big title which probably",
       taskDescription:
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
-      taskStatus: TaskStatus.inProgress,
+      taskStatus: TimesheetTaskStatus.inProgress,
       createdOn: DateTime.now(),
       hours: const Duration(),
     ),
-    TaskInfo(
+    TimesheetTask(
       taskId: "6",
       taskName: "Random Task2 with little big title",
       taskDescription:
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
-      taskStatus: TaskStatus.inProgress,
+      taskStatus: TimesheetTaskStatus.inProgress,
       createdOn: DateTime.now(),
       hours: const Duration(),
     ),
   ];
 
-  final List<TaskInfo> _done = [
-    TaskInfo(
+  final List<TimesheetTask> _done = [
+    TimesheetTask(
       taskId: "8",
       taskName: "Task Task1",
       taskDescription:
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
-      taskStatus: TaskStatus.done,
+      taskStatus: TimesheetTaskStatus.done,
       createdOn: DateTime.now(),
       doneOn: DateTime.now().add(const Duration(days: 2)),
       hours: const Duration(),
     ),
-    TaskInfo(
+    TimesheetTask(
       taskId: "9",
       taskName: "Task Task2 with little big title",
       taskDescription:
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
-      taskStatus: TaskStatus.done,
+      taskStatus: TimesheetTaskStatus.done,
       createdOn: DateTime.now(),
       doneOn: DateTime.now().add(const Duration(days: 1)),
       hours: const Duration(),
@@ -118,50 +116,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: Column(
-        children: [
-          const HomeAppBar(),
-          Expanded(
-            child: ListView(
-              controller: _scrollController,
-              physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom + 50),
-              children: [
-                const SizedBox(height: 30),
-                TaskSection(
-                  title: "Todo",
-                  tasks: _todos,
-                  onUpdateTaskStatus: (TaskInfo taskInfo) =>
-                      _updateTaskStatus(taskInfo, TaskStatus.todo),
-                  onDragOver: () => _scrollTo(isScrollToTop: true),
-                ),
-                const SizedBox(height: 35),
-                TaskSection(
-                  title: "In progress",
-                  tasks: _inProgress,
-                  onUpdateTaskStatus: (TaskInfo taskInfo) =>
-                      _updateTaskStatus(taskInfo, TaskStatus.inProgress),
-                ),
-                const SizedBox(height: 35),
-                TaskSection(
-                  title: "Done",
-                  tasks: _done,
-                  onUpdateTaskStatus: (TaskInfo taskInfo) =>
-                      _updateTaskStatus(taskInfo, TaskStatus.done),
-                  onDragOver: () => _scrollTo(isScrollToTop: false),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: Colors.yellowAccent,
-          child: const Icon(Icons.add)),
+    return Column(
+      children: [
+        const BoardAppBar(),
+        Expanded(
+          child: ListView(
+            controller: _scrollController,
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).padding.bottom + 50),
+            children: [
+              const SizedBox(height: 30),
+              TimesheetTaskSection(
+                title: "Todo",
+                tasks: _todos,
+                onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
+                    _updateTaskStatus(timesheetTask, TimesheetTaskStatus.todo),
+                onDragOver: () => _scrollTo(isScrollToTop: true),
+              ),
+              const SizedBox(height: 35),
+              TimesheetTaskSection(
+                title: "In progress",
+                tasks: _inProgress,
+                onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
+                    _updateTaskStatus(
+                        timesheetTask, TimesheetTaskStatus.inProgress),
+              ),
+              const SizedBox(height: 35),
+              TimesheetTaskSection(
+                title: "Done",
+                tasks: _done,
+                onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
+                    _updateTaskStatus(timesheetTask, TimesheetTaskStatus.done),
+                onDragOver: () => _scrollTo(isScrollToTop: false),
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -174,23 +166,25 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _updateTaskStatus(
-      TaskInfo taskInfo, TaskStatus newStatus) async {
-    Duration hours = taskInfo.hours;
+      TimesheetTask timesheetTask, TimesheetTaskStatus newStatus) async {
+    Duration hours = timesheetTask.hours;
 
     ///Checking whether timer is On
-    if (taskInfo.taskStatus == TaskStatus.inProgress &&
-        taskInfo.timerStartSince != null) {
-      hours =
-          taskInfo.hours + Utils.getTimerDuration(taskInfo.timerStartSince!);
+    if (timesheetTask.taskStatus == TimesheetTaskStatus.inProgress &&
+        timesheetTask.timerStartSince != null) {
+      hours = timesheetTask.hours +
+          Utils.getTimerDuration(timesheetTask.timerStartSince!);
     }
 
-    final TaskInfo updatedTaskInfo = TaskInfo(
-        taskId: taskInfo.taskId,
-        taskName: taskInfo.taskName,
-        taskDescription: taskInfo.taskDescription,
+    final TimesheetTask updatedTask = TimesheetTask(
+        taskId: timesheetTask.taskId,
+        taskName: timesheetTask.taskName,
+        taskDescription: timesheetTask.taskDescription,
         taskStatus: newStatus,
-        createdOn: taskInfo.createdOn,
-        doneOn: newStatus == TaskStatus.done ? DateTime.now().toUtc() : null,
+        createdOn: timesheetTask.createdOn,
+        doneOn: newStatus == TimesheetTaskStatus.done
+            ? DateTime.now().toUtc()
+            : null,
         timerStartSince: null,
         hours: hours);
   }
