@@ -24,13 +24,6 @@ class AppRouter {
           settings: settings,
         );
 
-      case TaskEditScreen.routeName:
-        return PageTransition(
-          child: const TaskEditScreen(),
-          type: PageTransitionType.rightToLeft,
-          settings: settings,
-        );
-
       default:
         assert(false, 'Need to implement ${settings.name}');
         return null;

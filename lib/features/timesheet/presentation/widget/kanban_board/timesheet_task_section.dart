@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
-import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_section/timesheet_task_card.dart';
+import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_card.dart';
 
 typedef OnUpdateTaskStatus = void Function(TimesheetTask taskInfo);
 

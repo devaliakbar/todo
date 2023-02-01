@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/utils/utils.dart';
+import 'package:todo/features/auth/presentation/bloc/user/user_bloc.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
-import 'package:todo/features/timesheet/presentation/widget/kanban_board/board_app_bar.dart';
-import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_section/timesheet_task_section.dart';
+import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_section.dart';
 
 class KanbanBoard extends StatefulWidget {
   const KanbanBoard({super.key});
@@ -118,7 +119,35 @@ class _KanbanBoardState extends State<KanbanBoard> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const BoardAppBar(),
+        Container(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 15,
+              left: 15,
+              bottom: 15),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black54.withOpacity(0.15),
+                blurRadius: 10,
+                offset: const Offset(0, 0),
+              )
+            ],
+          ),
+          child: BlocBuilder<UserBloc, UserState>(
+            builder: (_, UserState state) {
+              final String userFullName =
+                  state is SignInState ? state.userInfo.fullName : "";
+              return Text(
+                "Hi $userFullName",
+                style: const TextStyle(fontSize: 18),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              );
+            },
+          ),
+        ),
         Expanded(
           child: ListView(
             controller: _scrollController,
