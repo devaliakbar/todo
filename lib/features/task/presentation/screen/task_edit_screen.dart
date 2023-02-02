@@ -3,6 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/presentation/widget/common_text_field.dart';
+import 'package:todo/features/user/domain/enity/user_info.dart';
 import 'package:todo/features/user/presentation/screen/select_user_screen.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 
@@ -56,7 +57,10 @@ class TaskEditScreen extends StatelessWidget {
                           context,
                           PageTransition(
                               type: PageTransitionType.rightToLeft,
-                              child: const SelectUserScreen())),
+                              child: SelectUserScreen(
+                                onUsersSelect:
+                                    (List<UserInfo> selectedUsers) {},
+                              ))),
                       child: Padding(
                         padding: const EdgeInsets.all(15),
                         child: Row(
