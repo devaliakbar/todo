@@ -21,6 +21,8 @@ class SelectUserScreen extends StatefulWidget {
 }
 
 class _SelectUserScreenState extends State<SelectUserScreen> {
+  List<UserInfo> users = [];
+
   final List<UserInfo> selectedUsers = [];
 
   @override
@@ -57,89 +59,129 @@ class _SelectUserScreenState extends State<SelectUserScreen> {
             child: BlocProvider<GetUsersBloc>(
               create: (context) =>
                   di.sl<GetUsersBloc>()..add(GetAllUsersEvent()),
-              child: BlocBuilder<GetUsersBloc, GetUsersState>(
-                builder: (_, GetUsersState state) {
-                  if (state is GetUsersFailed) {
-                    return const Center(
-                      child: Text("Failed to load users"),
-                    );
-                  }
-
+              child: BlocConsumer<GetUsersBloc, GetUsersState>(
+                listenWhen: (previous, GetUsersState current) =>
+                    current is GetUsersLoaded,
+                listener: (context, GetUsersState state) {
                   if (state is GetUsersLoaded) {
-                    return ListView.builder(
-                      itemCount: state.users.length,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 30),
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Tapped(
-                          onTap: () {
-                            if (selectedUsers.contains(state.users[index])) {
-                              selectedUsers.remove(state.users[index]);
-                            } else {
-                              selectedUsers.add(state.users[index]);
-                            }
+                    users = [...state.users];
+                  }
+                },
+                builder: (_, GetUsersState state) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (state is GetUsersLoaded)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 15, right: 15, top: 15, bottom: 10),
+                          child: TextField(
+                            onChanged: (String value) {
+                              if (value.trim().isEmpty) {
+                                users = [...state.users];
+                              } else {
+                                users = state.users
+                                    .where((element) => element.fullName
+                                        .toLowerCase()
+                                        .contains(value.trim().toLowerCase()))
+                                    .toList();
+                              }
 
-                            setState(() {});
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 15),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Row(
-                              children: [
-                                Stack(
-                                  children: [
-                                    Container(
-                                      height: 24,
-                                      width: 24,
-                                      margin: const EdgeInsets.only(right: 10),
-                                      child: ClipOval(
-                                        child: CachedImage(
-                                            imageUrl:
-                                                state.users[index].profilePic),
-                                      ),
-                                    ),
-                                    if (selectedUsers
-                                        .contains(state.users[index]))
-                                      Container(
-                                        height: 24,
-                                        width: 24,
-                                        margin:
-                                            const EdgeInsets.only(right: 10),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white.withOpacity(0.5),
-                                        ),
-                                        child: const Icon(
-                                          Icons.check,
-                                          size: 18,
-                                          color: Colors.black,
-                                        ),
-                                      )
-                                  ],
-                                ),
-                                Expanded(
-                                  child: Text(state.users[index].fullName),
-                                ),
-                                const SizedBox(width: 10),
-                                const Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 14,
-                                )
-                              ],
-                            ),
+                              setState(() {});
+                            },
+                            decoration: InputDecoration(
+                                label: const Text("Search"),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0)),
+                                filled: true,
+                                hintStyle: TextStyle(color: Colors.grey[400]),
+                                fillColor: Colors.white),
                           ),
                         ),
-                      ),
-                    );
-                  }
+                      if (state is GetUsersFailed)
+                        const Center(
+                          child: Text("Failed to load users"),
+                        )
+                      else if (state is GetUsersLoaded)
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: users.length,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 30),
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) => Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Tapped(
+                                onTap: () {
+                                  if (selectedUsers.contains(users[index])) {
+                                    selectedUsers.remove(users[index]);
+                                  } else {
+                                    selectedUsers.add(users[index]);
+                                  }
 
-                  return const Center(
-                    child: Text("Loading..."),
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 15),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Row(
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          Container(
+                                            height: 24,
+                                            width: 24,
+                                            margin: const EdgeInsets.only(
+                                                right: 10),
+                                            child: ClipOval(
+                                              child: CachedImage(
+                                                  imageUrl:
+                                                      users[index].profilePic),
+                                            ),
+                                          ),
+                                          if (selectedUsers
+                                              .contains(users[index]))
+                                            Container(
+                                              height: 24,
+                                              width: 24,
+                                              margin: const EdgeInsets.only(
+                                                  right: 10),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white
+                                                    .withOpacity(0.6),
+                                              ),
+                                              child: const Icon(
+                                                Icons.check,
+                                                size: 18,
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: Text(users[index].fullName),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      const Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        size: 14,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                        const Center(
+                          child: Text("Loading..."),
+                        )
+                    ],
                   );
                 },
               ),
