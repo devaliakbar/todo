@@ -6,4 +6,5 @@ abstract class IAuthRepository {
   Future<Either<Failure, UserInfo>> signIn();
   Future<Either<Failure, void>> signOut();
   Future<Either<Failure, UserInfo>> checkSignIn();
+  Future<Either<Failure, List<UserInfo>>> getUsers();
 }

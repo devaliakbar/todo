@@ -4,7 +4,7 @@ enum TimesheetTaskStatus { todo, inProgress, done }
 
 class TimesheetTask extends BaseTask {
   final String timesheetId;
-  final String assignedPersonId;
+  final String assignedToPersonId;
   final String creatorId;
   final String creatorName;
   final TimesheetTaskStatus taskStatus;
@@ -14,7 +14,7 @@ class TimesheetTask extends BaseTask {
 
   const TimesheetTask(
       {required this.timesheetId,
-      required this.assignedPersonId,
+      required this.assignedToPersonId,
       required this.creatorId,
       required this.creatorName,
       required super.taskId,
@@ -29,7 +29,7 @@ class TimesheetTask extends BaseTask {
   @override
   List<Object?> get props => [
         timesheetId,
-        assignedPersonId,
+        assignedToPersonId,
         creatorId,
         creatorName,
         taskId,

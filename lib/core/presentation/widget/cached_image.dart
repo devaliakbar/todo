@@ -7,11 +7,15 @@ class CachedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl ?? "",
-      fit: BoxFit.cover,
-      placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
-    );
+    const Widget errorWidget = Icon(Icons.error);
+
+    return (imageUrl ?? "").isEmpty
+        ? errorWidget
+        : CachedNetworkImage(
+            imageUrl: imageUrl!,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => errorWidget,
+          );
   }
 }

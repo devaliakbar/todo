@@ -11,8 +11,9 @@ abstract class IAuthRemoteDataSource {
   /// Throws a [UnexpectedException] for any failure.
   Future<UserInfoModel> signIn();
 
-  /// Throws a [UnexpectedException] for any failure.
   Future<void> signOut();
+
+  Future<List<UserInfoModel>> getUsers();
 }
 
 class AuthRemoteDataSource extends IAuthRemoteDataSource {
@@ -54,6 +55,22 @@ class AuthRemoteDataSource extends IAuthRemoteDataSource {
     await _deleteNotificationToken(userId: auth.currentUser?.uid);
 
     await auth.signOut();
+  }
+
+  @override
+  Future<List<UserInfoModel>> getUsers() async {
+    CollectionReference users =
+        FirebaseFirestore.instance.collection(FirestoreCollectionNames.cUser);
+
+    var result = await users.get();
+
+    List<UserInfoResponseModel> usersRes = [];
+    for (var element in result.docs) {
+      usersRes.add(UserInfoResponseModel.fromJson(
+          element.data() as Map<String, dynamic>));
+    }
+
+    return usersRes;
   }
 
   Future<void> _saveUserDetails(UserInfoModel userInfoModel) async {

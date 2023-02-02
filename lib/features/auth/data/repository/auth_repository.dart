@@ -45,4 +45,13 @@ class AuthRepository extends IAuthRepository {
 
     return Left(UnexpectedFailure());
   }
+
+  @override
+  Future<Either<Failure, List<UserInfo>>> getUsers() async {
+    try {
+      return Right(await _authRemoteDataSource.getUsers());
+    } catch (_) {}
+
+    return Left(UnexpectedFailure());
+  }
 }
