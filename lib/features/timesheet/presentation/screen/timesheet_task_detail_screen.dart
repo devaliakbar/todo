@@ -88,6 +88,34 @@ class TimsheetTaskDetailScreen extends StatelessWidget {
                 Divider(
                   color: Colors.grey[200],
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text("Created on"),
+                        Text(
+                          "29 Jun 2022",
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Text("Done on"),
+                        Text(
+                          "29 Jun 2022",
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Divider(
+                  color: Colors.grey[200],
+                ),
                 const Text("Description"),
                 const Text(
                   "TaskDescription zxfjhkhgsda jfkbn,maf jkhesagf,mba§,mfgjahs mgfj,mgash,m§hg",

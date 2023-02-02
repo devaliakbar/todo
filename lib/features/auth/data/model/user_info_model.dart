@@ -61,4 +61,7 @@ class UserInfoResponseModel extends UserInfoModel {
 
     return tokens;
   }
+
+  @override
+  List<Object?> get props => [id, fullName, profilePic, notificationTokens];
 }

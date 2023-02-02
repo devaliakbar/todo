@@ -31,6 +31,10 @@ class _KanbanBoardState extends State<KanbanBoard> {
       taskStatus: TimesheetTaskStatus.todo,
       createdOn: DateTime.now(),
       hours: const Duration(),
+      assignedPersonId: "",
+      creatorId: "",
+      creatorName: "",
+      timesheetId: "",
     ),
     TimesheetTask(
       taskId: "2",
@@ -40,6 +44,10 @@ class _KanbanBoardState extends State<KanbanBoard> {
       taskStatus: TimesheetTaskStatus.todo,
       createdOn: DateTime.now(),
       hours: const Duration(),
+      assignedPersonId: "",
+      creatorId: "",
+      creatorName: "",
+      timesheetId: "",
     ),
     TimesheetTask(
       taskId: "3",
@@ -50,6 +58,10 @@ class _KanbanBoardState extends State<KanbanBoard> {
       taskStatus: TimesheetTaskStatus.todo,
       createdOn: DateTime.now(),
       hours: const Duration(),
+      assignedPersonId: "",
+      creatorId: "",
+      creatorName: "",
+      timesheetId: "",
     ),
     TimesheetTask(
       taskId: "4",
@@ -59,6 +71,10 @@ class _KanbanBoardState extends State<KanbanBoard> {
       taskStatus: TimesheetTaskStatus.todo,
       createdOn: DateTime.now(),
       hours: const Duration(),
+      assignedPersonId: "",
+      creatorId: "",
+      creatorName: "",
+      timesheetId: "",
     ),
   ];
 
@@ -70,6 +86,10 @@ class _KanbanBoardState extends State<KanbanBoard> {
             "Random Task Description. It must be more than 1 line. so here we go with a big description",
         taskStatus: TimesheetTaskStatus.inProgress,
         createdOn: DateTime.now(),
+        assignedPersonId: "",
+        creatorId: "",
+        creatorName: "",
+        timesheetId: "",
         hours: const Duration(hours: 2, minutes: 10, seconds: 25),
         timerStartSince: DateTime.now().toUtc()),
     TimesheetTask(
@@ -80,6 +100,10 @@ class _KanbanBoardState extends State<KanbanBoard> {
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
       taskStatus: TimesheetTaskStatus.inProgress,
       createdOn: DateTime.now(),
+      assignedPersonId: "",
+      creatorId: "",
+      creatorName: "",
+      timesheetId: "",
       hours: const Duration(),
     ),
     TimesheetTask(
@@ -89,6 +113,10 @@ class _KanbanBoardState extends State<KanbanBoard> {
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
       taskStatus: TimesheetTaskStatus.inProgress,
       createdOn: DateTime.now(),
+      assignedPersonId: "",
+      creatorId: "",
+      creatorName: "",
+      timesheetId: "",
       hours: const Duration(),
     ),
   ];
@@ -103,6 +131,10 @@ class _KanbanBoardState extends State<KanbanBoard> {
       createdOn: DateTime.now(),
       doneOn: DateTime.now().add(const Duration(days: 2)),
       hours: const Duration(),
+      assignedPersonId: "",
+      creatorId: "",
+      creatorName: "",
+      timesheetId: "",
     ),
     TimesheetTask(
       taskId: "9",
@@ -111,6 +143,10 @@ class _KanbanBoardState extends State<KanbanBoard> {
           "Random Task Description. It must be more than 1 line. so here we go with a big description",
       taskStatus: TimesheetTaskStatus.done,
       createdOn: DateTime.now(),
+      assignedPersonId: "",
+      creatorId: "",
+      creatorName: "",
+      timesheetId: "",
       doneOn: DateTime.now().add(const Duration(days: 1)),
       hours: const Duration(),
     ),
@@ -221,16 +257,16 @@ class _KanbanBoardState extends State<KanbanBoard> {
           Utils.getTimerDuration(timesheetTask.timerStartSince!);
     }
 
-    final TimesheetTask updatedTask = TimesheetTask(
-        taskId: timesheetTask.taskId,
-        taskName: timesheetTask.taskName,
-        taskDescription: timesheetTask.taskDescription,
-        taskStatus: newStatus,
-        createdOn: timesheetTask.createdOn,
-        doneOn: newStatus == TimesheetTaskStatus.done
-            ? DateTime.now().toUtc()
-            : null,
-        timerStartSince: null,
-        hours: hours);
+    // final TimesheetTask updatedTask = TimesheetTask(
+    //     taskId: timesheetTask.taskId,
+    //     taskName: timesheetTask.taskName,
+    //     taskDescription: timesheetTask.taskDescription,
+    //     taskStatus: newStatus,
+    //     createdOn: timesheetTask.createdOn,
+    //     doneOn: newStatus == TimesheetTaskStatus.done
+    //         ? DateTime.now().toUtc()
+    //         : null,
+    //     timerStartSince: null,
+    //     hours: hours);
   }
 }

@@ -59,6 +59,34 @@ class TaskDetailScreen extends StatelessWidget {
                 Divider(
                   color: Colors.grey[200],
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text("CreatedOn"),
+                        Text(
+                          "29 Jun 2022",
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Text("CompletedOn"),
+                        Text(
+                          "29 Jun 2022",
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Divider(
+                  color: Colors.grey[200],
+                ),
                 const Text(
                   "Members status",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),

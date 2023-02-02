@@ -156,14 +156,14 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
       timerStartSince = null;
     }
 
-    final TimesheetTask updatedTask = TimesheetTask(
-        taskId: widget.timesheetTask.taskId,
-        taskName: widget.timesheetTask.taskName,
-        taskDescription: widget.timesheetTask.taskDescription,
-        taskStatus: widget.timesheetTask.taskStatus,
-        createdOn: widget.timesheetTask.createdOn,
-        doneOn: widget.timesheetTask.doneOn,
-        timerStartSince: timerStartSince,
-        hours: hours);
+    // final TimesheetTask updatedTask = TimesheetTask(
+    //     taskId: widget.timesheetTask.taskId,
+    //     taskName: widget.timesheetTask.taskName,
+    //     taskDescription: widget.timesheetTask.taskDescription,
+    //     taskStatus: widget.timesheetTask.taskStatus,
+    //     createdOn: widget.timesheetTask.createdOn,
+    //     doneOn: widget.timesheetTask.doneOn,
+    //     timerStartSince: timerStartSince,
+    //     hours: hours);
   }
 }

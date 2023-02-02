@@ -1,29 +1,37 @@
-import 'package:equatable/equatable.dart';
+import 'package:todo/features/task/domain/entity/base_task.dart';
 
 enum TimesheetTaskStatus { todo, inProgress, done }
 
-class TimesheetTask extends Equatable {
-  final String taskId;
-  final String taskName;
-  final String taskDescription;
+class TimesheetTask extends BaseTask {
+  final String timesheetId;
+  final String assignedPersonId;
+  final String creatorId;
+  final String creatorName;
   final TimesheetTaskStatus taskStatus;
-  final DateTime createdOn;
   final DateTime? doneOn;
   final DateTime? timerStartSince;
   final Duration hours;
 
   const TimesheetTask(
-      {required this.taskId,
-      required this.taskName,
-      required this.taskDescription,
+      {required this.timesheetId,
+      required this.assignedPersonId,
+      required this.creatorId,
+      required this.creatorName,
+      required super.taskId,
+      required super.taskName,
+      required super.taskDescription,
       required this.taskStatus,
-      required this.createdOn,
+      required super.createdOn,
       this.doneOn,
       this.timerStartSince,
       this.hours = Duration.zero});
 
   @override
   List<Object?> get props => [
+        timesheetId,
+        assignedPersonId,
+        creatorId,
+        creatorName,
         taskId,
         taskName,
         taskDescription,
