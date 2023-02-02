@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tapped/tapped.dart';
+import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/presentation/widget/main_screen_app_bar.dart';
 import 'package:todo/core/res/app_resources.dart';
 import 'package:todo/features/auth/presentation/bloc/user/user_bloc.dart';
@@ -23,10 +24,24 @@ class Profile extends StatelessWidget {
                 final String userFullName =
                     state is SignInState ? state.userInfo.fullName : "";
 
+                final String? userImage =
+                    state is SignInState ? state.userInfo.profilePic : null;
                 return Center(
-                  child: Text(
-                    userFullName,
-                    style: const TextStyle(fontSize: 18),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 75,
+                        width: 75,
+                        child: ClipOval(
+                          child: CachedImage(imageUrl: userImage),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        userFullName,
+                        style: const TextStyle(fontSize: 18),
+                      )
+                    ],
                   ),
                 );
               }),

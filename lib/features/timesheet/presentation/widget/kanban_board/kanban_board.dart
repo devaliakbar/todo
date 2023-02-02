@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/auth/presentation/bloc/user/user_bloc.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
@@ -139,11 +140,26 @@ class _KanbanBoardState extends State<KanbanBoard> {
             builder: (_, UserState state) {
               final String userFullName =
                   state is SignInState ? state.userInfo.fullName : "";
-              return Text(
-                "Hi $userFullName",
-                style: const TextStyle(fontSize: 18),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+
+              final String? userImage =
+                  state is SignInState ? state.userInfo.profilePic : null;
+              return Row(
+                children: [
+                  SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: ClipOval(
+                      child: CachedImage(imageUrl: userImage),
+                    ),
+                  ),
+                  const SizedBox(width: 7),
+                  Text(
+                    "Hi $userFullName",
+                    style: const TextStyle(fontSize: 18),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
               );
             },
           ),

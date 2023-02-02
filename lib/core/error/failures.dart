@@ -10,3 +10,5 @@ abstract class Failure extends Equatable {
 }
 
 class UnexpectedFailure extends Failure {}
+
+class FirestoreFailure extends Failure {}

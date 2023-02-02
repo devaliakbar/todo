@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:todo/features/auth/data/datasource/auth_local_data_source.dart';
 import 'package:todo/features/auth/data/datasource/auth_remote_data_source.dart';
 import 'package:todo/features/auth/data/repository/auth_repository.dart';
@@ -13,6 +14,7 @@ import 'core/utils/bloc_event_restartable.dart';
 final sl = GetIt.instance;
 Future<void> init() async {
   // Core
+  sl.registerLazySingleton<Logger>(() => Logger());
   // Utils
   sl.registerLazySingleton<BlocEventRestartable>(() => BlocEventRestartable());
 
@@ -33,7 +35,8 @@ Future<void> init() async {
   sl.registerLazySingleton<IAuthRepository>(() =>
       AuthRepository(authRemoteDataSource: sl(), authLocalDataSource: sl()));
   // Data source
-  sl.registerLazySingleton<IAuthRemoteDataSource>(() => AuthRemoteDataSource());
+  sl.registerLazySingleton<IAuthRemoteDataSource>(
+      () => AuthRemoteDataSource(logger: sl()));
   sl.registerLazySingleton<IAuthLocalDataSource>(() => AuthLocalDataSource());
 
   ///*********************************************************************************************///

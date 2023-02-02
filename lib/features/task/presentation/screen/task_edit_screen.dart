@@ -15,7 +15,21 @@ class TaskEditScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          CommonAppBar(title: timesheetTask == null ? "Add task" : "Edit task"),
+          CommonAppBar(
+            title: timesheetTask == null ? "Add task" : "Edit task",
+            actions: [
+              Tapped(
+                onTap: () {},
+                child: const Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Icon(
+                    Icons.check,
+                    size: 24,
+                  ),
+                ),
+              )
+            ],
+          ),
           Expanded(
             child: ListView(
               physics: const BouncingScrollPhysics(),

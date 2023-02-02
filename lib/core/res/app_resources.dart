@@ -7,3 +7,4 @@ import 'package:todo/features/welcome/presentation/screen/splash_screen.dart';
 part 'app_router.dart';
 part 'app_style.dart';
 part 'app_assets.dart';
+part 'firestore_collection_names.dart';
