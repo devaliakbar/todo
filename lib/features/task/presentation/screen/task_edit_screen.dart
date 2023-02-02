@@ -3,7 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/presentation/widget/common_text_field.dart';
-import 'package:todo/features/auth/presentation/screen/select_user_screen.dart';
+import 'package:todo/features/user/presentation/screen/select_user_screen.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 
 class TaskEditScreen extends StatelessWidget {

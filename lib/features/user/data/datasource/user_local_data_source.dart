@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/core/error/exceptions.dart';
-import 'package:todo/features/auth/data/model/user_info_model.dart';
+import 'package:todo/features/user/data/model/user_info_model.dart';
 
-abstract class IAuthLocalDataSource {
+abstract class IUserLocalDataSource {
   Future<void> saveUserDetails({required UserInfoModel userInfo});
   Future<void> deleteUserDetails();
 
@@ -11,7 +11,7 @@ abstract class IAuthLocalDataSource {
   Future<UserInfoModel> checkSignIn();
 }
 
-class AuthLocalDataSource extends IAuthLocalDataSource {
+class UserLocalDataSource extends IUserLocalDataSource {
   static const _userInfoKey = "user_info";
 
   @override

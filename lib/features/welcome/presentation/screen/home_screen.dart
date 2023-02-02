@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/features/auth/presentation/widget/profile/profile.dart';
+import 'package:todo/features/user/presentation/widget/profile/profile.dart';
 import 'package:todo/features/task/presentation/widget/task_history/task_history.dart';
 import 'package:todo/features/task/presentation/widget/tasks/tasks.dart';
 import 'package:todo/features/timesheet/presentation/widget/kanban_board/kanban_board.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/utils/utils.dart';
-import 'package:todo/features/auth/presentation/bloc/user/user_bloc.dart';
+import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_section.dart';
 

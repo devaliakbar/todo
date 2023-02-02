@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/features/auth/presentation/bloc/user/user_bloc.dart';
+import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 import 'core/res/app_resources.dart';
 import 'injection_container.dart' as di;
 

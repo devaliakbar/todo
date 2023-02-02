@@ -4,8 +4,8 @@ import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/presentation/widget/main_screen_app_bar.dart';
 import 'package:todo/core/res/app_resources.dart';
-import 'package:todo/features/auth/presentation/bloc/user/user_bloc.dart';
-import 'package:todo/features/auth/presentation/screen/sign_in_screen.dart';
+import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
+import 'package:todo/features/user/presentation/screen/sign_in_screen.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});

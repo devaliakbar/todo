@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:todo/features/auth/presentation/bloc/user/user_bloc.dart';
+import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 import 'package:todo/features/welcome/presentation/screen/home_screen.dart';
 
 class SignInScreen extends StatelessWidget {

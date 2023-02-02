@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:todo/features/auth/domain/enity/user_info.dart';
+import 'package:todo/features/user/domain/enity/user_info.dart';
 
 class UserInfoModel extends UserInfo {
   const UserInfoModel(

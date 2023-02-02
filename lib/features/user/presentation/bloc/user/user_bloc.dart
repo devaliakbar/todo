@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/error/failures.dart';
 import 'package:todo/core/usecases/usecase.dart';
 import 'package:todo/core/utils/bloc_event_restartable.dart';
-import 'package:todo/features/auth/domain/enity/user_info.dart';
-import 'package:todo/features/auth/domain/usecases/check_sign_in.dart';
-import 'package:todo/features/auth/domain/usecases/sign_in.dart';
-import 'package:todo/features/auth/domain/usecases/sign_out.dart';
+import 'package:todo/features/user/domain/enity/user_info.dart';
+import 'package:todo/features/user/domain/usecases/check_sign_in.dart';
+import 'package:todo/features/user/domain/usecases/sign_in.dart';
+import 'package:todo/features/user/domain/usecases/sign_out.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';

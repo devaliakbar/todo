@@ -5,9 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/core/error/exceptions.dart';
 import 'package:todo/core/res/app_resources.dart';
-import 'package:todo/features/auth/data/model/user_info_model.dart';
+import 'package:todo/features/user/data/model/user_info_model.dart';
 
-abstract class IAuthRemoteDataSource {
+abstract class IUserRemoteDataSource {
   /// Throws a [UnexpectedException] for any failure.
   Future<UserInfoModel> signIn();
 
@@ -16,10 +16,10 @@ abstract class IAuthRemoteDataSource {
   Future<List<UserInfoModel>> getUsers();
 }
 
-class AuthRemoteDataSource extends IAuthRemoteDataSource {
+class UserRemoteDataSource extends IUserRemoteDataSource {
   final Logger _logger;
 
-  AuthRemoteDataSource({required Logger logger}) : _logger = logger;
+  UserRemoteDataSource({required Logger logger}) : _logger = logger;
 
   @override
   Future<UserInfoModel> signIn() async {
@@ -88,7 +88,7 @@ class AuthRemoteDataSource extends IAuthRemoteDataSource {
                 as Map<String, dynamic>)["notificationTokens"]);
 
         tokens.add(notificationToken);
-        result.docs.single.reference
+        await result.docs.single.reference
             .update({"notificationTokens": tokens})
             .then((value) =>
                 _logger.i("User new notification token added to firestore"))
@@ -103,7 +103,7 @@ class AuthRemoteDataSource extends IAuthRemoteDataSource {
       user["notificationTokens"] =
           notificationToken == null ? [] : [notificationToken];
 
-      users
+      await users
           .add(user)
           .then((value) => _logger.i("User added to firestore"))
           .catchError((error) {
@@ -132,7 +132,7 @@ class AuthRemoteDataSource extends IAuthRemoteDataSource {
 
             tokens.remove(notificationToken);
 
-            result.docs.single.reference
+            await result.docs.single.reference
                 .update({"notificationTokens": tokens})
                 .then((value) => _logger
                     .i("User old notification token removed from firestore"))
