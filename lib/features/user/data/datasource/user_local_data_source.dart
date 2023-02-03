@@ -15,6 +15,9 @@ abstract class IUserLocalDataSource {
 class UserLocalDataSource extends IUserLocalDataSource {
   static const _userInfoKey = "user_info";
 
+  ///***************************************************************************************************************************///                                              ///
+  ///                                                                                                                           ///
+  ///***************************************************************************************************************************///
   @override
   Future<void> saveUserDetails({required UserInfoModel userInfo}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -22,12 +25,18 @@ class UserLocalDataSource extends IUserLocalDataSource {
         _userInfoKey, jsonEncode(UserInfoModel.toJson(userInfo)));
   }
 
+  ///***************************************************************************************************************************///                                              ///
+  ///                                                                                                                           ///
+  ///***************************************************************************************************************************///
   @override
   Future<void> deleteUserDetails() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(_userInfoKey);
   }
 
+  ///***************************************************************************************************************************///                                              ///
+  ///                                                                                                                           ///
+  ///***************************************************************************************************************************///
   @override
   Future<UserInfo> checkSignIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

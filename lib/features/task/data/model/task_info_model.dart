@@ -36,6 +36,7 @@ class TaskInfoModel extends TaskInfo {
 
   static Map<String, dynamic> toFirestoreCreateJson(CreateTaskParams taskInfo) {
     return {
+      "creatorId": taskInfo.creatorInfo.id,
       "taskName": taskInfo.taskName,
       "taskDescription": taskInfo.taskDescription,
       "isCompleted": false,
@@ -48,10 +49,12 @@ class TaskInfoModel extends TaskInfo {
     };
   }
 
-  static Map<String, dynamic> toFirestoreUpdateJson(UpdateTaskParams taskInfo) {
+  static Map<String, dynamic> toFirestoreUpdateJson(
+      UpdateTaskParams taskInfo, Duration newDuration) {
     return {
       "taskName": taskInfo.taskName,
       "taskDescription": taskInfo.taskDescription,
+      "totalHours": newDuration.toString(),
       "assignedTo": taskInfo.users
           .map<Map<String, dynamic>>((e) => UserInfoModel.toJson(e))
           .toList()

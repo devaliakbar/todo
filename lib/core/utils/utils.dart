@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 
 class Utils {
   static String getFormattedDuration(Duration duration) {
@@ -30,5 +31,25 @@ class Utils {
     } catch (_) {}
 
     return Duration.zero;
+  }
+
+  static String getTaskStatusInString(TimesheetTaskStatus status) {
+    if (status == TimesheetTaskStatus.inProgress) {
+      return "inProgress";
+    } else if (status == TimesheetTaskStatus.done) {
+      return "done";
+    }
+
+    return "todo";
+  }
+
+  static TimesheetTaskStatus getTaskStatusInEnum(String status) {
+    if (status == "inProgress") {
+      return TimesheetTaskStatus.inProgress;
+    } else if (status == "done") {
+      return TimesheetTaskStatus.done;
+    }
+
+    return TimesheetTaskStatus.todo;
   }
 }

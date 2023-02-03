@@ -15,6 +15,7 @@ import 'package:todo/features/task/domain/usecases/update_task.dart';
 import 'package:todo/features/task/presentation/ui_helper/task_edit_helper.dart';
 import 'package:todo/features/task/presentation/view_controller/task_edit_controller.dart';
 import 'package:todo/features/user/domain/enity/user_info.dart';
+import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 import 'package:todo/features/user/presentation/screen/select_user_screen.dart';
 
 typedef OnSaved = Function(TaskInfo taskInfo);
@@ -201,35 +202,42 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
       final String taskName = _taskNameController.text.trim();
       final String taskDescription = _taskDescriptionController.text.trim();
 
-      final TaskEditController taskEditController =
-          RepositoryProvider.of<TaskEditController>(context, listen: false);
+      final UserState userState =
+          BlocProvider.of<UserBloc>(context, listen: false).state;
 
-      final dartz.Either<Failure, TaskInfo> result;
+      if (userState is SignInState) {
+        final TaskEditController taskEditController =
+            RepositoryProvider.of<TaskEditController>(context, listen: false);
 
-      if (widget.taskInfo != null) {
-        result = await taskEditController.updateTask(UpdateTaskParams(
-            taskId: widget.taskInfo!.taskId,
-            taskName: taskName,
-            taskDescription: taskDescription,
-            users: [..._selectedUsers.value],
-            removedUsers: TaskEditHelper.getRemovedUser(
-                widget.taskInfo!.assignedTo, _selectedUsers.value)));
-      } else {
-        result = await taskEditController.createTask(CreateTaskParams(
-            taskName: taskName,
-            taskDescription: taskDescription,
-            users: [..._selectedUsers.value]));
-      }
+        final dartz.Either<Failure, TaskInfo> result;
 
-      result.fold((l) => Fluttertoast.showToast(msg: "Failed to save"),
-          (TaskInfo result) {
-        Fluttertoast.showToast(msg: "Saved successfully");
-        if (widget.onSaved != null) {
-          widget.onSaved!(result);
+        if (widget.taskInfo != null) {
+          result = await taskEditController.updateTask(UpdateTaskParams(
+              taskId: widget.taskInfo!.taskId,
+              creatorInfo: userState.userInfo,
+              taskName: taskName,
+              taskDescription: taskDescription,
+              users: [..._selectedUsers.value],
+              removedUsers: TaskEditHelper.getRemovedUser(
+                  widget.taskInfo!.assignedTo, _selectedUsers.value)));
+        } else {
+          result = await taskEditController.createTask(CreateTaskParams(
+              creatorInfo: userState.userInfo,
+              taskName: taskName,
+              taskDescription: taskDescription,
+              users: [..._selectedUsers.value]));
         }
 
-        Navigator.pop(context);
-      });
+        result.fold((l) => Fluttertoast.showToast(msg: "Failed to save"),
+            (TaskInfo result) {
+          Fluttertoast.showToast(msg: "Saved successfully");
+          if (widget.onSaved != null) {
+            widget.onSaved!(result);
+          }
+
+          Navigator.pop(context);
+        });
+      }
     }
   }
 }

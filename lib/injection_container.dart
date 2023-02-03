@@ -9,6 +9,7 @@ import 'package:todo/features/task/domain/usecases/create_task.dart';
 import 'package:todo/features/task/domain/usecases/get_tasks.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';
 import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
+import 'package:todo/features/task/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
 import 'package:todo/features/task/presentation/view_controller/task_edit_controller.dart';
 import 'package:todo/features/user/data/datasource/user_local_data_source.dart';
 import 'package:todo/features/user/data/datasource/user_remote_data_source.dart';
@@ -22,6 +23,8 @@ import 'package:todo/features/user/domain/usecases/sign_in.dart';
 import 'package:todo/features/user/domain/usecases/sign_out.dart';
 import 'package:todo/features/user/presentation/bloc/get_users/get_users_bloc.dart';
 import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
+
+import 'features/task/domain/usecases/get_tasks_timesheet.dart';
 
 final sl = GetIt.instance;
 Future<void> init() async {
@@ -62,6 +65,7 @@ Future<void> init() async {
   // Auth
   // Bloc
   sl.registerFactory(() => TasksBloc(getTasks: sl()));
+  sl.registerFactory(() => TasksTimesheetBloc(getTasksTimesheet: sl()));
   // View Controller
   sl.registerFactory(
       () => TaskEditController(createTask: sl(), updateTask: sl()));
@@ -69,6 +73,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreateTask(taskRepository: sl()));
   sl.registerLazySingleton(() => UpdateTask(taskRepository: sl()));
   sl.registerLazySingleton(() => GetTasks(taskRepository: sl()));
+  sl.registerLazySingleton(() => GetTasksTimesheet(taskRepository: sl()));
   // Repository
   sl.registerLazySingleton<ItaskRepository>(
       () => TaskRepository(taskRemoteDataSource: sl()));

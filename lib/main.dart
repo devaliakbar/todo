@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/main_widget.dart';
+import 'package:todo/core/utils/track_context.dart';
 import 'package:todo/features/task/presentation/view_controller/task_edit_controller.dart';
 import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 import 'core/res/app_resources.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       builder: (context, child) => MaterialApp(
         title: 'Todo',
+        key: TrackContext.key,
         theme: ThemeData(useMaterial3: true),
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppRouter.onGenerateRoute,

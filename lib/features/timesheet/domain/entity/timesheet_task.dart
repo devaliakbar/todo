@@ -22,9 +22,9 @@ class TimesheetTask extends BaseTask {
       required super.taskDescription,
       required this.taskStatus,
       required super.createdOn,
-      this.doneOn,
-      this.timerStartSince,
-      this.hours = Duration.zero});
+      required this.doneOn,
+      required this.timerStartSince,
+      required this.hours});
 
   @override
   List<Object?> get props => [

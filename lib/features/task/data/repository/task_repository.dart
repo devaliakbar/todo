@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:todo/features/task/domain/irepository/itask_repository.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
+import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 
 class TaskRepository extends ItaskRepository {
   final ITaskRemoteDataSource _taskRemoteDataSource;
@@ -35,6 +36,16 @@ class TaskRepository extends ItaskRepository {
   Future<Either<Failure, List<TaskInfo>>> getTasks() async {
     try {
       return Right(await _taskRemoteDataSource.getTasks());
+    } catch (_) {}
+
+    return Left(UnexpectedFailure());
+  }
+
+  @override
+  Future<Either<Failure, List<TimesheetTask>>> getTasksTimesheet(
+      String taskId) async {
+    try {
+      return Right(await _taskRemoteDataSource.getTasksTimesheet(taskId));
     } catch (_) {}
 
     return Left(UnexpectedFailure());

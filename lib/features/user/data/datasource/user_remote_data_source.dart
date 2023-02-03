@@ -21,6 +21,9 @@ class UserRemoteDataSource extends IUserRemoteDataSource {
 
   UserRemoteDataSource({required Logger logger}) : _logger = logger;
 
+  ///***************************************************************************************************************************///                                              ///
+  ///                                                                                                                           ///
+  ///***************************************************************************************************************************///
   @override
   Future<UserInfoModel> signIn() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -49,6 +52,9 @@ class UserRemoteDataSource extends IUserRemoteDataSource {
     throw UnexpectedException();
   }
 
+  ///***************************************************************************************************************************///                                              ///
+  ///                                                                                                                           ///
+  ///***************************************************************************************************************************///
   @override
   Future<void> signOut() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -57,6 +63,9 @@ class UserRemoteDataSource extends IUserRemoteDataSource {
     await auth.signOut();
   }
 
+  ///***************************************************************************************************************************///                                              ///
+  ///                                                                                                                           ///
+  ///***************************************************************************************************************************///
   @override
   Future<List<UserInfoModel>> getUsers() async {
     CollectionReference users =
@@ -73,6 +82,9 @@ class UserRemoteDataSource extends IUserRemoteDataSource {
     return usersRes;
   }
 
+  ///***************************************************************************************************************************///                                              ///
+  ///                                                                                                                           ///
+  ///***************************************************************************************************************************///
   Future<void> _saveUserDetails(UserInfoModel userInfoModel) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection(FirestoreCollectionNames.cUser);
@@ -113,6 +125,9 @@ class UserRemoteDataSource extends IUserRemoteDataSource {
     }
   }
 
+  ///***************************************************************************************************************************///                                              ///
+  ///                                                                                                                           ///
+  ///***************************************************************************************************************************///
   Future<void> _deleteNotificationToken({required String? userId}) async {
     try {
       final String? notificationToken =

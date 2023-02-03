@@ -17,12 +17,14 @@ class CreateTask extends UseCase<TaskInfo, CreateTaskParams> {
 }
 
 class CreateTaskParams extends Equatable {
+  final UserInfo creatorInfo;
   final String taskName;
   final String taskDescription;
   final List<UserInfo> users;
 
   const CreateTaskParams(
-      {required this.taskName,
+      {required this.creatorInfo,
+      required this.taskName,
       required this.taskDescription,
       required this.users});
 

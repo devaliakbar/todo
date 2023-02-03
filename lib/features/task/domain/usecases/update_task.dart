@@ -22,6 +22,7 @@ class UpdateTaskParams extends CreateTaskParams {
 
   const UpdateTaskParams(
       {required this.taskId,
+      required super.creatorInfo,
       required super.taskName,
       required super.taskDescription,
       required super.users,
