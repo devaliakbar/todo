@@ -21,8 +21,8 @@ class Utils {
       List<String> durationSplit = duration.split(".").first.split(":");
       return Duration(
           hours: int.parse(durationSplit.first),
-          minutes: int.parse(duration[1]),
-          seconds: int.parse(duration[2]));
+          minutes: int.parse(durationSplit[1]),
+          seconds: int.parse(durationSplit[2]));
     } catch (_) {}
 
     return Duration.zero;

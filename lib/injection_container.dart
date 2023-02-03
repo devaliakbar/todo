@@ -6,7 +6,9 @@ import 'package:todo/features/task/data/datasource/task_remote_data_source.dart'
 import 'package:todo/features/task/data/repository/task_repository.dart';
 import 'package:todo/features/task/domain/irepository/itask_repository.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
+import 'package:todo/features/task/domain/usecases/get_tasks.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';
+import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
 import 'package:todo/features/task/presentation/view_controller/task_edit_controller.dart';
 import 'package:todo/features/user/data/datasource/user_local_data_source.dart';
 import 'package:todo/features/user/data/datasource/user_remote_data_source.dart';
@@ -58,12 +60,15 @@ Future<void> init() async {
   ///*********************************************************************************************///
 
   // Auth
+  // Bloc
+  sl.registerFactory(() => TasksBloc(getTasks: sl()));
   // View Controller
   sl.registerFactory(
       () => TaskEditController(createTask: sl(), updateTask: sl()));
   // Usecase
   sl.registerLazySingleton(() => CreateTask(taskRepository: sl()));
   sl.registerLazySingleton(() => UpdateTask(taskRepository: sl()));
+  sl.registerLazySingleton(() => GetTasks(taskRepository: sl()));
   // Repository
   sl.registerLazySingleton<ItaskRepository>(
       () => TaskRepository(taskRemoteDataSource: sl()));

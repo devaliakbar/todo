@@ -9,4 +9,6 @@ abstract class ItaskRepository {
       CreateTaskParams createTaskParams);
   Future<Either<Failure, TaskInfo>> updateTask(
       UpdateTaskParams updateTaskParams);
+
+  Future<Either<Failure, List<TaskInfo>>> getTasks();
 }

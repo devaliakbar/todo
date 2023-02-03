@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
 import 'package:todo/features/user/presentation/widget/profile/profile.dart';
 import 'package:todo/features/task/presentation/widget/task_history/task_history.dart';
 import 'package:todo/features/task/presentation/widget/tasks/tasks.dart';
 import 'package:todo/features/timesheet/presentation/widget/kanban_board/kanban_board.dart';
 import 'package:todo/features/welcome/presentation/widget/home_screen/home_bottom_navigation.dart';
+import 'package:todo/injection_container.dart' as di;
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home_screen';
@@ -45,11 +48,14 @@ class _HomeScreenState extends State<HomeScreen>
       body: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
           controller: _tabController,
-          children: const [
-            KanbanBoard(),
-            Tasks(),
-            TaskHistory(),
-            Profile(),
+          children: [
+            const KanbanBoard(),
+            BlocProvider(
+              create: (context) => di.sl<TasksBloc>()..add(GetTasksEvent()),
+              child: const Tasks(),
+            ),
+            const TaskHistory(),
+            const Profile(),
           ]),
       bottomNavigationBar: HomeBottomNavigation(currentIndex: _currentIndex),
     );

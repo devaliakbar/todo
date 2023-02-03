@@ -17,12 +17,12 @@ import 'package:todo/features/task/presentation/view_controller/task_edit_contro
 import 'package:todo/features/user/domain/enity/user_info.dart';
 import 'package:todo/features/user/presentation/screen/select_user_screen.dart';
 
-typedef OnSuccess = Function(TaskInfo taskInfo);
+typedef OnSaved = Function(TaskInfo taskInfo);
 
 class TaskEditScreen extends StatefulWidget {
   final TaskInfo? taskInfo;
-  final OnSuccess? onSuccess;
-  const TaskEditScreen({super.key, this.taskInfo, this.onSuccess});
+  final OnSaved? onSaved;
+  const TaskEditScreen({super.key, this.taskInfo, this.onSaved});
 
   @override
   State<TaskEditScreen> createState() => _TaskEditScreenState();
@@ -224,8 +224,8 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
       result.fold((l) => Fluttertoast.showToast(msg: "Failed to save"),
           (TaskInfo result) {
         Fluttertoast.showToast(msg: "Saved successfully");
-        if (widget.onSuccess != null) {
-          widget.onSuccess!(result);
+        if (widget.onSaved != null) {
+          widget.onSaved!(result);
         }
 
         Navigator.pop(context);

@@ -12,6 +12,8 @@ abstract class ITaskRemoteDataSource {
 
   /// Throws a [FirestoreException] for any failure.
   Future<TaskInfoModel> updateTask(UpdateTaskParams updateTaskParams);
+
+  Future<List<TaskInfoModel>> getTasks();
 }
 
 class TaskRemoteDataSource extends ITaskRemoteDataSource {
@@ -43,5 +45,21 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
   Future<TaskInfoModel> updateTask(UpdateTaskParams updateTaskParams) async {
     // TODO: implement updateTask
     throw UnimplementedError();
+  }
+
+  @override
+  Future<List<TaskInfoModel>> getTasks() async {
+    CollectionReference tasks =
+        FirebaseFirestore.instance.collection(FirestoreCollectionNames.cTasks);
+
+    var result = await tasks.orderBy('createdOn', descending: true).get();
+
+    List<TaskInfoModel> tasksRes = [];
+    for (var element in result.docs) {
+      tasksRes.add(TaskInfoModel.fromFirestore(
+          element.id, element.data() as Map<String, dynamic>));
+    }
+
+    return tasksRes;
   }
 }

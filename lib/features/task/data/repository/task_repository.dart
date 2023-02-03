@@ -30,4 +30,13 @@ class TaskRepository extends ItaskRepository {
 
     return Left(UnexpectedFailure());
   }
+
+  @override
+  Future<Either<Failure, List<TaskInfo>>> getTasks() async {
+    try {
+      return Right(await _taskRemoteDataSource.getTasks());
+    } catch (_) {}
+
+    return Left(UnexpectedFailure());
+  }
 }

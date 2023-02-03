@@ -23,8 +23,10 @@ class TaskInfoModel extends TaskInfo {
       taskDescription: json["taskDescription"],
       isCompleted: json["isCompleted"],
       totalHours: Utils.parseDuration(json["totalHours"]),
-      createdOn: json["createdOn"],
-      completedOn: json["completedOn"],
+      createdOn: DateTime.parse(json["createdOn"]),
+      completedOn: json["completedOn"] == null
+          ? null
+          : DateTime.parse(json["completedOn"]),
       assignedTo: json["assignedTo"]
           .map<UserInfo>((e) => UserInfoModel.fromJson(e))
           .toList(),
@@ -37,7 +39,7 @@ class TaskInfoModel extends TaskInfo {
       "taskDescription": taskInfo.taskDescription,
       "isCompleted": false,
       "totalHours": Duration.zero.toString(),
-      "createdOn": DateTime.now().toUtc(),
+      "createdOn": DateTime.now().toUtc().toString(),
       "completedOn": null,
       "assignedTo": taskInfo.users
           .map<Map<String, dynamic>>((e) => UserInfoModel.toJson(e))
@@ -50,9 +52,9 @@ class TaskInfoModel extends TaskInfo {
       "taskName": taskInfo.taskName,
       "taskDescription": taskInfo.taskDescription,
       "isCompleted": taskInfo.isCompleted,
-      "totalHours": taskInfo.totalHours,
-      "createdOn": taskInfo.createdOn,
-      "completedOn": taskInfo.completedOn,
+      "totalHours": taskInfo.totalHours.toString(),
+      "createdOn": taskInfo.createdOn.toString(),
+      "completedOn": taskInfo.completedOn.toString(),
       "assignedTo": taskInfo.assignedTo
           .map<Map<String, dynamic>>((e) => UserInfoModel.toJson(e))
           .toList()

@@ -62,7 +62,7 @@ class UserRemoteDataSource extends IUserRemoteDataSource {
     CollectionReference users =
         FirebaseFirestore.instance.collection(FirestoreCollectionNames.cUser);
 
-    var result = await users.get();
+    var result = await users.orderBy('fullName', descending: false).get();
 
     List<UserInfoResponseModel> usersRes = [];
     for (var element in result.docs) {
