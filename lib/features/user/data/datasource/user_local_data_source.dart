@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/core/error/exceptions.dart';
 import 'package:todo/features/user/data/model/user_info_model.dart';
+import 'package:todo/features/user/domain/enity/user_info.dart';
 
 abstract class IUserLocalDataSource {
   Future<void> saveUserDetails({required UserInfoModel userInfo});
   Future<void> deleteUserDetails();
 
   /// Throws a [UnexpectedException] for any failure.
-  Future<UserInfoModel> checkSignIn();
+  Future<UserInfo> checkSignIn();
 }
 
 class UserLocalDataSource extends IUserLocalDataSource {
@@ -28,7 +29,7 @@ class UserLocalDataSource extends IUserLocalDataSource {
   }
 
   @override
-  Future<UserInfoModel> checkSignIn() async {
+  Future<UserInfo> checkSignIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       final String? userJson = prefs.getString(_userInfoKey);

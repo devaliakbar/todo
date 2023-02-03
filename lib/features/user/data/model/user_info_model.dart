@@ -12,14 +12,14 @@ class UserInfoModel extends UserInfo {
         profilePic: user.photoURL);
   }
 
-  factory UserInfoModel.fromJson(Map<String, dynamic> json) {
-    return UserInfoModel(
+  static UserInfo fromJson(Map<String, dynamic> json) {
+    return UserInfo(
         id: json["id"],
         fullName: json["fullName"],
         profilePic: json["profilePic"]);
   }
 
-  static Map<String, dynamic> toJson(UserInfoModel userInfo) {
+  static Map<String, dynamic> toJson(UserInfo userInfo) {
     return {
       "id": userInfo.id,
       "fullName": userInfo.fullName,

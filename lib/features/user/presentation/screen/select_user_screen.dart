@@ -93,8 +93,6 @@ class _SelectUserScreenState extends State<SelectUserScreen> {
                                         .contains(value.trim().toLowerCase()))
                                     .toList();
                               }
-
-                              _users.notifyListeners();
                             },
                             decoration: InputDecoration(
                                 label: const Text("Search"),

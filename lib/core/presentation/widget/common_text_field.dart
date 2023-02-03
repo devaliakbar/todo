@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class CommonTextField extends StatelessWidget {
   final String title;
+  final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
   final int maxLength;
   final bool hideMaxLength;
   final int maxLine;
@@ -9,15 +11,19 @@ class CommonTextField extends StatelessWidget {
   const CommonTextField(
       {super.key,
       required this.title,
+      this.controller,
+      this.validator,
       this.maxLength = 50,
       this.hideMaxLength = false,
       this.maxLine = 1});
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      controller: controller,
       maxLength: maxLength,
       maxLines: maxLine,
+      validator: validator,
       decoration: InputDecoration(
           label: Text(title),
           counter: hideMaxLength ? const SizedBox.shrink() : null,

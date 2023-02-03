@@ -15,4 +15,16 @@ class Utils {
   static Duration getTimerDuration(DateTime timerStartSince) {
     return DateTime.now().toUtc().difference(timerStartSince);
   }
+
+  static Duration parseDuration(String duration) {
+    try {
+      List<String> durationSplit = duration.split(".").first.split(":");
+      return Duration(
+          hours: int.parse(durationSplit.first),
+          minutes: int.parse(duration[1]),
+          seconds: int.parse(duration[2]));
+    } catch (_) {}
+
+    return Duration.zero;
+  }
 }

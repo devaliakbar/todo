@@ -30,6 +30,7 @@ dependencies:
   cloud_firestore: ^4.3.1
   firebase_messaging: ^14.2.1
   logger: ^1.1.0
+  flutter_screenutil: ^5.6.1
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,9 @@
-import 'package:todo/features/auth/domain/enity/user_info.dart';
 import 'package:todo/features/task/domain/entity/base_task.dart';
+import 'package:todo/features/user/domain/enity/user_info.dart';
 
 class TaskInfo extends BaseTask {
   final bool isCompleted;
-  final double totalHours;
+  final Duration totalHours;
   final DateTime? completedOn;
   final List<UserInfo> assignedTo;
 

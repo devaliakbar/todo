@@ -1,6 +1,13 @@
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/utils/bloc_event_restartable.dart';
+import 'package:todo/features/task/data/datasource/task_remote_data_source.dart';
+import 'package:todo/features/task/data/repository/task_repository.dart';
+import 'package:todo/features/task/domain/irepository/itask_repository.dart';
+import 'package:todo/features/task/domain/usecases/create_task.dart';
+import 'package:todo/features/task/domain/usecases/update_task.dart';
+import 'package:todo/features/task/presentation/view_controller/task_edit_controller.dart';
 import 'package:todo/features/user/data/datasource/user_local_data_source.dart';
 import 'package:todo/features/user/data/datasource/user_remote_data_source.dart';
 import 'package:todo/features/user/data/repository/auth_repository.dart';
@@ -20,6 +27,8 @@ Future<void> init() async {
   sl.registerLazySingleton<Logger>(() => Logger());
   // Utils
   sl.registerLazySingleton<BlocEventRestartable>(() => BlocEventRestartable());
+  // Bloc
+  sl.registerFactory(() => AppLoaderBloc());
 
   ///*********************************************************************************************///
 
@@ -47,4 +56,18 @@ Future<void> init() async {
   sl.registerLazySingleton<IUserLocalDataSource>(() => UserLocalDataSource());
 
   ///*********************************************************************************************///
+
+  // Auth
+  // View Controller
+  sl.registerFactory(
+      () => TaskEditController(createTask: sl(), updateTask: sl()));
+  // Usecase
+  sl.registerLazySingleton(() => CreateTask(taskRepository: sl()));
+  sl.registerLazySingleton(() => UpdateTask(taskRepository: sl()));
+  // Repository
+  sl.registerLazySingleton<ItaskRepository>(
+      () => TaskRepository(taskRemoteDataSource: sl()));
+  // Data source
+  sl.registerLazySingleton<ITaskRemoteDataSource>(
+      () => TaskRemoteDataSource(logger: sl()));
 }
