@@ -19,15 +19,18 @@ class Tasks extends StatelessWidget {
           title: "Task",
           actions: [
             Tapped(
-              onTap: () => Navigator.push(
-                  context,
-                  PageTransition(
-                      type: PageTransitionType.rightToLeft,
-                      child: TaskEditScreen(
-                        onSaved: (_) =>
-                            BlocProvider.of<TasksBloc>(context, listen: false)
-                                .add(GetTasksEvent()),
-                      ))),
+              onTap: () {
+                final TasksBloc tasksBloc =
+                    BlocProvider.of<TasksBloc>(context, listen: false);
+
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        child: TaskEditScreen(
+                          onSaved: (_) => tasksBloc.add(GetTasksEvent()),
+                        )));
+              },
               child: const Padding(
                 padding: EdgeInsets.all(15),
                 child: Icon(
@@ -56,11 +59,20 @@ class Tasks extends StatelessWidget {
                   itemBuilder: (context, int index) => Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Tapped(
-                      onTap: () => Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: const TaskDetailScreen())),
+                      onTap: () {
+                        final TasksBloc tasksBloc =
+                            BlocProvider.of<TasksBloc>(context, listen: false);
+
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: TaskDetailScreen(
+                                  taskInfo: state.tasks[index],
+                                  onChange: () =>
+                                      tasksBloc.add(GetTasksEvent()),
+                                )));
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(

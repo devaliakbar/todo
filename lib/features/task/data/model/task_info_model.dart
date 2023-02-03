@@ -1,6 +1,7 @@
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
+import 'package:todo/features/task/domain/usecases/update_task.dart';
 import 'package:todo/features/user/data/model/user_info_model.dart';
 import 'package:todo/features/user/domain/enity/user_info.dart';
 
@@ -47,15 +48,11 @@ class TaskInfoModel extends TaskInfo {
     };
   }
 
-  static Map<String, dynamic> toFirestoreUpdateJson(TaskInfoModel taskInfo) {
+  static Map<String, dynamic> toFirestoreUpdateJson(UpdateTaskParams taskInfo) {
     return {
       "taskName": taskInfo.taskName,
       "taskDescription": taskInfo.taskDescription,
-      "isCompleted": taskInfo.isCompleted,
-      "totalHours": taskInfo.totalHours.toString(),
-      "createdOn": taskInfo.createdOn.toString(),
-      "completedOn": taskInfo.completedOn.toString(),
-      "assignedTo": taskInfo.assignedTo
+      "assignedTo": taskInfo.users
           .map<Map<String, dynamic>>((e) => UserInfoModel.toJson(e))
           .toList()
     };

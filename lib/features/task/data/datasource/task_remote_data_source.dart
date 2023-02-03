@@ -43,8 +43,33 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
 
   @override
   Future<TaskInfoModel> updateTask(UpdateTaskParams updateTaskParams) async {
-    // TODO: implement updateTask
-    throw UnimplementedError();
+    final Map<String, dynamic> updateTaskJson =
+        TaskInfoModel.toFirestoreUpdateJson(updateTaskParams);
+
+    CollectionReference tasks =
+        FirebaseFirestore.instance.collection(FirestoreCollectionNames.cTasks);
+    var result = await tasks
+        .where(FieldPath.documentId, isEqualTo: updateTaskParams.taskId)
+        .get();
+
+    if (result.docs.isNotEmpty) {
+      await result.docs.single.reference
+          .update(updateTaskJson)
+          .then((value) => _logger.i("Successfully updated task"))
+          .catchError((err) {
+        _logger.e("Failed to update task: $err");
+        throw FirestoreException();
+      });
+
+      result = await tasks
+          .where(FieldPath.documentId, isEqualTo: updateTaskParams.taskId)
+          .get();
+
+      return TaskInfoModel.fromFirestore(result.docs.single.id,
+          result.docs.single.data() as Map<String, dynamic>);
+    }
+
+    throw FirestoreException();
   }
 
   @override

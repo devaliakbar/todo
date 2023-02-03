@@ -12,7 +12,7 @@ class UpdateTask extends UseCase<TaskInfo, UpdateTaskParams> {
 
   @override
   Future<Either<Failure, TaskInfo>> call(UpdateTaskParams params) async {
-    return await taskRepository.createTask(params);
+    return await taskRepository.updateTask(params);
   }
 }
 

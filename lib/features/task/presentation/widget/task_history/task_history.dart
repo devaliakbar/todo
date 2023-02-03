@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/widget/main_screen_app_bar.dart';
-import 'package:todo/features/task/presentation/screen/task_detail_screen.dart';
 
 class TaskHistory extends StatelessWidget {
   const TaskHistory({super.key});
@@ -31,11 +29,13 @@ class TaskHistory extends StatelessWidget {
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: Tapped(
-                onTap: () => Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        child: const TaskDetailScreen())),
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   PageTransition(
+                  //       type: PageTransitionType.rightToLeft,
+                  //       child: const TaskDetailScreen()));
+                },
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
