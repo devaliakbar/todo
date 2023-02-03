@@ -5,9 +5,9 @@ import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
-import 'package:todo/features/task/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
 import 'package:todo/features/task/presentation/screen/task_edit_screen.dart';
 import 'package:todo/features/task/presentation/widget/task_detail_screen/tasks_timesheet_section.dart';
+import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
 
 import 'package:todo/injection_container.dart' as di;
 

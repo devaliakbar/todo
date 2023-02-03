@@ -18,8 +18,6 @@ abstract class ITaskRemoteDataSource {
   Future<TaskInfoModel> updateTask(UpdateTaskParams updateTaskParams);
 
   Future<List<TaskInfoModel>> getTasks();
-
-  Future<List<TimesheetTaskModel>> getTasksTimesheet(String taskId);
 }
 
 class TaskRemoteDataSource extends ITaskRemoteDataSource {
@@ -165,25 +163,6 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
     List<TaskInfoModel> tasksRes = [];
     for (var element in result.docs) {
       tasksRes.add(TaskInfoModel.fromFirestore(
-          element.id, element.data() as Map<String, dynamic>));
-    }
-
-    return tasksRes;
-  }
-
-  @override
-  Future<List<TimesheetTaskModel>> getTasksTimesheet(String taskId) async {
-    CollectionReference tasks = FirebaseFirestore.instance
-        .collection(FirestoreCollectionNames.cTimesheetTasks);
-
-    var result = await tasks
-        .where('taskId', isEqualTo: taskId)
-        // .orderBy('createdOn', descending: true)
-        .get();
-
-    List<TimesheetTaskModel> tasksRes = [];
-    for (var element in result.docs) {
-      tasksRes.add(TimesheetTaskModel.fromFirestore(
           element.id, element.data() as Map<String, dynamic>));
     }
 
