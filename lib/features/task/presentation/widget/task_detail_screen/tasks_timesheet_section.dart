@@ -1,19 +1,24 @@
 import 'dart:async';
-
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
+import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
 import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
+import 'package:todo/features/timesheet/presentation/view_controller/timesheet_edit_controller.dart';
 import 'package:todo/features/user/domain/enity/user_info.dart';
 
 class TasksTimesheetSection extends StatelessWidget {
   final TaskInfo taskInfo;
+  final Function onChange;
 
-  const TasksTimesheetSection({super.key, required this.taskInfo});
+  const TasksTimesheetSection(
+      {super.key, required this.taskInfo, required this.onChange});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +50,10 @@ class TasksTimesheetSection extends StatelessWidget {
                           element.id == timesheetTask.assignedToPersonId);
 
                   return _MemberProgress(
-                      timesheetTask: timesheetTask, userInfo: userInfo);
+                    timesheetTask: timesheetTask,
+                    userInfo: userInfo,
+                    onChange: onChange,
+                  );
                 },
               );
             }
@@ -63,8 +71,12 @@ class TasksTimesheetSection extends StatelessWidget {
 class _MemberProgress extends StatefulWidget {
   final TimesheetTask timesheetTask;
   final UserInfo userInfo;
+  final Function onChange;
 
-  const _MemberProgress({required this.timesheetTask, required this.userInfo});
+  const _MemberProgress(
+      {required this.timesheetTask,
+      required this.userInfo,
+      required this.onChange});
 
   @override
   State<_MemberProgress> createState() => _MemberProgressState();
@@ -125,7 +137,16 @@ class _MemberProgressState extends State<_MemberProgress> {
           Row(
             children: [
               Tapped(
-                onTap: () {},
+                onTap: () {
+                  if (widget.timesheetTask.taskStatus !=
+                      TimesheetTaskStatus.done) {
+                    Fluttertoast.showToast(
+                        msg:
+                            "You can only do this action if the status is done");
+                  } else {
+                    _changeStatus();
+                  }
+                },
                 child: _getStatusWidget(
                     title: "Todo",
                     isSelected: widget.timesheetTask.taskStatus ==
@@ -169,5 +190,33 @@ class _MemberProgressState extends State<_MemberProgress> {
       _taskHours.value = widget.timesheetTask.hours +
           Utils.getTimerDuration(widget.timesheetTask.timerStartSince!);
     });
+  }
+
+  Future<void> _changeStatus() async {
+    final UpdateTimesheetStatusParam updateTask = UpdateTimesheetStatusParam(
+        timesheetId: widget.timesheetTask.timesheetId,
+        taskId: widget.timesheetTask.taskId,
+        taskStatus: TimesheetTaskStatus.todo,
+        doneOn: widget.timesheetTask.doneOn,
+        timerStartSince: widget.timesheetTask.timerStartSince,
+        hours: widget.timesheetTask.hours);
+
+    final UpdateTimesheetStatusParam oldTask = UpdateTimesheetStatusParam(
+        timesheetId: widget.timesheetTask.timesheetId,
+        taskId: widget.timesheetTask.taskId,
+        taskStatus: widget.timesheetTask.taskStatus,
+        doneOn: widget.timesheetTask.doneOn,
+        timerStartSince: widget.timesheetTask.timerStartSince,
+        hours: widget.timesheetTask.hours);
+
+    final dartz.Either result =
+        await RepositoryProvider.of<TimesheetEditController>(context,
+                listen: false)
+            .updateTimesheet(
+                updateTimesheetParams: UpdateTimesheetParams(
+                    oldTask: oldTask, updatedTask: updateTask));
+
+    result.fold((l) => Fluttertoast.showToast(msg: "Failed to update"),
+        (r) => widget.onChange());
   }
 }

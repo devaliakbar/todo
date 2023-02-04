@@ -136,7 +136,19 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                   Divider(
                     color: Colors.grey[200],
                   ),
-                  TasksTimesheetSection(taskInfo: taskInfo),
+                  Builder(
+                    builder: (context) => TasksTimesheetSection(
+                      taskInfo: taskInfo,
+                      onChange: () {
+                        BlocProvider.of<TasksTimesheetBloc>(context,
+                                listen: false)
+                            .add(GetTasksTimesheetEvent(
+                                taskId: taskInfo.taskId));
+
+                        widget.onChange();
+                      },
+                    ),
+                  ),
                 ],
               ),
             )

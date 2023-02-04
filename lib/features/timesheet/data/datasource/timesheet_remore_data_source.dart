@@ -1,13 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/core/res/app_resources.dart';
+import 'package:todo/features/task/data/model/task_info_model.dart';
+import 'package:todo/features/timesheet/data/model/task_status_change_model.dart';
 import 'package:todo/features/timesheet/data/model/tasks_timesheet_model.dart';
 import 'package:todo/features/timesheet/data/model/timesheet_task_model.dart';
 import 'package:todo/features/timesheet/domain/usecases/get_tasks_timesheet.dart';
+import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
 
 abstract class ITimesheetRemoreDataSource {
   Future<TasksTimesheetModel> getTasksTimesheet(
       GetTimesheetParams getTimesheetParams);
+
+  Future<TaskInfoModel> getTask(String taskId);
+
+  Future<void> updateTimesheet(UpdateTimesheetStatusParam updatedTimesheet,
+      TaskStatusChangeModel? updatedTask);
 }
 
 class TimesheetRemoreDataSource extends ITimesheetRemoreDataSource {
@@ -77,5 +85,55 @@ class TimesheetRemoreDataSource extends ITimesheetRemoreDataSource {
         doneTasks: doneTasks);
 
     return tasksTimesheetModel;
+  }
+
+  @override
+  Future<TaskInfoModel> getTask(String taskId) async {
+    CollectionReference tasks =
+        FirebaseFirestore.instance.collection(FirestoreCollectionNames.cTasks);
+
+    var result =
+        await tasks.where(FieldPath.documentId, isEqualTo: taskId).get();
+
+    return TaskInfoModel.fromFirestore(result.docs.single.id,
+        result.docs.single.data() as Map<String, dynamic>);
+  }
+
+  @override
+  Future<void> updateTimesheet(UpdateTimesheetStatusParam updatedTimesheet,
+      TaskStatusChangeModel? updatedTask) async {
+    CollectionReference tasks =
+        FirebaseFirestore.instance.collection(FirestoreCollectionNames.cTasks);
+
+    CollectionReference timesheetTasks = FirebaseFirestore.instance
+        .collection(FirestoreCollectionNames.cTimesheetTasks);
+
+    try {
+      ///Transaction
+      WriteBatch writeBatch = FirebaseFirestore.instance.batch();
+
+      var timesheetQuery = await timesheetTasks
+          .where(FieldPath.documentId, isEqualTo: updatedTimesheet.timesheetId)
+          .get();
+
+      ///Updating timesheet
+      writeBatch.update(timesheetQuery.docs.single.reference,
+          TaskStatusChangeModel.getTimesheetUpdateJson(updatedTimesheet));
+
+      ///Updating task
+      if (updatedTask != null) {
+        var taskQuery = await tasks
+            .where(FieldPath.documentId, isEqualTo: updatedTask.taskId)
+            .get();
+
+        writeBatch.update(taskQuery.docs.single.reference,
+            TaskStatusChangeModel.getTaskUpdateJson(updatedTask));
+      }
+
+      // Commit
+      await writeBatch.commit();
+    } catch (e) {
+      _logger.e("Failed to update timesheet : $e");
+    }
   }
 }

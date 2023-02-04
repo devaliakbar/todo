@@ -14,7 +14,9 @@ import 'package:todo/features/timesheet/data/datasource/timesheet_remore_data_so
 import 'package:todo/features/timesheet/data/repository/timesheet_repository.dart';
 import 'package:todo/features/timesheet/domain/irepository/itimesheet_repository.dart';
 import 'package:todo/features/timesheet/domain/usecases/get_tasks_timesheet.dart';
+import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
 import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
+import 'package:todo/features/timesheet/presentation/view_controller/timesheet_edit_controller.dart';
 import 'package:todo/features/user/data/datasource/user_local_data_source.dart';
 import 'package:todo/features/user/data/datasource/user_remote_data_source.dart';
 import 'package:todo/features/user/data/repository/auth_repository.dart';
@@ -86,8 +88,13 @@ Future<void> init() async {
   // Timesheet
   // Bloc
   sl.registerFactory(() => TasksTimesheetBloc(getTasksTimesheet: sl()));
+  // View Controller
+  sl.registerFactory(
+      () => TimesheetEditController(updateTimesheetStatus: sl()));
   // Usecase
   sl.registerLazySingleton(() => GetTasksTimesheet(timesheetRepository: sl()));
+  sl.registerLazySingleton(
+      () => UpdateTimesheetStatus(timesheetRepository: sl()));
   // Repository
   sl.registerLazySingleton<ITimesheetRepository>(
       () => TimesheetRepository(timesheetRemoreDataSource: sl()));

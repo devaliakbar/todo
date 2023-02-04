@@ -1,11 +1,17 @@
 import 'dart:async';
-
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
+import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
+import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
 import 'package:todo/features/timesheet/presentation/screen/timesheet_task_detail_screen.dart';
+import 'package:todo/features/timesheet/presentation/view_controller/timesheet_edit_controller.dart';
+import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 
 class TimesheetTaskCard extends StatefulWidget {
   final TimesheetTask timesheetTask;
@@ -142,7 +148,7 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
     });
   }
 
-  void _toggleTimer({required bool isStart}) {
+  Future<void> _toggleTimer({required bool isStart}) async {
     final Duration hours;
     final DateTime? timerStartSince;
     if (isStart) {
@@ -156,14 +162,37 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
       timerStartSince = null;
     }
 
-    // final TimesheetTask updatedTask = TimesheetTask(
-    //     taskId: widget.timesheetTask.taskId,
-    //     taskName: widget.timesheetTask.taskName,
-    //     taskDescription: widget.timesheetTask.taskDescription,
-    //     taskStatus: widget.timesheetTask.taskStatus,
-    //     createdOn: widget.timesheetTask.createdOn,
-    //     doneOn: widget.timesheetTask.doneOn,
-    //     timerStartSince: timerStartSince,
-    //     hours: hours);
+    final UpdateTimesheetStatusParam updatedInfo = UpdateTimesheetStatusParam(
+        timesheetId: widget.timesheetTask.timesheetId,
+        taskId: widget.timesheetTask.taskId,
+        taskStatus: widget.timesheetTask.taskStatus,
+        doneOn: widget.timesheetTask.doneOn,
+        timerStartSince: timerStartSince,
+        hours: hours);
+
+    final UpdateTimesheetStatusParam oldInfo = UpdateTimesheetStatusParam(
+        timesheetId: widget.timesheetTask.timesheetId,
+        taskId: widget.timesheetTask.taskId,
+        taskStatus: widget.timesheetTask.taskStatus,
+        doneOn: widget.timesheetTask.doneOn,
+        timerStartSince: widget.timesheetTask.timerStartSince,
+        hours: widget.timesheetTask.hours);
+
+    final dartz.Either result =
+        await RepositoryProvider.of<TimesheetEditController>(context,
+                listen: false)
+            .updateTimesheet(
+                updateTimesheetParams: UpdateTimesheetParams(
+                    oldTask: oldInfo, updatedTask: updatedInfo));
+
+    result.fold((l) => Fluttertoast.showToast(msg: "Failed to update"), (r) {
+      final UserState userState =
+          BlocProvider.of<UserBloc>(context, listen: false).state;
+
+      if (userState is SignInState) {
+        BlocProvider.of<TasksTimesheetBloc>(context, listen: false)
+            .add(GetTasksTimesheetEvent(userId: userState.userInfo.id));
+      }
+    });
   }
 }

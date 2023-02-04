@@ -60,8 +60,8 @@ class _TimesheetTaskSectionState extends State<TimesheetTaskSection> {
         _carouselController.animateToPage(0);
         _showMoveEffect.value = false;
 
-        if (data is TimesheetTask) {
-          widget.onUpdateTaskStatus(data as TimesheetTask);
+        if (data.data is TimesheetTask) {
+          widget.onUpdateTaskStatus(data.data as TimesheetTask);
         }
       },
       builder: (context, candidateData, rejectedData) => Column(

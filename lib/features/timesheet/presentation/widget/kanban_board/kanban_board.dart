@@ -1,8 +1,12 @@
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/utils/utils.dart';
+import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
 import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
+import 'package:todo/features/timesheet/presentation/view_controller/timesheet_edit_controller.dart';
 import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_section.dart';
@@ -19,13 +23,7 @@ class _KanbanBoardState extends State<KanbanBoard> {
 
   @override
   void initState() {
-    final UserState userState =
-        BlocProvider.of<UserBloc>(context, listen: false).state;
-
-    if (userState is SignInState) {
-      BlocProvider.of<TasksTimesheetBloc>(context, listen: false)
-          .add(GetTasksTimesheetEvent(userId: userState.userInfo.id));
-    }
+    _getData();
 
     super.initState();
   }
@@ -73,11 +71,13 @@ class _KanbanBoardState extends State<KanbanBoard> {
                     ),
                   ),
                   const SizedBox(width: 7),
-                  Text(
-                    "Hi $userFullName",
-                    style: const TextStyle(fontSize: 18),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Expanded(
+                    child: Text(
+                      "Hi $userFullName",
+                      style: const TextStyle(fontSize: 18),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   )
                 ],
               );
@@ -140,6 +140,16 @@ class _KanbanBoardState extends State<KanbanBoard> {
     );
   }
 
+  void _getData() {
+    final UserState userState =
+        BlocProvider.of<UserBloc>(context, listen: false).state;
+
+    if (userState is SignInState) {
+      BlocProvider.of<TasksTimesheetBloc>(context, listen: false)
+          .add(GetTasksTimesheetEvent(userId: userState.userInfo.id));
+    }
+  }
+
   void _scrollTo({required bool isScrollToTop}) {
     _scrollController.animateTo(
       isScrollToTop ? 0 : _scrollController.position.maxScrollExtent,
@@ -159,16 +169,32 @@ class _KanbanBoardState extends State<KanbanBoard> {
           Utils.getTimerDuration(timesheetTask.timerStartSince!);
     }
 
-    // final TimesheetTask updatedTask = TimesheetTask(
-    //     taskId: timesheetTask.taskId,
-    //     taskName: timesheetTask.taskName,
-    //     taskDescription: timesheetTask.taskDescription,
-    //     taskStatus: newStatus,
-    //     createdOn: timesheetTask.createdOn,
-    //     doneOn: newStatus == TimesheetTaskStatus.done
-    //         ? DateTime.now().toUtc()
-    //         : null,
-    //     timerStartSince: null,
-    //     hours: hours);
+    final UpdateTimesheetStatusParam updatedInfo = UpdateTimesheetStatusParam(
+        timesheetId: timesheetTask.timesheetId,
+        taskId: timesheetTask.taskId,
+        taskStatus: newStatus,
+        doneOn: newStatus == TimesheetTaskStatus.done
+            ? DateTime.now().toUtc()
+            : null,
+        timerStartSince: null,
+        hours: hours);
+
+    final UpdateTimesheetStatusParam oldInfo = UpdateTimesheetStatusParam(
+        timesheetId: timesheetTask.timesheetId,
+        taskId: timesheetTask.taskId,
+        taskStatus: timesheetTask.taskStatus,
+        doneOn: timesheetTask.doneOn,
+        timerStartSince: timesheetTask.timerStartSince,
+        hours: timesheetTask.hours);
+
+    final dartz.Either result =
+        await RepositoryProvider.of<TimesheetEditController>(context,
+                listen: false)
+            .updateTimesheet(
+                updateTimesheetParams: UpdateTimesheetParams(
+                    oldTask: oldInfo, updatedTask: updatedInfo));
+
+    result.fold((l) => Fluttertoast.showToast(msg: "Failed to update"),
+        (r) => _getData());
   }
 }

@@ -6,6 +6,7 @@ import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/main_widget.dart';
 import 'package:todo/core/utils/track_context.dart';
 import 'package:todo/features/task/presentation/view_controller/task_edit_controller.dart';
+import 'package:todo/features/timesheet/presentation/view_controller/timesheet_edit_controller.dart';
 import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 import 'core/res/app_resources.dart';
 import 'injection_container.dart' as di;
@@ -28,6 +29,9 @@ void main() async {
       child: MultiRepositoryProvider(providers: [
         RepositoryProvider(
           create: (context) => di.sl<TaskEditController>(),
+        ),
+        RepositoryProvider(
+          create: (context) => di.sl<TimesheetEditController>(),
         )
       ], child: const MyApp())));
 }
