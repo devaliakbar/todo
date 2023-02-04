@@ -2,10 +2,12 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/utils/bloc_event_restartable.dart';
+import 'package:todo/features/task/data/datasource/task_local_data_source.dart';
 import 'package:todo/features/task/data/datasource/task_remote_data_source.dart';
 import 'package:todo/features/task/data/repository/task_repository.dart';
 import 'package:todo/features/task/domain/irepository/itask_repository.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
+import 'package:todo/features/task/domain/usecases/export_tasks_csv.dart';
 import 'package:todo/features/task/domain/usecases/get_tasks.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';
 import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
@@ -66,22 +68,25 @@ Future<void> init() async {
 
   ///*********************************************************************************************///
 
-  // Auth
+  // Task
   // Bloc
   sl.registerFactory(() => TasksBloc(getTasks: sl()));
   // View Controller
-  sl.registerFactory(
-      () => TaskEditController(createTask: sl(), updateTask: sl()));
+  sl.registerFactory(() => TaskEditController(
+      createTask: sl(), updateTask: sl(), exportTasksCsv: sl()));
   // Usecase
   sl.registerLazySingleton(() => CreateTask(taskRepository: sl()));
   sl.registerLazySingleton(() => UpdateTask(taskRepository: sl()));
   sl.registerLazySingleton(() => GetTasks(taskRepository: sl()));
+  sl.registerLazySingleton(() => ExportTasksCsv(taskRepository: sl()));
   // Repository
-  sl.registerLazySingleton<ItaskRepository>(
-      () => TaskRepository(taskRemoteDataSource: sl()));
+  sl.registerLazySingleton<ItaskRepository>(() =>
+      TaskRepository(taskRemoteDataSource: sl(), taskLocalDataSource: sl()));
   // Data source
   sl.registerLazySingleton<ITaskRemoteDataSource>(
       () => TaskRemoteDataSource(logger: sl()));
+  sl.registerLazySingleton<ITaskLocalDataSource>(
+      () => TaskLocalDataSource(logger: sl()));
 
   ///*********************************************************************************************///
 

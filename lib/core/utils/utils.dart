@@ -9,6 +9,13 @@ class Utils {
     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
+  static String getFormattedDurationCSV(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}h, ${twoDigitMinutes}m, ${twoDigitSeconds}s";
+  }
+
   static String getFormattedShortDate(DateTime date) {
     return DateFormat("dd MMM, hh:mm a").format(date);
   }

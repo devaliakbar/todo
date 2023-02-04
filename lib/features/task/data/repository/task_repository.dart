@@ -1,3 +1,4 @@
+import 'package:todo/features/task/data/datasource/task_local_data_source.dart';
 import 'package:todo/features/task/data/datasource/task_remote_data_source.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/core/error/failures.dart';
@@ -8,9 +9,13 @@ import 'package:todo/features/task/domain/usecases/update_task.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
 
 class TaskRepository extends ItaskRepository {
+  final ITaskLocalDataSource _taskLocalDataSource;
   final ITaskRemoteDataSource _taskRemoteDataSource;
-  TaskRepository({required ITaskRemoteDataSource taskRemoteDataSource})
-      : _taskRemoteDataSource = taskRemoteDataSource;
+  TaskRepository(
+      {required ITaskRemoteDataSource taskRemoteDataSource,
+      required ITaskLocalDataSource taskLocalDataSource})
+      : _taskLocalDataSource = taskLocalDataSource,
+        _taskRemoteDataSource = taskRemoteDataSource;
 
   @override
   Future<Either<Failure, TaskInfo>> createTask(
@@ -37,6 +42,15 @@ class TaskRepository extends ItaskRepository {
       GetTasksParams params) async {
     try {
       return Right(await _taskRemoteDataSource.getTasks(params));
+    } catch (_) {}
+
+    return Left(UnexpectedFailure());
+  }
+
+  @override
+  Future<Either<Failure, String>> exportTasksToCsv(List<TaskInfo> tasks) async {
+    try {
+      return Right(await _taskLocalDataSource.exportTasksToCsv(tasks));
     } catch (_) {}
 
     return Left(UnexpectedFailure());
