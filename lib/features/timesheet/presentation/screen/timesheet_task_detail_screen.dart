@@ -143,7 +143,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                       children: [
                         const Text("Created on"),
                         Text(
-                          Utils.getFormattedFullDate(timesheetTask.createdOn),
+                          Utils.getFormattedDate(timesheetTask.createdOn),
                           style: const TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ],
@@ -154,7 +154,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                         children: [
                           const Text("Done on"),
                           Text(
-                            Utils.getFormattedFullDate(timesheetTask.doneOn!),
+                            Utils.getFormattedDate(timesheetTask.doneOn!),
                             style: const TextStyle(fontStyle: FontStyle.italic),
                           ),
                         ],
@@ -211,7 +211,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
     final DateTime? timerStartSince;
     if (isStart) {
       hours = timesheetTask.hours;
-      timerStartSince = DateTime.now().toUtc();
+      timerStartSince = DateTime.now();
     } else {
       _timer?.cancel();
 
@@ -253,9 +253,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
         timesheetId: timesheetTask.timesheetId,
         taskId: timesheetTask.taskId,
         taskStatus: newStatus,
-        doneOn: newStatus == TimesheetTaskStatus.done
-            ? DateTime.now().toUtc()
-            : null,
+        doneOn: newStatus == TimesheetTaskStatus.done ? DateTime.now() : null,
         timerStartSince: null,
         hours: hours);
 

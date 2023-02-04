@@ -9,16 +9,16 @@ class Utils {
     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
-  static String getFormattedDate(DateTime date) {
-    return DateFormat("dd MMM").format(date);
+  static String getFormattedShortDate(DateTime date) {
+    return DateFormat("dd MMM, hh:mm a").format(date);
   }
 
-  static String getFormattedFullDate(DateTime date) {
-    return DateFormat("dd MMM yyyy").format(date);
+  static String getFormattedDate(DateTime date) {
+    return DateFormat("dd-MMM-yyyy, hh:mm a").format(date);
   }
 
   static Duration getTimerDuration(DateTime timerStartSince) {
-    return DateTime.now().toUtc().difference(timerStartSince);
+    return DateTime.now().difference(timerStartSince);
   }
 
   static Duration parseDuration(String duration) {

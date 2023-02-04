@@ -177,9 +177,7 @@ class _KanbanBoardState extends State<KanbanBoard> {
         timesheetId: timesheetTask.timesheetId,
         taskId: timesheetTask.taskId,
         taskStatus: newStatus,
-        doneOn: newStatus == TimesheetTaskStatus.done
-            ? DateTime.now().toUtc()
-            : null,
+        doneOn: newStatus == TimesheetTaskStatus.done ? DateTime.now() : null,
         timerStartSince: null,
         hours: hours);
 

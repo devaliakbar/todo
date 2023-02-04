@@ -6,6 +6,7 @@ import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/data/model/task_info_model.dart';
 import 'package:todo/features/task/domain/entity/base_task.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
+import 'package:todo/features/task/domain/usecases/get_tasks.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';
 import 'package:todo/features/timesheet/data/model/timesheet_task_model.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
@@ -18,7 +19,7 @@ abstract class ITaskRemoteDataSource {
   /// Throws a [FirestoreException] for any failure.
   Future<TaskInfoModel> updateTask(UpdateTaskParams updateTaskParams);
 
-  Future<List<TaskInfoModel>> getTasks();
+  Future<List<TaskInfoModel>> getTasks(GetTasksParams params);
 }
 
 class TaskRemoteDataSource extends ITaskRemoteDataSource {
@@ -187,11 +188,27 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
   ///                                                                                                                           ///
   ///***************************************************************************************************************************///
   @override
-  Future<List<TaskInfoModel>> getTasks() async {
+  Future<List<TaskInfoModel>> getTasks(GetTasksParams params) async {
     CollectionReference tasks =
         FirebaseFirestore.instance.collection(FirestoreCollectionNames.cTasks);
 
-    var result = await tasks.orderBy('createdOn', descending: true).get();
+    String? where;
+    bool? isEqualTo;
+
+    if (params.getCompltedTask != null) {
+      where = "isCompleted";
+      isEqualTo = params.getCompltedTask;
+    }
+
+    QuerySnapshot<Object?> result;
+    if (where != null && isEqualTo != null) {
+      result = await tasks
+          .where(where, isEqualTo: isEqualTo)
+          .orderBy('createdOn', descending: true)
+          .get();
+    } else {
+      result = await tasks.orderBy('createdOn', descending: true).get();
+    }
 
     List<TaskInfoModel> tasksRes = [];
     for (var element in result.docs) {

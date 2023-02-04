@@ -112,7 +112,7 @@ class TimesheetRepository extends ITimesheetRepository {
           taskCompletedOn = null;
         } else {
           isTaskComplete = true;
-          taskCompletedOn = DateTime.now().toUtc();
+          taskCompletedOn = DateTime.now();
         }
       }
 

@@ -114,7 +114,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                         children: [
                           const Text("Created on"),
                           Text(
-                            Utils.getFormattedFullDate(taskInfo.createdOn),
+                            Utils.getFormattedDate(taskInfo.createdOn),
                             style: const TextStyle(fontStyle: FontStyle.italic),
                           ),
                         ],
@@ -125,7 +125,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                           children: [
                             const Text("Completed on"),
                             Text(
-                              Utils.getFormattedFullDate(taskInfo.completedOn!),
+                              Utils.getFormattedDate(taskInfo.completedOn!),
                               style:
                                   const TextStyle(fontStyle: FontStyle.italic),
                             ),

@@ -3,13 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/widget/main_screen_app_bar.dart';
-import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
-import 'package:todo/features/task/presentation/screen/task_detail_screen.dart';
 import 'package:todo/features/task/presentation/screen/task_edit_screen.dart';
+import 'package:todo/features/task/presentation/widget/task_list.dart';
 
 class Tasks extends StatelessWidget {
-  const Tasks({super.key});
+  final Function onReload;
+
+  const Tasks({super.key, required this.onReload});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,8 @@ class Tasks extends StatelessWidget {
                     PageTransition(
                         type: PageTransitionType.rightToLeft,
                         child: TaskEditScreen(
-                          onSaved: (_) => tasksBloc.add(GetTasksEvent()),
+                          onSaved: (_) => tasksBloc
+                              .add(const GetTasksEvent(getCompltedTask: false)),
                         )));
               },
               child: const Padding(
@@ -41,80 +43,7 @@ class Tasks extends StatelessWidget {
             )
           ],
         ),
-        Expanded(
-          child: BlocBuilder<TasksBloc, TasksState>(
-            builder: (context, TasksState state) {
-              if (state is TasksLoadFail) {
-                return const Center(
-                  child: Text("oops! something went wrong"),
-                );
-              }
-
-              if (state is TasksLoaded) {
-                return ListView.builder(
-                  itemCount: state.tasks.length,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, int index) => Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Tapped(
-                      onTap: () {
-                        final TasksBloc tasksBloc =
-                            BlocProvider.of<TasksBloc>(context, listen: false);
-
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: TaskDetailScreen(
-                                  taskInfo: state.tasks[index],
-                                  onChange: () =>
-                                      tasksBloc.add(GetTasksEvent()),
-                                )));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                    child: Text(
-                                  state.tasks[index].taskName,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                )),
-                                const SizedBox(width: 15),
-                                Text(
-                                    "${Utils.getFormattedDuration(state.tasks[index].totalHours)} HRS"),
-                              ],
-                            ),
-                            const SizedBox(height: 15),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    "Created on : ${Utils.getFormattedDate(state.tasks[index].createdOn)}"),
-                                Text(
-                                    "Status : ${state.tasks[index].isCompleted ? "Completed" : "Not completed"}"),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }
-
-              return const Center(child: Text("Loading"));
-            },
-          ),
-        )
+        TaskList(onReLoad: onReload),
       ],
     );
   }

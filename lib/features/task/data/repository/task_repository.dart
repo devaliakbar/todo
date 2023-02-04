@@ -3,6 +3,7 @@ import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:todo/features/task/domain/irepository/itask_repository.dart';
+import 'package:todo/features/task/domain/usecases/get_tasks.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
 
@@ -32,9 +33,10 @@ class TaskRepository extends ItaskRepository {
   }
 
   @override
-  Future<Either<Failure, List<TaskInfo>>> getTasks() async {
+  Future<Either<Failure, List<TaskInfo>>> getTasks(
+      GetTasksParams params) async {
     try {
-      return Right(await _taskRemoteDataSource.getTasks());
+      return Right(await _taskRemoteDataSource.getTasks(params));
     } catch (_) {}
 
     return Left(UnexpectedFailure());

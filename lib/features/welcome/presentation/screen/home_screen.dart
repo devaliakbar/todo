@@ -55,10 +55,25 @@ class _HomeScreenState extends State<HomeScreen>
               child: const KanbanBoard(),
             ),
             BlocProvider(
-              create: (context) => di.sl<TasksBloc>()..add(GetTasksEvent()),
-              child: const Tasks(),
+              create: (context) => di.sl<TasksBloc>()
+                ..add(const GetTasksEvent(getCompltedTask: false)),
+              child: Builder(
+                builder: (context) => Tasks(onReload: () {
+                  BlocProvider.of<TasksBloc>(context, listen: false)
+                      .add(const GetTasksEvent(getCompltedTask: false));
+                }),
+              ),
             ),
-            const TaskHistory(),
+            BlocProvider(
+              create: (context) => di.sl<TasksBloc>()
+                ..add(const GetTasksEvent(getCompltedTask: true)),
+              child: Builder(
+                builder: (context) => TaskHistory(onReload: () {
+                  BlocProvider.of<TasksBloc>(context, listen: false)
+                      .add(const GetTasksEvent(getCompltedTask: true));
+                }),
+              ),
+            ),
             const Profile(),
           ]),
       bottomNavigationBar: HomeBottomNavigation(currentIndex: _currentIndex),

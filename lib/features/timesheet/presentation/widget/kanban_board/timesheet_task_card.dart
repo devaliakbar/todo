@@ -132,11 +132,14 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
                     : MainAxisAlignment.center,
                 children: [
                   Text(
-                      "Created: ${Utils.getFormattedDate(widget.timesheetTask.createdOn)}",
+                      Utils.getFormattedShortDate(
+                          widget.timesheetTask.createdOn),
                       style: const TextStyle(fontSize: 13)),
+                  if (showDoneDate) const Text("to"),
                   if (showDoneDate)
                     Text(
-                        "Done by: ${Utils.getFormattedDate(widget.timesheetTask.doneOn!)}",
+                        Utils.getFormattedShortDate(
+                            widget.timesheetTask.doneOn!),
                         style: const TextStyle(fontSize: 13)),
                 ],
               ),
@@ -159,7 +162,7 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
     final DateTime? timerStartSince;
     if (isStart) {
       hours = widget.timesheetTask.hours;
-      timerStartSince = DateTime.now().toUtc();
+      timerStartSince = DateTime.now();
     } else {
       _timer?.cancel();
 
