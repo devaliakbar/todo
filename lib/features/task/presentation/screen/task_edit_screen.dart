@@ -215,6 +215,7 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
           result = await taskEditController.updateTask(UpdateTaskParams(
               taskId: widget.taskInfo!.taskId,
               creatorInfo: userState.userInfo,
+              taskCreatedTime: widget.taskInfo!.createdOn,
               taskName: taskName,
               taskDescription: taskDescription,
               users: [..._selectedUsers.value],

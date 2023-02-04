@@ -35,105 +35,113 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          CommonAppBar(
-            title: "Task detail",
-            actions: [
-              Tapped(
-                onTap: () => Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        child: TaskEditScreen(
-                          taskInfo: taskInfo,
-                          onSaved: (TaskInfo newTaskInfo) {
-                            setState(() {
-                              taskInfo = newTaskInfo;
-                            });
+    return BlocProvider<TasksTimesheetBloc>(
+      create: (context) => di.sl<TasksTimesheetBloc>()
+        ..add(GetTasksTimesheetEvent(taskId: taskInfo.taskId)),
+      child: Scaffold(
+        body: Column(
+          children: [
+            CommonAppBar(
+              title: "Task detail",
+              actions: [
+                Builder(
+                  builder: (context) => Tapped(
+                    onTap: () => Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            child: TaskEditScreen(
+                              taskInfo: taskInfo,
+                              onSaved: (TaskInfo newTaskInfo) {
+                                BlocProvider.of<TasksTimesheetBloc>(context,
+                                        listen: false)
+                                    .add(GetTasksTimesheetEvent(
+                                        taskId: taskInfo.taskId));
+                                setState(() {
+                                  taskInfo = newTaskInfo;
+                                });
 
-                            widget.onChange();
-                          },
-                        ))),
-                child: const Padding(
-                  padding: EdgeInsets.all(15),
-                  child: Icon(
-                    Icons.edit,
-                    size: 24,
-                  ),
-                ),
-              )
-            ],
-          ),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              physics: const BouncingScrollPhysics(),
-              children: [
-                Text(
-                  taskInfo.taskName,
-                  style: const TextStyle(fontSize: 17),
-                ),
-                Divider(
-                  color: Colors.grey[200],
-                ),
-                Text(
-                    "Status : ${taskInfo.isCompleted ? "Completed" : "Not completed"}"),
-                Divider(
-                  color: Colors.grey[200],
-                ),
-                Text(
-                    "Total Hour Spend : ${Utils.getFormattedDuration(taskInfo.totalHours)}"),
-                Divider(
-                  color: Colors.grey[200],
-                ),
-                const Text("Description"),
-                Text(
-                  taskInfo.taskDescription,
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                ),
-                Divider(
-                  color: Colors.grey[200],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Created on"),
-                        Text(
-                          Utils.getFormattedFullDate(taskInfo.createdOn),
-                          style: const TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                      ],
+                                widget.onChange();
+                              },
+                            ))),
+                    child: const Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Icon(
+                        Icons.edit,
+                        size: 24,
+                      ),
                     ),
-                    if (taskInfo.completedOn != null)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Text("Completed on"),
-                          Text(
-                            Utils.getFormattedFullDate(taskInfo.completedOn!),
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ],
-                      )
-                  ],
-                ),
-                Divider(
-                  color: Colors.grey[200],
-                ),
-                BlocProvider<TasksTimesheetBloc>(
-                  create: (context) => di.sl<TasksTimesheetBloc>()
-                    ..add(GetTasksTimesheetEvent(taskId: taskInfo.taskId)),
-                  child: TasksTimesheetSection(taskInfo: taskInfo),
+                  ),
                 )
               ],
             ),
-          )
-        ],
+            Expanded(
+              child: ListView(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  Text(
+                    taskInfo.taskName,
+                    style: const TextStyle(fontSize: 17),
+                  ),
+                  Divider(
+                    color: Colors.grey[200],
+                  ),
+                  Text(
+                      "Status : ${taskInfo.isCompleted ? "Completed" : "Not completed"}"),
+                  Divider(
+                    color: Colors.grey[200],
+                  ),
+                  Text(
+                      "Total Hour Spend : ${Utils.getFormattedDuration(taskInfo.totalHours)}"),
+                  Divider(
+                    color: Colors.grey[200],
+                  ),
+                  const Text("Description"),
+                  Text(
+                    taskInfo.taskDescription,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                  Divider(
+                    color: Colors.grey[200],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("Created on"),
+                          Text(
+                            Utils.getFormattedFullDate(taskInfo.createdOn),
+                            style: const TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ],
+                      ),
+                      if (taskInfo.completedOn != null)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const Text("Completed on"),
+                            Text(
+                              Utils.getFormattedFullDate(taskInfo.completedOn!),
+                              style:
+                                  const TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        )
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.grey[200],
+                  ),
+                  TasksTimesheetSection(taskInfo: taskInfo),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

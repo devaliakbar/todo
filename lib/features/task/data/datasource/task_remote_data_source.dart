@@ -8,6 +8,7 @@ import 'package:todo/features/task/domain/entity/base_task.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';
 import 'package:todo/features/timesheet/data/model/timesheet_task_model.dart';
+import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/user/domain/enity/user_info.dart';
 
 abstract class ITaskRemoteDataSource {
@@ -98,8 +99,12 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
             .where('taskId', isEqualTo: updateTaskParams.taskId)
             .get();
 
+        final List<UserInfo> newUsers = [...updateTaskParams.users];
+
         ///This is for reduce the deleted users hours from the task total hour
         Duration reduceDuration = Duration.zero;
+
+        bool isCurrentTaskCompleted = true;
         for (var element in timesheetQuery.docs) {
           final TimesheetTaskModel timesheetTaskModel =
               TimesheetTaskModel.fromFirestore(
@@ -114,12 +119,39 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
 
             writeBatch.delete(element.reference);
           } else {
+            if (timesheetTaskModel.taskStatus != TimesheetTaskStatus.done) {
+              isCurrentTaskCompleted = false;
+            }
+
             ///Updating new values
             writeBatch.update(
                 element.reference,
                 TimesheetTaskModel.toFirestoreUpdateTaskDetailsJson(
                     updateTaskParams));
+
+            newUsers.removeWhere((element) =>
+                element.id == timesheetTaskModel.assignedToPersonId);
           }
+        }
+
+        if (newUsers.isNotEmpty) {
+          isCurrentTaskCompleted = false;
+        }
+
+        ///Creating timesheet tasks for each users which are newly assigned
+        for (UserInfo userInfo in newUsers) {
+          final Map<String, dynamic> createTimesheetTaskJson =
+              TimesheetTaskModel.toFirestoreCreateJson(
+                  userInfo.id,
+                  updateTaskParams.creatorInfo,
+                  BaseTask(
+                      taskId: updateTaskParams.taskId,
+                      taskName: updateTaskParams.taskName,
+                      taskDescription: updateTaskParams.taskDescription,
+                      createdOn: updateTaskParams.taskCreatedTime));
+
+          var newTimesheetTask = timesheetTasks.doc();
+          writeBatch.set(newTimesheetTask, createTimesheetTaskJson);
         }
 
         ///Reducing deleted users durations from total duration
@@ -129,7 +161,8 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
 
         ///Updating task
         final Map<String, dynamic> updateTaskJson =
-            TaskInfoModel.toFirestoreUpdateJson(updateTaskParams, updatedHours);
+            TaskInfoModel.toFirestoreUpdateJson(
+                updateTaskParams, isCurrentTaskCompleted, updatedHours);
         writeBatch.update(taskResult.docs.single.reference, updateTaskJson);
 
         // Commit

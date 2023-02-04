@@ -50,11 +50,13 @@ class TaskInfoModel extends TaskInfo {
   }
 
   static Map<String, dynamic> toFirestoreUpdateJson(
-      UpdateTaskParams taskInfo, Duration newDuration) {
+      UpdateTaskParams taskInfo, bool isCompleted, Duration newDuration) {
     return {
       "taskName": taskInfo.taskName,
       "taskDescription": taskInfo.taskDescription,
       "totalHours": newDuration.toString(),
+      "isCompleted": isCompleted,
+      "completedOn": isCompleted ? DateTime.now().toUtc().toString() : null,
       "assignedTo": taskInfo.users
           .map<Map<String, dynamic>>((e) => UserInfoModel.toJson(e))
           .toList()

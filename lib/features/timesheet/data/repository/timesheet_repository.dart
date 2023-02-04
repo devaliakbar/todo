@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:todo/core/error/failures.dart';
 import 'package:todo/features/timesheet/data/datasource/timesheet_remore_data_source.dart';
-import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
+import 'package:todo/features/timesheet/domain/entity/tasks_timesheet.dart';
 import 'package:todo/features/timesheet/domain/irepository/itimesheet_repository.dart';
 import 'package:todo/features/timesheet/domain/usecases/get_tasks_timesheet.dart';
 
@@ -13,7 +13,7 @@ class TimesheetRepository extends ITimesheetRepository {
       : _timesheetRemoreDataSource = timesheetRemoreDataSource;
 
   @override
-  Future<Either<Failure, List<TimesheetTask>>> getTasksTimesheet(
+  Future<Either<Failure, TasksTimesheet>> getTasksTimesheet(
       GetTimesheetParams getTimesheetParams) async {
     try {
       return Right(await _timesheetRemoreDataSource

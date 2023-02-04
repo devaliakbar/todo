@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tapped/tapped.dart';
+import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
@@ -25,14 +26,19 @@ class TasksTimesheetSection extends StatelessWidget {
         BlocBuilder<TasksTimesheetBloc, TasksTimesheetState>(
           builder: (context, state) {
             if (state is TasksTimesheetLoaded) {
+              List<TimesheetTask> tasks = [];
+              tasks.addAll(state.tasks.doneTasks);
+              tasks.addAll(state.tasks.inprogressTasks);
+              tasks.addAll(state.tasks.todoTasks);
+
               return ListView.builder(
-                itemCount: state.tasks.length,
+                itemCount: tasks.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
                 itemBuilder: (context, index) {
-                  final TimesheetTask timesheetTask = state.tasks[index];
+                  final TimesheetTask timesheetTask = tasks[index];
 
                   final UserInfo userInfo = taskInfo.assignedTo.firstWhere(
                       (element) =>
@@ -99,9 +105,21 @@ class _MemberProgressState extends State<_MemberProgress> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.userInfo.fullName,
-            style: const TextStyle(fontSize: 16),
+          Row(
+            children: [
+              Container(
+                height: 24,
+                width: 24,
+                margin: const EdgeInsets.only(right: 10),
+                child: ClipOval(
+                  child: CachedImage(imageUrl: widget.userInfo.profilePic),
+                ),
+              ),
+              Text(
+                widget.userInfo.fullName,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
           ),
           const SizedBox(height: 10),
           Row(

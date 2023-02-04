@@ -18,16 +18,19 @@ class UpdateTask extends UseCase<TaskInfo, UpdateTaskParams> {
 
 class UpdateTaskParams extends CreateTaskParams {
   final String taskId;
+  final DateTime taskCreatedTime;
   final List<UserInfo> removedUsers;
 
   const UpdateTaskParams(
       {required this.taskId,
       required super.creatorInfo,
+      required this.taskCreatedTime,
       required super.taskName,
       required super.taskDescription,
       required super.users,
       required this.removedUsers});
 
   @override
-  List<Object?> get props => [taskName, taskDescription, users];
+  List<Object?> get props =>
+      [...super.props, taskId, taskCreatedTime, removedUsers];
 }

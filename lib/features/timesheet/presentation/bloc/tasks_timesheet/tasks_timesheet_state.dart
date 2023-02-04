@@ -14,7 +14,7 @@ class TasksTimesheetLoading extends TasksTimesheetState {}
 class TasksTimesheetLoadFail extends TasksTimesheetState {}
 
 class TasksTimesheetLoaded extends TasksTimesheetState {
-  final List<TimesheetTask> tasks;
+  final TasksTimesheet tasks;
 
   const TasksTimesheetLoaded({required this.tasks});
 

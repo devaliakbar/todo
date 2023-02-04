@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
+import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
 import 'package:todo/features/user/presentation/widget/profile/profile.dart';
 import 'package:todo/features/task/presentation/widget/task_history/task_history.dart';
 import 'package:todo/features/task/presentation/widget/tasks/tasks.dart';
@@ -49,7 +50,10 @@ class _HomeScreenState extends State<HomeScreen>
           physics: const NeverScrollableScrollPhysics(),
           controller: _tabController,
           children: [
-            const KanbanBoard(),
+            BlocProvider(
+              create: (context) => di.sl<TasksTimesheetBloc>(),
+              child: const KanbanBoard(),
+            ),
             BlocProvider(
               create: (context) => di.sl<TasksBloc>()..add(GetTasksEvent()),
               child: const Tasks(),

@@ -4,14 +4,15 @@ abstract class TasksTimesheetEvent extends Equatable {
   const TasksTimesheetEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class GetTasksTimesheetEvent extends TasksTimesheetEvent {
-  final String taskId;
+  final String? taskId;
+  final String? userId;
 
-  const GetTasksTimesheetEvent({required this.taskId});
+  const GetTasksTimesheetEvent({this.taskId, this.userId});
 
   @override
-  List<Object> get props => [taskId];
+  List<Object?> get props => [taskId, userId];
 }

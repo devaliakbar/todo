@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/utils/utils.dart';
+import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
 import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_section.dart';
@@ -17,16 +18,23 @@ class _KanbanBoardState extends State<KanbanBoard> {
   final ScrollController _scrollController = ScrollController();
 
   @override
+  void initState() {
+    final UserState userState =
+        BlocProvider.of<UserBloc>(context, listen: false).state;
+
+    if (userState is SignInState) {
+      BlocProvider.of<TasksTimesheetBloc>(context, listen: false)
+          .add(GetTasksTimesheetEvent(userId: userState.userInfo.id));
+    }
+
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
   }
-
-  final List<TimesheetTask> _todos = [];
-
-  final List<TimesheetTask> _inProgress = [];
-
-  final List<TimesheetTask> _done = [];
 
   @override
   Widget build(BuildContext context) {
@@ -77,37 +85,55 @@ class _KanbanBoardState extends State<KanbanBoard> {
           ),
         ),
         Expanded(
-          child: ListView(
-            controller: _scrollController,
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).padding.bottom + 50),
-            children: [
-              const SizedBox(height: 30),
-              TimesheetTaskSection(
-                title: "Todo",
-                tasks: _todos,
-                onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
-                    _updateTaskStatus(timesheetTask, TimesheetTaskStatus.todo),
-                onDragOver: () => _scrollTo(isScrollToTop: true),
-              ),
-              const SizedBox(height: 35),
-              TimesheetTaskSection(
-                title: "In progress",
-                tasks: _inProgress,
-                onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
-                    _updateTaskStatus(
-                        timesheetTask, TimesheetTaskStatus.inProgress),
-              ),
-              const SizedBox(height: 35),
-              TimesheetTaskSection(
-                title: "Done",
-                tasks: _done,
-                onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
-                    _updateTaskStatus(timesheetTask, TimesheetTaskStatus.done),
-                onDragOver: () => _scrollTo(isScrollToTop: false),
-              ),
-            ],
+          child: BlocBuilder<TasksTimesheetBloc, TasksTimesheetState>(
+            builder: (context, state) {
+              if (state is TasksTimesheetLoadFail) {
+                return const Center(
+                  child: Text("oops! something went wrong."),
+                );
+              }
+
+              if (state is TasksTimesheetLoaded) {
+                return ListView(
+                  controller: _scrollController,
+                  physics: const BouncingScrollPhysics(),
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).padding.bottom + 50),
+                  children: [
+                    const SizedBox(height: 30),
+                    TimesheetTaskSection(
+                      title: "Todo",
+                      tasks: state.tasks.todoTasks,
+                      onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
+                          _updateTaskStatus(
+                              timesheetTask, TimesheetTaskStatus.todo),
+                      onDragOver: () => _scrollTo(isScrollToTop: true),
+                    ),
+                    const SizedBox(height: 35),
+                    TimesheetTaskSection(
+                      title: "In progress",
+                      tasks: state.tasks.inprogressTasks,
+                      onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
+                          _updateTaskStatus(
+                              timesheetTask, TimesheetTaskStatus.inProgress),
+                    ),
+                    const SizedBox(height: 35),
+                    TimesheetTaskSection(
+                      title: "Done",
+                      tasks: state.tasks.doneTasks,
+                      onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
+                          _updateTaskStatus(
+                              timesheetTask, TimesheetTaskStatus.done),
+                      onDragOver: () => _scrollTo(isScrollToTop: false),
+                    ),
+                  ],
+                );
+              }
+
+              return const Center(
+                child: Text("Loading..."),
+              );
+            },
           ),
         )
       ],
