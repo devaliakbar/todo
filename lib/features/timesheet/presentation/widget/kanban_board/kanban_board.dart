@@ -98,39 +98,46 @@ class _KanbanBoardState extends State<KanbanBoard> {
               }
 
               if (state is TasksTimesheetLoaded) {
-                return ListView(
-                  controller: _scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).padding.bottom + 50),
-                  children: [
-                    const SizedBox(height: 30),
-                    TimesheetTaskSection(
-                      title: "Todo",
-                      tasks: state.tasks.todoTasks,
-                      onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
-                          _updateTaskStatus(
-                              timesheetTask, TimesheetTaskStatus.todo),
-                      onDragOver: () => _scrollTo(isScrollToTop: true),
-                    ),
-                    const SizedBox(height: 35),
-                    TimesheetTaskSection(
-                      title: "In progress",
-                      tasks: state.tasks.inprogressTasks,
-                      onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
-                          _updateTaskStatus(
-                              timesheetTask, TimesheetTaskStatus.inProgress),
-                    ),
-                    const SizedBox(height: 35),
-                    TimesheetTaskSection(
-                      title: "Done",
-                      tasks: state.tasks.doneTasks,
-                      onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
-                          _updateTaskStatus(
-                              timesheetTask, TimesheetTaskStatus.done),
-                      onDragOver: () => _scrollTo(isScrollToTop: false),
-                    ),
-                  ],
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    _getData();
+
+                    await Future.delayed(const Duration(seconds: 1));
+                  },
+                  child: ListView(
+                    controller: _scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).padding.bottom + 50),
+                    children: [
+                      const SizedBox(height: 30),
+                      TimesheetTaskSection(
+                        title: "Todo",
+                        tasks: state.tasks.todoTasks,
+                        onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
+                            _updateTaskStatus(
+                                timesheetTask, TimesheetTaskStatus.todo),
+                        onDragOver: () => _scrollTo(isScrollToTop: true),
+                      ),
+                      const SizedBox(height: 35),
+                      TimesheetTaskSection(
+                        title: "In progress",
+                        tasks: state.tasks.inprogressTasks,
+                        onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
+                            _updateTaskStatus(
+                                timesheetTask, TimesheetTaskStatus.inProgress),
+                      ),
+                      const SizedBox(height: 35),
+                      TimesheetTaskSection(
+                        title: "Done",
+                        tasks: state.tasks.doneTasks,
+                        onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
+                            _updateTaskStatus(
+                                timesheetTask, TimesheetTaskStatus.done),
+                        onDragOver: () => _scrollTo(isScrollToTop: false),
+                      ),
+                    ],
+                  ),
                 );
               }
 
