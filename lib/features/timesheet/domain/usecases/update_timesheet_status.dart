@@ -5,14 +5,16 @@ import 'package:todo/core/usecases/usecase.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/domain/irepository/itimesheet_repository.dart';
 
-class UpdateTimesheetStatus extends UseCase<void, UpdateTimesheetParams> {
+class UpdateTimesheetStatus
+    extends UseCase<TimesheetTask, UpdateTimesheetParams> {
   final ITimesheetRepository _timesheetRepository;
 
   UpdateTimesheetStatus({required ITimesheetRepository timesheetRepository})
       : _timesheetRepository = timesheetRepository;
 
   @override
-  Future<Either<Failure, void>> call(UpdateTimesheetParams params) async {
+  Future<Either<Failure, TimesheetTask>> call(
+      UpdateTimesheetParams params) async {
     return await _timesheetRepository.updateTaskStatus(params);
   }
 }

@@ -14,6 +14,8 @@ abstract class ITimesheetRemoreDataSource {
 
   Future<TaskInfoModel> getTask(String taskId);
 
+  Future<TimesheetTaskModel> getTimesheetTask(String timesheetId);
+
   Future<void> updateTimesheet(UpdateTimesheetStatusParam updatedTimesheet,
       TaskStatusChangeModel? updatedTask);
 }
@@ -96,6 +98,19 @@ class TimesheetRemoreDataSource extends ITimesheetRemoreDataSource {
         await tasks.where(FieldPath.documentId, isEqualTo: taskId).get();
 
     return TaskInfoModel.fromFirestore(result.docs.single.id,
+        result.docs.single.data() as Map<String, dynamic>);
+  }
+
+  @override
+  Future<TimesheetTaskModel> getTimesheetTask(String timesheetId) async {
+    CollectionReference timesheetTasks = FirebaseFirestore.instance
+        .collection(FirestoreCollectionNames.cTimesheetTasks);
+
+    var result = await timesheetTasks
+        .where(FieldPath.documentId, isEqualTo: timesheetId)
+        .get();
+
+    return TimesheetTaskModel.fromFirestore(result.docs.single.id,
         result.docs.single.data() as Map<String, dynamic>);
   }
 

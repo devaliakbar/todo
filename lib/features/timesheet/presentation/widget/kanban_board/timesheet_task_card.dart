@@ -60,7 +60,12 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
           context,
           PageTransition(
               type: PageTransitionType.rightToLeft,
-              child: const TimsheetTaskDetailScreen())),
+              child: BlocProvider.value(
+                  value: BlocProvider.of<TasksTimesheetBloc>(context,
+                      listen: false),
+                  child: TimsheetTaskDetailScreen(
+                    timesheetTask: widget.timesheetTask,
+                  )))),
       child: Container(
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(

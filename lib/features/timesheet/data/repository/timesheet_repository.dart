@@ -29,7 +29,7 @@ class TimesheetRepository extends ITimesheetRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updateTaskStatus(
+  Future<Either<Failure, TimesheetTask>> updateTaskStatus(
       UpdateTimesheetParams updateTaskStatusParams) async {
     try {
       final bool isTotalHourChanged = updateTaskStatusParams.oldTask.hours !=
@@ -57,7 +57,8 @@ class TimesheetRepository extends ITimesheetRepository {
       await _timesheetRemoreDataSource.updateTimesheet(
           updateTaskStatusParams.updatedTask, taskStatusChangeModel);
 
-      return const Right(null);
+      return Right(await _timesheetRemoreDataSource
+          .getTimesheetTask(updateTaskStatusParams.oldTask.timesheetId));
     } catch (_) {}
 
     return Left(UnexpectedFailure());
