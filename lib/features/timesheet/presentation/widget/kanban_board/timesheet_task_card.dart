@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
+import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
@@ -178,12 +179,19 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
         timerStartSince: widget.timesheetTask.timerStartSince,
         hours: widget.timesheetTask.hours);
 
+    final AppLoaderBloc appLoaderBloc =
+        BlocProvider.of<AppLoaderBloc>(context, listen: false);
+
+    appLoaderBloc.add(ShowLoader());
+
     final dartz.Either result =
         await RepositoryProvider.of<TimesheetEditController>(context,
                 listen: false)
             .updateTimesheet(
                 updateTimesheetParams: UpdateTimesheetParams(
                     oldTask: oldInfo, updatedTask: updatedInfo));
+
+    appLoaderBloc.add(HideLoader());
 
     result.fold((l) => Fluttertoast.showToast(msg: "Failed to update"), (r) {
       final UserState userState =

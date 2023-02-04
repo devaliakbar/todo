@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/error/failures.dart';
+import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/presentation/widget/common_text_field.dart';
@@ -211,6 +212,11 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
 
         final dartz.Either<Failure, TaskInfo> result;
 
+        final AppLoaderBloc appLoaderBloc =
+            BlocProvider.of<AppLoaderBloc>(context, listen: false);
+
+        appLoaderBloc.add(ShowLoader());
+
         if (widget.taskInfo != null) {
           result = await taskEditController.updateTask(UpdateTaskParams(
               taskId: widget.taskInfo!.taskId,
@@ -228,6 +234,8 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
               taskDescription: taskDescription,
               users: [..._selectedUsers.value]));
         }
+
+        appLoaderBloc.add(HideLoader());
 
         result.fold((l) => Fluttertoast.showToast(msg: "Failed to save"),
             (TaskInfo result) {

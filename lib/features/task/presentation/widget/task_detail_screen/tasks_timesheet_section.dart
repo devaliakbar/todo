@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tapped/tapped.dart';
+import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
@@ -209,12 +210,19 @@ class _MemberProgressState extends State<_MemberProgress> {
         timerStartSince: widget.timesheetTask.timerStartSince,
         hours: widget.timesheetTask.hours);
 
+    final AppLoaderBloc appLoaderBloc =
+        BlocProvider.of<AppLoaderBloc>(context, listen: false);
+
+    appLoaderBloc.add(ShowLoader());
+
     final dartz.Either result =
         await RepositoryProvider.of<TimesheetEditController>(context,
                 listen: false)
             .updateTimesheet(
                 updateTimesheetParams: UpdateTimesheetParams(
                     oldTask: oldTask, updatedTask: updateTask));
+
+    appLoaderBloc.add(HideLoader());
 
     result.fold((l) => Fluttertoast.showToast(msg: "Failed to update"),
         (r) => widget.onChange());
