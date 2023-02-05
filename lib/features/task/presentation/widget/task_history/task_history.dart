@@ -6,6 +6,7 @@ import 'package:tapped/tapped.dart';
 import 'package:todo/core/error/failures.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/main_screen_app_bar.dart';
+import 'package:todo/core/res/app_resources.dart';
 import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
 import 'package:todo/features/task/presentation/view_controller/task_edit_controller.dart';
 import 'package:todo/features/task/presentation/widget/task_list.dart';
@@ -31,7 +32,7 @@ class TaskHistory extends StatelessWidget {
                 if (tasksState is TasksLoaded) {
                   if (tasksState.tasks.isEmpty) {
                     Fluttertoast.showToast(
-                        msg: "You don't have any tasks to export");
+                        msg: AppString.youDontHaveAnyTasksToExport);
                     return;
                   }
 

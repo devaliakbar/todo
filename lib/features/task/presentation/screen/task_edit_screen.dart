@@ -11,6 +11,7 @@ import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/presentation/widget/common_text_field.dart';
 import 'package:todo/core/presentation/widget/custom_value_notifier.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
+import 'package:todo/core/res/app_resources.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';
@@ -66,7 +67,9 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
       body: Column(
         children: [
           CommonAppBar(
-            title: widget.taskInfo == null ? "Add task" : "Edit task",
+            title: widget.taskInfo == null
+                ? AppString.addTask
+                : AppString.editTask,
             actions: [
               Tapped(
                 onTap: _save,
@@ -90,12 +93,12 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
                     child: Column(
                       children: [
                         CommonTextField(
-                            title: "Task name",
+                            title: AppString.taskName,
                             controller: _taskNameController,
                             validator: TaskEditHelper.validateTaskName),
                         const SizedBox(height: 20),
                         CommonTextField(
-                          title: "Task Description",
+                          title: AppString.taskDescription,
                           controller: _taskDescriptionController,
                           validator: TaskEditHelper.validateTaskDescription,
                           maxLength: 100,
@@ -107,10 +110,10 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Assign to :",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    Text(
+                      "${AppString.assignTo} :",
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                     Tapped(
                       onTap: () {
@@ -134,7 +137,7 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
                             Icon(Icons.add,
                                 color: AppTheme.color.warningColor, size: 16),
                             Text(
-                              "Add user",
+                              AppString.addUser,
                               style:
                                   TextStyle(color: AppTheme.color.warningColor),
                             )

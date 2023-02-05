@@ -6,6 +6,7 @@ import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
 import 'package:todo/core/presentation/widget/failed_view.dart';
+import 'package:todo/core/res/app_resources.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
 import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
@@ -76,7 +77,7 @@ class _KanbanBoardState extends State<KanbanBoard> {
                   const SizedBox(width: 7),
                   Expanded(
                     child: Text(
-                      "Hi $userFullName",
+                      "${AppString.hi} $userFullName",
                       style: const TextStyle(fontSize: 18),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -118,7 +119,7 @@ class _KanbanBoardState extends State<KanbanBoard> {
                     children: [
                       const SizedBox(height: 30),
                       TimesheetTaskSection(
-                        title: "Todo",
+                        title: AppString.todo,
                         tasks: state.tasks.todoTasks,
                         onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
                             _updateTaskStatus(
@@ -127,7 +128,7 @@ class _KanbanBoardState extends State<KanbanBoard> {
                       ),
                       const SizedBox(height: 35),
                       TimesheetTaskSection(
-                        title: "In progress",
+                        title: AppString.inProgress,
                         tasks: state.tasks.inprogressTasks,
                         onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
                             _updateTaskStatus(
@@ -135,7 +136,7 @@ class _KanbanBoardState extends State<KanbanBoard> {
                       ),
                       const SizedBox(height: 35),
                       TimesheetTaskSection(
-                        title: "Done",
+                        title: AppString.done,
                         tasks: state.tasks.doneTasks,
                         onUpdateTaskStatus: (TimesheetTask timesheetTask) =>
                             _updateTaskStatus(

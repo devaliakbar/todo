@@ -87,7 +87,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                     Tapped(
                       onTap: () => _updateTaskStatus(TimesheetTaskStatus.todo),
                       child: _getStatusWidget(
-                          title: "Todo",
+                          title: AppString.todo,
                           isSelected: timesheetTask.taskStatus ==
                               TimesheetTaskStatus.todo),
                     ),
@@ -96,7 +96,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                       onTap: () =>
                           _updateTaskStatus(TimesheetTaskStatus.inProgress),
                       child: _getStatusWidget(
-                          title: "In progress",
+                          title: AppString.inProgress,
                           isSelected: timesheetTask.taskStatus ==
                               TimesheetTaskStatus.inProgress),
                     ),
@@ -104,7 +104,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                     Tapped(
                       onTap: () => _updateTaskStatus(TimesheetTaskStatus.done),
                       child: _getStatusWidget(
-                          title: "Done",
+                          title: AppString.done,
                           isSelected: timesheetTask.taskStatus ==
                               TimesheetTaskStatus.done),
                     ),
@@ -158,7 +158,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Created on",
+                          AppString.createdOn,
                           style: AppStyle.subInfo(),
                         ),
                         Text(
@@ -182,7 +182,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                   color: AppTheme.color.dividerColor,
                 ),
                 Text(
-                  "Description",
+                  AppString.description,
                   style: AppStyle.subInfo(),
                 ),
                 Text(

@@ -53,11 +53,11 @@ class Profile extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex: 2,
                       child: Text(
-                        "Language",
-                        style: TextStyle(fontSize: 16),
+                        AppString.language,
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ),
                     Expanded(
@@ -88,11 +88,11 @@ class Profile extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex: 2,
                       child: Text(
-                        "Theme",
-                        style: TextStyle(fontSize: 16),
+                        AppString.theme,
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ),
                     Expanded(
@@ -130,7 +130,10 @@ class Profile extends StatelessWidget {
                     Navigator.pushReplacementNamed(
                         context, SignInScreen.routeName);
                   },
-                  child: const Text("Sign out"),
+                  child: Text(
+                    AppString.signOut,
+                    style: AppStyle.mainInfo,
+                  ),
                 )
               ],
             ),

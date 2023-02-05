@@ -73,7 +73,7 @@ class _TimesheetTaskSectionState extends State<TimesheetTaskSection> {
           Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
             child: Text(
-              "${widget.title} ${widget.tasks.length}",
+              "${widget.title} (${widget.tasks.length})",
               style: AppStyle.title,
             ),
           ),
@@ -89,7 +89,8 @@ class _TimesheetTaskSectionState extends State<TimesheetTaskSection> {
               ),
               items: [
                 if (showMoveEffect) const _ChildWhenDraggingWidget(),
-                if (widget.tasks.isEmpty) const FailedView(failMsg: "No tasks"),
+                if (widget.tasks.isEmpty)
+                  FailedView(failMsg: AppString.noTasks),
                 ...widget.tasks.map<Widget>((task) {
                   final GlobalKey taskCardKey = GlobalKey();
 

@@ -95,7 +95,7 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
               Expanded(
                 child: Center(
                   child: Text(
-                    "Total Hours : ${Utils.getFormattedDuration(widget.timesheetTask.hours)}",
+                    "${AppString.totalHours} : ${Utils.getFormattedDuration(widget.timesheetTask.hours)}",
                     style: AppStyle.subInfo(),
                   ),
                 ),
@@ -131,7 +131,7 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
               Expanded(
                 child: Center(
                   child: Text(
-                    "Created by ${widget.timesheetTask.creatorName}",
+                    "${AppString.createdBy} ${widget.timesheetTask.creatorName}",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: AppStyle.subInfo(),

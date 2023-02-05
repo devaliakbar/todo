@@ -49,7 +49,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         body: Column(
           children: [
             CommonAppBar(
-              title: "Task detail",
+              title: AppString.taskDetail,
               actions: [
                 Tapped(
                   onTap: _deleteTaskConfirmation,
@@ -106,21 +106,21 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     color: AppTheme.color.dividerColor,
                   ),
                   Text(
-                    "Status : ${taskInfo.isCompleted ? "Completed" : "Not completed"}",
+                    "${AppString.status} : ${taskInfo.isCompleted ? "Completed" : "Not completed"}",
                     style: AppStyle.subInfo(),
                   ),
                   Divider(
                     color: AppTheme.color.dividerColor,
                   ),
                   Text(
-                    "Total Hour Spend : ${Utils.getFormattedDuration(taskInfo.totalHours)}",
+                    "${AppString.totalHourSpend} : ${Utils.getFormattedDuration(taskInfo.totalHours)}",
                     style: AppStyle.subInfo(),
                   ),
                   Divider(
                     color: AppTheme.color.dividerColor,
                   ),
                   Text(
-                    "Description",
+                    AppString.description,
                     style: AppStyle.subInfo(),
                   ),
                   Text(taskInfo.taskDescription,
@@ -135,7 +135,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Created on",
+                            AppString.createdOn,
                             style: AppStyle.subInfo(),
                           ),
                           Text(
@@ -149,7 +149,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              "Completed on",
+                              AppString.completedOn,
                               style: AppStyle.subInfo(),
                             ),
                             Text(
@@ -187,11 +187,11 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
 
   void _deleteTaskConfirmation() {
     Widget cancelButton = TextButton(
-      child: const Text("No"),
+      child: Text(AppString.no),
       onPressed: () => Navigator.pop(context),
     );
     Widget continueButton = TextButton(
-      child: const Text("Yes"),
+      child: Text(AppString.yes),
       onPressed: () {
         Navigator.pop(context);
 
@@ -200,8 +200,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
     );
 
     AlertDialog alert = AlertDialog(
-      title: const Text("Delete"),
-      content: const Text("Are you sure, do you like to delete?"),
+      title: Text(AppString.delete),
+      content: Text(AppString.areYouSureDoYouLikeToDelete),
       actions: [
         cancelButton,
         continueButton,

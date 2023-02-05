@@ -28,8 +28,8 @@ class TaskList extends StatelessWidget {
 
           if (state is TasksLoaded) {
             if (state.tasks.isEmpty) {
-              return const FailedView(
-                failMsg: "No data found",
+              return FailedView(
+                failMsg: AppString.noDataFound,
               );
             }
 
@@ -73,7 +73,7 @@ class TaskList extends StatelessWidget {
                           ),
                           const SizedBox(height: 15),
                           Text(
-                            "Created on : ${Utils.getFormattedDate(state.tasks[index].createdOn)}",
+                            "${AppString.createdOn}: ${Utils.getFormattedDate(state.tasks[index].createdOn)}",
                             style: AppStyle.subInfo(),
                           ),
                           const SizedBox(height: 15),
@@ -82,8 +82,8 @@ class TaskList extends StatelessWidget {
                             children: [
                               Text(
                                 state.tasks[index].isCompleted
-                                    ? "Completed"
-                                    : "Not completed",
+                                    ? AppString.complete
+                                    : AppString.notComplete,
                                 style: AppStyle.subInfo(),
                               ),
                               const SizedBox(width: 15),

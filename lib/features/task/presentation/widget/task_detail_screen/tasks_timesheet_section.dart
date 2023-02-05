@@ -29,7 +29,7 @@ class TasksTimesheetSection extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "Members status",
+          AppString.membersStatus,
           style: AppStyle.mainInfo,
         ),
         BlocBuilder<TasksTimesheetBloc, TasksTimesheetState>(
@@ -164,18 +164,18 @@ class _MemberProgressState extends State<_MemberProgress> {
                   }
                 },
                 child: _getStatusWidget(
-                    title: "Todo",
+                    title: AppString.todo,
                     isSelected: widget.timesheetTask.taskStatus ==
                         TimesheetTaskStatus.todo),
               ),
               const SizedBox(width: 10),
               _getStatusWidget(
-                  title: "In progress",
+                  title: AppString.inProgress,
                   isSelected: widget.timesheetTask.taskStatus ==
                       TimesheetTaskStatus.inProgress),
               const SizedBox(width: 10),
               _getStatusWidget(
-                  title: "Done",
+                  title: AppString.done,
                   isSelected: widget.timesheetTask.taskStatus ==
                       TimesheetTaskStatus.done),
               const Spacer(),
