@@ -21,4 +21,9 @@ class AppStyle {
         color: AppTheme.color.black.withOpacity(0.6),
         fontStyle: isItalic ? FontStyle.italic : null,
       );
+
+  static TextStyle get signIn => const TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+      );
 }
