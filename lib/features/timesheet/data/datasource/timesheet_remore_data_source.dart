@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/core/res/app_resources.dart';
+import 'package:todo/core/service/app_notification_service.dart';
+import 'package:todo/core/service/notification_message_model.dart';
 import 'package:todo/features/task/data/model/task_info_model.dart';
 import 'package:todo/features/timesheet/data/model/task_status_change_model.dart';
 import 'package:todo/features/timesheet/data/model/tasks_timesheet_model.dart';
 import 'package:todo/features/timesheet/data/model/timesheet_task_model.dart';
 import 'package:todo/features/timesheet/domain/usecases/get_tasks_timesheet.dart';
 import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
+import 'package:todo/features/user/data/model/user_info_model.dart';
 
 abstract class ITimesheetRemoreDataSource {
   Future<TasksTimesheetModel> getTasksTimesheet(
@@ -18,12 +21,19 @@ abstract class ITimesheetRemoreDataSource {
 
   Future<void> updateTimesheet(UpdateTimesheetStatusParam updatedTimesheet,
       TaskStatusChangeModel? updatedTask);
+
+  Future<void> sendNotification(String creatorId);
 }
 
 class TimesheetRemoreDataSource extends ITimesheetRemoreDataSource {
+  final AppNotificationService _appNotificationService;
   final Logger _logger;
 
-  TimesheetRemoreDataSource({required Logger logger}) : _logger = logger;
+  TimesheetRemoreDataSource(
+      {required AppNotificationService appNotificationService,
+      required Logger logger})
+      : _appNotificationService = appNotificationService,
+        _logger = logger;
 
   @override
   Future<TasksTimesheetModel> getTasksTimesheet(
@@ -149,6 +159,25 @@ class TimesheetRemoreDataSource extends ITimesheetRemoreDataSource {
       await writeBatch.commit();
     } catch (e) {
       _logger.e("Failed to update timesheet : $e");
+    }
+  }
+
+  @override
+  Future<void> sendNotification(String creatorId) async {
+    CollectionReference users =
+        FirebaseFirestore.instance.collection(FirestoreCollectionNames.cUser);
+
+    var result = await users.where("id", isEqualTo: creatorId).get();
+    final UserInfoResponseModel userRes = UserInfoResponseModel.fromJson(
+        result.docs.single.data() as Map<String, dynamic>);
+
+    const NotificationMessageModel message = NotificationMessageModel(
+        messageTitle: "Task done",
+        messsageBody: "One user completed your task.");
+
+    for (String token in userRes.notificationTokens) {
+      _appNotificationService.sendNotification(
+          userToken: token, model: message);
     }
   }
 }

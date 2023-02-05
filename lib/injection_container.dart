@@ -117,6 +117,6 @@ Future<void> init() async {
   sl.registerLazySingleton<ITimesheetRepository>(
       () => TimesheetRepository(timesheetRemoreDataSource: sl()));
   // Data source
-  sl.registerLazySingleton<ITimesheetRemoreDataSource>(
-      () => TimesheetRemoreDataSource(logger: sl()));
+  sl.registerLazySingleton<ITimesheetRemoreDataSource>(() =>
+      TimesheetRemoreDataSource(logger: sl(), appNotificationService: sl()));
 }

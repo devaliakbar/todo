@@ -4,6 +4,7 @@ import 'package:todo/features/task/data/model/task_info_model.dart';
 import 'package:todo/features/timesheet/data/datasource/timesheet_remore_data_source.dart';
 import 'package:todo/features/timesheet/data/model/task_status_change_model.dart';
 import 'package:todo/features/timesheet/data/model/tasks_timesheet_model.dart';
+import 'package:todo/features/timesheet/data/model/timesheet_task_model.dart';
 import 'package:todo/features/timesheet/domain/entity/tasks_timesheet.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/domain/irepository/itimesheet_repository.dart';
@@ -57,8 +58,15 @@ class TimesheetRepository extends ITimesheetRepository {
       await _timesheetRemoreDataSource.updateTimesheet(
           updateTaskStatusParams.updatedTask, taskStatusChangeModel);
 
-      return Right(await _timesheetRemoreDataSource
-          .getTimesheetTask(updateTaskStatusParams.oldTask.timesheetId));
+      final TimesheetTaskModel updatedTimesheet =
+          await _timesheetRemoreDataSource
+              .getTimesheetTask(updateTaskStatusParams.oldTask.timesheetId);
+
+      if (updatedTimesheet.taskStatus == TimesheetTaskStatus.done) {
+        _timesheetRemoreDataSource.sendNotification(updatedTimesheet.creatorId);
+      }
+
+      return Right(updatedTimesheet);
     } catch (_) {}
 
     return Left(UnexpectedFailure());

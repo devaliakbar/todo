@@ -269,11 +269,13 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
     }
   }
 
-  Future<void> _sendNotification(List<UserInfo> users) async {
+  Future<void> _sendNotification(List<UserInfo> usersList) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection(FirestoreCollectionNames.cUser);
 
-    var result = await users.get();
+    var result = await users
+        .where("id", whereIn: usersList.map<String>((e) => e.id).toList())
+        .get();
 
     const NotificationMessageModel message = NotificationMessageModel(
         messageTitle: "New task", messsageBody: "You got a new task");
