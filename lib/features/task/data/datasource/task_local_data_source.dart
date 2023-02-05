@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:logger/logger.dart';
+import 'package:todo/core/error/exceptions.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:csv/csv.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:external_path/external_path.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 abstract class ITaskLocalDataSource {
   Future<String> exportTasksToCsv(List<TaskInfo> tasks);
@@ -17,6 +19,12 @@ class TaskLocalDataSource extends ITaskLocalDataSource {
 
   @override
   Future<String> exportTasksToCsv(List<TaskInfo> tasks) async {
+    var status = await Permission.storage.request();
+
+    if (status.isDenied) {
+      throw UnexpectedException();
+    }
+
     List<List<dynamic>> rows = [];
 
     List<dynamic> header = [];
@@ -42,9 +50,11 @@ class TaskLocalDataSource extends ITaskLocalDataSource {
     }
 
     String csv = const ListToCsvConverter().convert(rows);
+
     String dir = await ExternalPath.getExternalStoragePublicDirectory(
         ExternalPath.DIRECTORY_DOWNLOADS);
-    File file = File("$dir/filename.csv");
+    File file =
+        File("$dir/TaskExport${DateTime.now().microsecondsSinceEpoch}.csv");
     await file.writeAsString(csv);
 
     return file.path;
