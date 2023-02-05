@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/core/error/exceptions.dart';
+import 'package:todo/core/service/app_notification_service.dart';
 import 'package:todo/features/user/data/model/user_info_model.dart';
 import 'package:todo/features/user/domain/enity/user_info.dart';
 
@@ -13,6 +14,11 @@ abstract class IUserLocalDataSource {
 }
 
 class UserLocalDataSource extends IUserLocalDataSource {
+  final AppNotificationService _appNotificationService;
+
+  UserLocalDataSource({required AppNotificationService appNotificationService})
+      : _appNotificationService = appNotificationService;
+
   static const _userInfoKey = "user_info";
 
   ///***************************************************************************************************************************///                                              ///
@@ -43,7 +49,9 @@ class UserLocalDataSource extends IUserLocalDataSource {
     try {
       final String? userJson = prefs.getString(_userInfoKey);
       if (userJson != null) {
-        return UserInfoModel.fromJson(jsonDecode(userJson));
+        final UserInfo res = UserInfoModel.fromJson(jsonDecode(userJson));
+        await _appNotificationService.setUpNotification();
+        return res;
       }
     } catch (_) {
       prefs.remove(_userInfoKey);

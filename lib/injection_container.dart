@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
+import 'package:todo/core/service/app_notification_service.dart';
 import 'package:todo/core/utils/bloc_event_restartable.dart';
 import 'package:todo/features/task/data/datasource/task_local_data_source.dart';
 import 'package:todo/features/task/data/datasource/task_remote_data_source.dart';
@@ -40,6 +41,9 @@ Future<void> init() async {
   sl.registerLazySingleton<Logger>(() => Logger());
   // Utils
   sl.registerLazySingleton<BlocEventRestartable>(() => BlocEventRestartable());
+  // Core
+  sl.registerLazySingleton<AppNotificationService>(
+      () => AppNotificationService(logger: sl()));
   // Bloc
   sl.registerFactory(() => AppLoaderBloc());
   // AppTheme
@@ -67,8 +71,9 @@ Future<void> init() async {
       () => UserRepository(userRemoteDataSource: sl()));
   // Data source
   sl.registerLazySingleton<IUserRemoteDataSource>(
-      () => UserRemoteDataSource(logger: sl()));
-  sl.registerLazySingleton<IUserLocalDataSource>(() => UserLocalDataSource());
+      () => UserRemoteDataSource(appNotificationService: sl(), logger: sl()));
+  sl.registerLazySingleton<IUserLocalDataSource>(
+      () => UserLocalDataSource(appNotificationService: sl()));
 
   ///*********************************************************************************************///
 

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/core/error/exceptions.dart';
 import 'package:todo/core/res/app_resources.dart';
+import 'package:todo/core/service/app_notification_service.dart';
 import 'package:todo/features/user/data/model/user_info_model.dart';
 
 abstract class IUserRemoteDataSource {
@@ -17,9 +17,14 @@ abstract class IUserRemoteDataSource {
 }
 
 class UserRemoteDataSource extends IUserRemoteDataSource {
+  final AppNotificationService _appNotificationService;
   final Logger _logger;
 
-  UserRemoteDataSource({required Logger logger}) : _logger = logger;
+  UserRemoteDataSource(
+      {required AppNotificationService appNotificationService,
+      required Logger logger})
+      : _appNotificationService = appNotificationService,
+        _logger = logger;
 
   ///***************************************************************************************************************************///                                              ///
   ///                                                                                                                           ///
@@ -45,6 +50,7 @@ class UserRemoteDataSource extends IUserRemoteDataSource {
       if (user != null) {
         final UserInfoModel userInfoModel = UserInfoModel.fromFirebase(user);
         await _saveUserDetails(userInfoModel);
+        await _appNotificationService.setUpNotification();
         return userInfoModel;
       }
     }
@@ -90,7 +96,7 @@ class UserRemoteDataSource extends IUserRemoteDataSource {
         FirebaseFirestore.instance.collection(FirestoreCollectionNames.cUser);
 
     final String? notificationToken =
-        await FirebaseMessaging.instance.getToken();
+        await _appNotificationService.getNotificationToken();
 
     var result = await users.where('id', isEqualTo: userInfoModel.id).get();
     if (result.docs.isNotEmpty) {
@@ -131,10 +137,10 @@ class UserRemoteDataSource extends IUserRemoteDataSource {
   Future<void> _deleteNotificationToken({required String? userId}) async {
     try {
       final String? notificationToken =
-          await FirebaseMessaging.instance.getToken();
+          await _appNotificationService.getNotificationToken();
 
       if (notificationToken != null) {
-        await FirebaseMessaging.instance.deleteToken();
+        await _appNotificationService.deleteNotificationToken();
 
         if (userId != null) {
           CollectionReference users = FirebaseFirestore.instance
