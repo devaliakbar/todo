@@ -97,7 +97,7 @@ Future<void> init() async {
       TaskRepository(taskRemoteDataSource: sl(), taskLocalDataSource: sl()));
   // Data source
   sl.registerLazySingleton<ITaskRemoteDataSource>(
-      () => TaskRemoteDataSource(logger: sl()));
+      () => TaskRemoteDataSource(logger: sl(), appNotificationService: sl()));
   sl.registerLazySingleton<ITaskLocalDataSource>(
       () => TaskLocalDataSource(logger: sl()));
 

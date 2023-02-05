@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/core/error/exceptions.dart';
 import 'package:todo/core/res/app_resources.dart';
+import 'package:todo/core/service/app_notification_service.dart';
+import 'package:todo/core/service/notification_message_model.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/data/model/task_info_model.dart';
 import 'package:todo/features/task/domain/entity/base_task.dart';
@@ -10,6 +12,7 @@ import 'package:todo/features/task/domain/usecases/get_tasks.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';
 import 'package:todo/features/timesheet/data/model/timesheet_task_model.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
+import 'package:todo/features/user/data/model/user_info_model.dart';
 import 'package:todo/features/user/domain/enity/user_info.dart';
 
 abstract class ITaskRemoteDataSource {
@@ -26,9 +29,14 @@ abstract class ITaskRemoteDataSource {
 }
 
 class TaskRemoteDataSource extends ITaskRemoteDataSource {
+  final AppNotificationService _appNotificationService;
   final Logger _logger;
 
-  TaskRemoteDataSource({required Logger logger}) : _logger = logger;
+  TaskRemoteDataSource(
+      {required AppNotificationService appNotificationService,
+      required Logger logger})
+      : _appNotificationService = appNotificationService,
+        _logger = logger;
 
   ///***************************************************************************************************************************///                                              ///
   ///                                                                                                                           ///
@@ -70,6 +78,8 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
       // Commit
       await writeBatch.commit();
       _logger.i("Successfully created task");
+
+      _sendNotification(createTaskParams.users);
 
       return TaskInfoModel.fromFirestore(newTask.id, createTaskJson);
     } catch (e) {
@@ -177,6 +187,8 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
             .where(FieldPath.documentId, isEqualTo: updateTaskParams.taskId)
             .get();
 
+        _sendNotification(newUsers);
+
         return TaskInfoModel.fromFirestore(taskResult.docs.single.id,
             taskResult.docs.single.data() as Map<String, dynamic>);
       }
@@ -254,6 +266,26 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
     } catch (e) {
       _logger.e("Failed to delete task : $e");
       throw FirestoreException();
+    }
+  }
+
+  Future<void> _sendNotification(List<UserInfo> users) async {
+    CollectionReference users =
+        FirebaseFirestore.instance.collection(FirestoreCollectionNames.cUser);
+
+    var result = await users.get();
+
+    const NotificationMessageModel message = NotificationMessageModel(
+        messageTitle: "New task", messsageBody: "You got a new task");
+
+    for (var element in result.docs) {
+      final UserInfoResponseModel userRes = UserInfoResponseModel.fromJson(
+          element.data() as Map<String, dynamic>);
+
+      for (String token in userRes.notificationTokens) {
+        _appNotificationService.sendNotification(
+            userToken: token, model: message);
+      }
     }
   }
 }

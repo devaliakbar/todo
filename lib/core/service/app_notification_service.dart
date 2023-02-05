@@ -68,7 +68,8 @@ class AppNotificationService {
   }
 
   Future<void> sendNotification(
-      NotificationMessageModel model, String userToken) async {
+      {required NotificationMessageModel model,
+      required String userToken}) async {
     ///Sending push notification
     await Dio().post(
       'https://fcm.googleapis.com/fcm/send',
