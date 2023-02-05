@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
 import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
+import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 import 'package:todo/features/user/presentation/widget/profile/profile.dart';
 import 'package:todo/features/task/presentation/widget/task_history/task_history.dart';
 import 'package:todo/features/task/presentation/widget/tasks/tasks.dart';
@@ -45,6 +46,9 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final SignInState userState =
+        BlocProvider.of<UserBloc>(context, listen: false).state as SignInState;
+
     return Scaffold(
       body: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
@@ -56,21 +60,27 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             BlocProvider(
               create: (context) => di.sl<TasksBloc>()
-                ..add(GetTasksEvent(getCompltedTask: false, ownerId: "")),
+                ..add(GetTasksEvent(
+                    getCompltedTask: false, ownerId: userState.userInfo.id)),
               child: Builder(
                 builder: (context) => Tasks(onReload: () {
-                  BlocProvider.of<TasksBloc>(context, listen: false)
-                      .add(GetTasksEvent(getCompltedTask: false, ownerId: ""));
+                  BlocProvider.of<TasksBloc>(context, listen: false).add(
+                      GetTasksEvent(
+                          getCompltedTask: false,
+                          ownerId: userState.userInfo.id));
                 }),
               ),
             ),
             BlocProvider(
               create: (context) => di.sl<TasksBloc>()
-                ..add(GetTasksEvent(getCompltedTask: true, ownerId: "")),
+                ..add(GetTasksEvent(
+                    getCompltedTask: true, ownerId: userState.userInfo.id)),
               child: Builder(
                 builder: (context) => TaskHistory(onReload: () {
-                  BlocProvider.of<TasksBloc>(context, listen: false)
-                      .add(GetTasksEvent(getCompltedTask: true, ownerId: ""));
+                  BlocProvider.of<TasksBloc>(context, listen: false).add(
+                      GetTasksEvent(
+                          getCompltedTask: true,
+                          ownerId: userState.userInfo.id));
                 }),
               ),
             ),
