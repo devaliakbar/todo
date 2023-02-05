@@ -29,8 +29,7 @@ class Tasks extends StatelessWidget {
                     PageTransition(
                         type: PageTransitionType.rightToLeft,
                         child: TaskEditScreen(
-                          onSaved: (_) => tasksBloc
-                              .add(const GetTasksEvent(getCompltedTask: false)),
+                          onSaved: (_) => onReload(),
                         )));
               },
               child: const Padding(

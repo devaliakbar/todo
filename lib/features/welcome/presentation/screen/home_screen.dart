@@ -56,21 +56,21 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             BlocProvider(
               create: (context) => di.sl<TasksBloc>()
-                ..add(const GetTasksEvent(getCompltedTask: false)),
+                ..add(GetTasksEvent(getCompltedTask: false, ownerId: "")),
               child: Builder(
                 builder: (context) => Tasks(onReload: () {
                   BlocProvider.of<TasksBloc>(context, listen: false)
-                      .add(const GetTasksEvent(getCompltedTask: false));
+                      .add(GetTasksEvent(getCompltedTask: false, ownerId: ""));
                 }),
               ),
             ),
             BlocProvider(
               create: (context) => di.sl<TasksBloc>()
-                ..add(const GetTasksEvent(getCompltedTask: true)),
+                ..add(GetTasksEvent(getCompltedTask: true, ownerId: "")),
               child: Builder(
                 builder: (context) => TaskHistory(onReload: () {
                   BlocProvider.of<TasksBloc>(context, listen: false)
-                      .add(const GetTasksEvent(getCompltedTask: true));
+                      .add(GetTasksEvent(getCompltedTask: true, ownerId: ""));
                 }),
               ),
             ),

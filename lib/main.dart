@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,7 @@ import 'injection_container.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
   await di.init();
 
@@ -57,15 +58,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      minTextAdapt: true,
-      builder: (context, child) => MaterialApp(
-        title: 'Todo',
-        key: TrackContext.key,
-        theme: ThemeData(useMaterial3: true),
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: AppRouter.onGenerateRoute,
-        builder: MainWidget.widget,
+    return EasyLocalization(
+      supportedLocales: const [Locale('en', 'US'), Locale('de', 'DE')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en', 'US'),
+      child: ScreenUtilInit(
+        minTextAdapt: true,
+        builder: (context, child) => MaterialApp(
+          title: 'Todo',
+          key: TrackContext.key,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          theme: ThemeData(useMaterial3: true),
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: AppRouter.onGenerateRoute,
+          builder: MainWidget.widget,
+        ),
       ),
     );
   }

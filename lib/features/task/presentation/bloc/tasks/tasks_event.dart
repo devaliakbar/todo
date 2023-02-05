@@ -8,10 +8,11 @@ abstract class TasksEvent extends Equatable {
 }
 
 class GetTasksEvent extends TasksEvent {
+  final String ownerId;
   final bool? getCompltedTask;
 
-  const GetTasksEvent({this.getCompltedTask});
+  const GetTasksEvent({required this.ownerId, this.getCompltedTask});
 
   @override
-  List<Object?> get props => [getCompltedTask];
+  List<Object?> get props => [ownerId, getCompltedTask];
 }
