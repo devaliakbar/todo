@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
@@ -181,7 +182,9 @@ class _MemberProgressState extends State<_MemberProgress> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: isSelected ? Colors.yellow[200] : Colors.grey[200]),
+          color: isSelected
+              ? AppTheme.color.primaryColor.withOpacity(0.2)
+              : AppTheme.color.dividerColor),
       child: Text(title),
     );
   }

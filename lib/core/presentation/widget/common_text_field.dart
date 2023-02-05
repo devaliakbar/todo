@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 
 class CommonTextField extends StatelessWidget {
   final String title;
@@ -29,7 +30,7 @@ class CommonTextField extends StatelessWidget {
           counter: hideMaxLength ? const SizedBox.shrink() : null,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
           filled: true,
-          hintStyle: TextStyle(color: Colors.grey[400]),
+          hintStyle: TextStyle(color: AppTheme.color.greyLight),
           fillColor: Colors.white),
     );
   }

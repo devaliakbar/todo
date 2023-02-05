@@ -20,7 +20,7 @@ class HomeBottomNavigation extends StatelessWidget {
               color: Colors.white,
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                  color: Colors.black54.withOpacity(0.15),
+                  color: AppTheme.color.shadowColor,
                   blurRadius: 10,
                   offset: const Offset(0, 0),
                 )
@@ -40,8 +40,8 @@ class HomeBottomNavigation extends StatelessWidget {
                         Icons.home,
                         size: 24,
                         color: currentIndex == 0
-                            ? AppTheme.color.bottomNavigationSelectionColor
-                            : Colors.black,
+                            ? AppTheme.color.primaryColor
+                            : AppTheme.color.black,
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -60,8 +60,8 @@ class HomeBottomNavigation extends StatelessWidget {
                         Icons.task,
                         size: 24,
                         color: currentIndex == 1
-                            ? AppTheme.color.bottomNavigationSelectionColor
-                            : Colors.black,
+                            ? AppTheme.color.primaryColor
+                            : AppTheme.color.black,
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -80,8 +80,8 @@ class HomeBottomNavigation extends StatelessWidget {
                         Icons.history,
                         size: 24,
                         color: currentIndex == 2
-                            ? AppTheme.color.bottomNavigationSelectionColor
-                            : Colors.black,
+                            ? AppTheme.color.primaryColor
+                            : AppTheme.color.black,
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -100,8 +100,8 @@ class HomeBottomNavigation extends StatelessWidget {
                         Icons.person,
                         size: 24,
                         color: currentIndex == 3
-                            ? AppTheme.color.bottomNavigationSelectionColor
-                            : Colors.black,
+                            ? AppTheme.color.primaryColor
+                            : AppTheme.color.black,
                       ),
                       const SizedBox(height: 4),
                       Text(

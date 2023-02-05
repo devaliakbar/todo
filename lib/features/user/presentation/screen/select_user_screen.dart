@@ -4,6 +4,7 @@ import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/presentation/widget/custom_value_notifier.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 import 'package:todo/features/user/domain/enity/user_info.dart';
 import 'package:todo/features/user/presentation/bloc/get_users/get_users_bloc.dart';
 import 'package:todo/injection_container.dart' as di;
@@ -99,7 +100,8 @@ class _SelectUserScreenState extends State<SelectUserScreen> {
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15.0)),
                                 filled: true,
-                                hintStyle: TextStyle(color: Colors.grey[400]),
+                                hintStyle:
+                                    TextStyle(color: AppTheme.color.greyLight),
                                 fillColor: Colors.white),
                           ),
                         ),
@@ -162,10 +164,10 @@ class _SelectUserScreenState extends State<SelectUserScreen> {
                                                   color: Colors.white
                                                       .withOpacity(0.6),
                                                 ),
-                                                child: const Icon(
+                                                child: Icon(
                                                   Icons.check,
                                                   size: 18,
-                                                  color: Colors.black,
+                                                  color: AppTheme.color.black,
                                                 ),
                                               )
                                           ],

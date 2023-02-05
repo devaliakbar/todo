@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 
 class MainScreenAppBar extends StatelessWidget {
   final String title;
@@ -19,7 +20,7 @@ class MainScreenAppBar extends StatelessWidget {
         color: Colors.white,
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black54.withOpacity(0.15),
+            color: AppTheme.color.shadowColor,
             blurRadius: 10,
             offset: const Offset(0, 0),
           )

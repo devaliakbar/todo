@@ -7,6 +7,7 @@ import 'package:tapped/tapped.dart';
 import 'package:todo/core/error/failures.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
@@ -66,11 +67,11 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                   style: const TextStyle(fontSize: 17),
                 ),
                 Divider(
-                  color: Colors.grey[200],
+                  color: AppTheme.color.dividerColor,
                 ),
                 Text("Created by : ${timesheetTask.creatorName}"),
                 Divider(
-                  color: Colors.grey[200],
+                  color: AppTheme.color.dividerColor,
                 ),
                 Row(
                   children: [
@@ -103,7 +104,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                   ],
                 ),
                 Divider(
-                  color: Colors.grey[200],
+                  color: AppTheme.color.dividerColor,
                 ),
                 if (timesheetTask.taskStatus == TimesheetTaskStatus.done)
                   Text(
@@ -140,7 +141,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                     ],
                   ),
                 Divider(
-                  color: Colors.grey[200],
+                  color: AppTheme.color.dividerColor,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -169,7 +170,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                   ],
                 ),
                 Divider(
-                  color: Colors.grey[200],
+                  color: AppTheme.color.dividerColor,
                 ),
                 const Text("Description"),
                 Text(
@@ -189,7 +190,9 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: isSelected ? Colors.yellow[200] : Colors.grey[200]),
+          color: isSelected
+              ? AppTheme.color.primaryColor.withOpacity(0.2)
+              : AppTheme.color.dividerColor),
       child: Text(title),
     );
   }

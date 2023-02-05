@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
@@ -73,7 +74,7 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.15),
+              color: AppTheme.color.shadowColor,
               blurRadius: 10,
             ),
           ],

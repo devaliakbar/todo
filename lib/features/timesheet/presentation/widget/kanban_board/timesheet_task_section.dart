@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_card.dart';
 
@@ -121,7 +122,7 @@ class _ChildWhenDraggingWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: AppTheme.color.greyLight.withOpacity(0.3),
         borderRadius: BorderRadius.circular(10),
       ),
     );

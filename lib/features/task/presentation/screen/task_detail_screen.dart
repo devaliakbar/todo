@@ -6,6 +6,7 @@ import 'package:tapped/tapped.dart';
 import 'package:todo/core/error/failures.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/task/presentation/screen/task_edit_screen.dart';
@@ -101,17 +102,17 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     style: const TextStyle(fontSize: 17),
                   ),
                   Divider(
-                    color: Colors.grey[200],
+                    color: AppTheme.color.dividerColor,
                   ),
                   Text(
                       "Status : ${taskInfo.isCompleted ? "Completed" : "Not completed"}"),
                   Divider(
-                    color: Colors.grey[200],
+                    color: AppTheme.color.dividerColor,
                   ),
                   Text(
                       "Total Hour Spend : ${Utils.getFormattedDuration(taskInfo.totalHours)}"),
                   Divider(
-                    color: Colors.grey[200],
+                    color: AppTheme.color.dividerColor,
                   ),
                   const Text("Description"),
                   Text(
@@ -119,7 +120,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     style: const TextStyle(fontStyle: FontStyle.italic),
                   ),
                   Divider(
-                    color: Colors.grey[200],
+                    color: AppTheme.color.dividerColor,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -149,7 +150,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                     ],
                   ),
                   Divider(
-                    color: Colors.grey[200],
+                    color: AppTheme.color.dividerColor,
                   ),
                   Builder(
                     builder: (context) => TasksTimesheetSection(

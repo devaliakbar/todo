@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tapped/tapped.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 
 class CommonAppBar extends StatelessWidget {
   final String title;
@@ -11,7 +12,16 @@ class CommonAppBar extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       width: double.infinity,
-      color: Colors.white,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: AppTheme.color.shadowColor,
+            blurRadius: 10,
+            offset: const Offset(0, 0),
+          )
+        ],
+      ),
       child: actions.isEmpty
           ? Stack(
               children: [

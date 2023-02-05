@@ -10,6 +10,7 @@ import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/presentation/widget/common_text_field.dart';
 import 'package:todo/core/presentation/widget/custom_value_notifier.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';
@@ -129,11 +130,13 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(15),
                         child: Row(
-                          children: const [
-                            Icon(Icons.add, color: Colors.red, size: 16),
+                          children: [
+                            Icon(Icons.add,
+                                color: AppTheme.color.warningColor, size: 16),
                             Text(
                               "Add user",
-                              style: TextStyle(color: Colors.red),
+                              style:
+                                  TextStyle(color: AppTheme.color.warningColor),
                             )
                           ],
                         ),
@@ -170,12 +173,12 @@ class _TaskEditScreenState extends State<TaskEditScreen> {
                             selectedUsers.removeAt(index);
                             _selectedUsers.notifyListeners();
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.all(15),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
                             child: Icon(
                               Icons.delete,
                               size: 18,
-                              color: Colors.red,
+                              color: AppTheme.color.warningColor,
                             ),
                           ),
                         )

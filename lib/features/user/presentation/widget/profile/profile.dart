@@ -65,10 +65,10 @@ class Profile extends StatelessWidget {
                         child: Row(
                           children: const [
                             _LanguageFlag(
-                                isSelect: true, flag: AppAssets.usFlagImg),
+                                isSelect: false, flag: AppAssets.usFlagImg),
                             SizedBox(width: 20),
                             _LanguageFlag(
-                                isSelect: false, flag: AppAssets.deFlagImg)
+                                isSelect: true, flag: AppAssets.deFlagImg)
                           ],
                         ))
                   ],
@@ -93,16 +93,16 @@ class Profile extends StatelessWidget {
                                 onSelect: () {
                                   appTheme.changeTheme(0);
                                 },
-                                color1: Colors.red,
-                                color2: Colors.yellow,
+                                color1: Colors.pinkAccent,
+                                color2: const Color(0xFF9b111e),
                                 isSelect: AppTheme.currentThemeIndex == 0),
                             const SizedBox(width: 20),
                             _ThemeColors(
                               onSelect: () {
                                 appTheme.changeTheme(1);
                               },
-                              color1: Colors.blue,
-                              color2: Colors.pink,
+                              color1: Colors.blueAccent,
+                              color2: const Color(0xFF7b403b),
                               isSelect: AppTheme.currentThemeIndex == 1,
                             )
                           ],
@@ -150,12 +150,14 @@ class _ThemeColors extends StatelessWidget {
       child: Container(
         decoration: isSelect
             ? BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: Colors.black, width: 2))
+                borderRadius: BorderRadius.circular(10),
+                border:
+                    Border.all(color: AppTheme.color.primaryColor, width: 3))
             : null,
         child: Row(
           children: [
             Container(
+              margin: const EdgeInsets.only(top: 1, bottom: 1, left: 1),
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(5),
@@ -166,6 +168,7 @@ class _ThemeColors extends StatelessWidget {
               width: 12,
             ),
             Container(
+              margin: const EdgeInsets.only(top: 1, bottom: 1, right: 1),
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(5),
@@ -196,9 +199,11 @@ class _LanguageFlag extends StatelessWidget {
         decoration: isSelect
             ? BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.black, width: 2.5))
+                border:
+                    Border.all(color: AppTheme.color.primaryColor, width: 3))
             : null,
         child: Container(
+          margin: const EdgeInsets.all(2),
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),

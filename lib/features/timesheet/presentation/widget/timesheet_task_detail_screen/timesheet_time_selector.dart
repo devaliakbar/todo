@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:duration_picker/duration_picker.dart';
 import 'package:tapped/tapped.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 import 'package:todo/core/utils/utils.dart';
 
 typedef OnHourUpdate = Function(Duration newHour);
@@ -29,7 +30,7 @@ class TimesheetTimeSelector extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.1),
+          color: AppTheme.color.greyLight.withOpacity(0.3),
           borderRadius: BorderRadius.circular(5),
         ),
         child: Text(Utils.getFormattedDuration(hours)),
