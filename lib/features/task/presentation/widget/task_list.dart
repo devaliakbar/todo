@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
+import 'package:todo/core/presentation/widget/failed_view.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
 import 'package:todo/features/task/presentation/screen/task_detail_screen.dart';
@@ -17,12 +18,20 @@ class TaskList extends StatelessWidget {
       child: BlocBuilder<TasksBloc, TasksState>(
         builder: (context, TasksState state) {
           if (state is TasksLoadFail) {
-            return const Center(
-              child: Text("oops! something went wrong"),
+            return FailedView(
+              failMsg: "oops! something went wrong",
+              addRetryBtn: true,
+              onClickRetry: onReLoad,
             );
           }
 
           if (state is TasksLoaded) {
+            if (state.tasks.isEmpty) {
+              return const FailedView(
+                failMsg: "No data found",
+              );
+            }
+
             return RefreshIndicator(
               onRefresh: () async {
                 onReLoad();

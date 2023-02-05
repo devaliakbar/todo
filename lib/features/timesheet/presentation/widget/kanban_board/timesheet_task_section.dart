@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
+import 'package:todo/core/presentation/widget/failed_view.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_card.dart';
 
@@ -84,6 +85,7 @@ class _TimesheetTaskSectionState extends State<TimesheetTaskSection> {
               ),
               items: [
                 if (showMoveEffect) const _ChildWhenDraggingWidget(),
+                if (widget.tasks.isEmpty) const FailedView(failMsg: "No tasks"),
                 ...widget.tasks.map<Widget>((task) {
                   final GlobalKey taskCardKey = GlobalKey();
 

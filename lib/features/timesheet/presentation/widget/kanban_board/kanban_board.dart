@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
+import 'package:todo/core/presentation/widget/failed_view.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
 import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
@@ -93,8 +94,12 @@ class _KanbanBoardState extends State<KanbanBoard> {
                     previous is! TasksTimesheetLoaded,
             builder: (context, state) {
               if (state is TasksTimesheetLoadFail) {
-                return const Center(
-                  child: Text("oops! something went wrong."),
+                return FailedView(
+                  failMsg: "oops! something went wrong.",
+                  addRetryBtn: true,
+                  onClickRetry: () {
+                    _getData();
+                  },
                 );
               }
 

@@ -31,7 +31,7 @@ class TaskHistory extends StatelessWidget {
                 if (tasksState is TasksLoaded) {
                   if (tasksState.tasks.isEmpty) {
                     Fluttertoast.showToast(
-                        msg: "You don't have any tasks top export");
+                        msg: "You don't have any tasks to export");
                     return;
                   }
 

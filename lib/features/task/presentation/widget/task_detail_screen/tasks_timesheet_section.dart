@@ -7,6 +7,7 @@ import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
+import 'package:todo/core/presentation/widget/failed_view.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
@@ -32,11 +33,23 @@ class TasksTimesheetSection extends StatelessWidget {
         ),
         BlocBuilder<TasksTimesheetBloc, TasksTimesheetState>(
           builder: (context, state) {
+            if (state is TasksTimesheetLoadFail) {
+              return FailedView(
+                failMsg: "Oops!, something went wrong",
+                addRetryBtn: true,
+                onClickRetry: onChange,
+              );
+            }
+
             if (state is TasksTimesheetLoaded) {
               List<TimesheetTask> tasks = [];
               tasks.addAll(state.tasks.doneTasks);
               tasks.addAll(state.tasks.inprogressTasks);
               tasks.addAll(state.tasks.todoTasks);
+
+              if (tasks.isEmpty) {
+                return const FailedView(failMsg: "No members found");
+              }
 
               return ListView.builder(
                 itemCount: tasks.length,
