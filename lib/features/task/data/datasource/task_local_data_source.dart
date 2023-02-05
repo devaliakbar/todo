@@ -45,7 +45,7 @@ class TaskLocalDataSource extends ITaskLocalDataSource {
     String dir = await ExternalPath.getExternalStoragePublicDirectory(
         ExternalPath.DIRECTORY_DOWNLOADS);
     File file = File("$dir/filename.csv");
-    file.writeAsString(csv);
+    await file.writeAsString(csv);
 
     return file.path;
   }
