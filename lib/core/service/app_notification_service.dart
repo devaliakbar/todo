@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:todo/core/error/exceptions.dart';
 import 'package:todo/core/service/notification_message_model.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:dio/dio.dart';
 
 class AppNotificationService {
   final Logger _logger;
@@ -64,6 +65,25 @@ class AppNotificationService {
     }
 
     throw FirebaseMessagingException();
+  }
+
+  Future<void> sendNotification(
+      NotificationMessageModel model, String userToken) async {
+    ///Sending push notification
+    await Dio().post(
+      'https://fcm.googleapis.com/fcm/send',
+      data: {
+        "notification": {
+          "body": model.messsageBody,
+          "title": model.messageTitle
+        },
+        "to": userToken
+      },
+      options: Options(headers: {
+        "Authorization":
+            "key=AAAAGea1uQk:APA91bEcT3fnndXBd_9ol5N0OsxHNHP6445Y-qoRKYm7voqLInFXg3SIj7VERWxFZsvhKOaKhFTQrHb3AzgHDSlzRMu4HqCT5HqMKAOD2FsGEg3sAIGdREX8RiYvPfuGDQ5SkpJ4RMBV"
+      }),
+    );
   }
 
   Future<void> _sendManualNotification(
