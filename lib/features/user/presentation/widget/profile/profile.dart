@@ -100,21 +100,21 @@ class Profile extends StatelessWidget {
                         child: Row(
                           children: [
                             _ThemeColors(
-                                onSelect: () {
-                                  appTheme.changeTheme(0);
-                                },
-                                color1: Colors.pinkAccent,
-                                color2: const Color(0xFF9b111e),
-                                isSelect: AppTheme.currentThemeIndex == 0),
-                            const SizedBox(width: 20),
-                            _ThemeColors(
                               onSelect: () {
-                                appTheme.changeTheme(1);
+                                appTheme.changeTheme(0);
                               },
                               color1: Colors.blueAccent,
                               color2: const Color(0xFF7b403b),
-                              isSelect: AppTheme.currentThemeIndex == 1,
-                            )
+                              isSelect: AppTheme.currentThemeIndex == 0,
+                            ),
+                            const SizedBox(width: 20),
+                            _ThemeColors(
+                                onSelect: () {
+                                  appTheme.changeTheme(1);
+                                },
+                                color1: Colors.pinkAccent,
+                                color2: const Color(0xFF9b111e),
+                                isSelect: AppTheme.currentThemeIndex == 1),
                           ],
                         ))
                   ],

@@ -23,11 +23,11 @@ class AppTheme extends ChangeNotifier {
   AppTheme({required Logger logger}) : _logger = logger {
     _colors.addAll([
       AppColor(
-          primaryColor: Colors.pinkAccent,
-          warningColor: const Color(0xFF9b111e)),
-      AppColor(
           primaryColor: Colors.blueAccent,
           warningColor: const Color(0xFF7b403b)),
+      AppColor(
+          primaryColor: Colors.pinkAccent,
+          warningColor: const Color(0xFF9b111e)),
     ]);
 
     _loadSavedTheme();
