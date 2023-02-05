@@ -71,20 +71,19 @@ class AppNotificationService {
     try {
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
           FlutterLocalNotificationsPlugin();
-      flutterLocalNotificationsPlugin
+
+      await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.requestPermission();
 
       const AndroidInitializationSettings initializationSettingsAndroid =
-          AndroidInitializationSettings('app_icon');
+          AndroidInitializationSettings('@mipmap/ic_launcher');
 
       const InitializationSettings initializationSettings =
           InitializationSettings(android: initializationSettingsAndroid);
 
-      flutterLocalNotificationsPlugin.initialize(initializationSettings,
-          onDidReceiveBackgroundNotificationResponse:
-              (NotificationResponse notificationResponse) async {});
+      await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
       const AndroidNotificationDetails androidNotificationDetails =
           AndroidNotificationDetails('ChannelId', 'TodoApp',
@@ -95,11 +94,11 @@ class AppNotificationService {
       const NotificationDetails notificationDetails =
           NotificationDetails(android: androidNotificationDetails);
       await flutterLocalNotificationsPlugin.show(
-          0,
-          notificationModel.messageTitle,
-          notificationModel.messsageBody,
-          notificationDetails,
-          payload: notificationModel.messsageBody);
+        0,
+        notificationModel.messageTitle,
+        notificationModel.messsageBody,
+        notificationDetails,
+      );
     } catch (e) {
       Logger().w("Failed to send notification manually $e");
     }
