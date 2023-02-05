@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
+import 'package:todo/core/res/app_theme/app_theme.dart';
 import 'package:todo/core/utils/bloc_event_restartable.dart';
 import 'package:todo/features/task/data/datasource/task_local_data_source.dart';
 import 'package:todo/features/task/data/datasource/task_remote_data_source.dart';
@@ -41,6 +42,8 @@ Future<void> init() async {
   sl.registerLazySingleton<BlocEventRestartable>(() => BlocEventRestartable());
   // Bloc
   sl.registerFactory(() => AppLoaderBloc());
+  // AppTheme
+  sl.registerFactory(() => AppTheme(logger: sl()));
 
   ///*********************************************************************************************///
 

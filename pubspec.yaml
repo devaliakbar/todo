@@ -35,6 +35,7 @@ dependencies:
   csv: ^5.0.1
   open_file: ^3.2.1
   duration_picker: ^1.1.1
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
