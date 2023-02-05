@@ -12,6 +12,7 @@ import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
 import 'package:todo/features/timesheet/presentation/bloc/tasks_timesheet/tasks_timesheet_bloc.dart';
 import 'package:todo/features/timesheet/presentation/view_controller/timesheet_edit_controller.dart';
+import 'package:todo/features/timesheet/presentation/widget/timesheet_task_detail_screen/timesheet_time_selector.dart';
 import 'package:todo/features/user/presentation/bloc/user/user_bloc.dart';
 
 class TimsheetTaskDetailScreen extends StatefulWidget {
@@ -125,10 +126,16 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                       const SizedBox(width: 15),
                       ValueListenableBuilder(
                         valueListenable: _taskHours,
-                        builder: (context, Duration taskHours, child) => Text(
-                          Utils.getFormattedDuration(taskHours),
-                          style: const TextStyle(fontSize: 15),
-                        ),
+                        builder: (context, Duration taskHours, child) =>
+                            isTimerOn
+                                ? Text(
+                                    Utils.getFormattedDuration(taskHours),
+                                    style: const TextStyle(fontSize: 15),
+                                  )
+                                : TimesheetTimeSelector(
+                                    hours: taskHours,
+                                    onHourUpdate: _onHourChanged,
+                                  ),
                       )
                     ],
                   ),
@@ -227,6 +234,26 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
         doneOn: timesheetTask.doneOn,
         timerStartSince: timerStartSince,
         hours: hours);
+
+    final UpdateTimesheetStatusParam oldInfo = UpdateTimesheetStatusParam(
+        timesheetId: timesheetTask.timesheetId,
+        taskId: timesheetTask.taskId,
+        taskStatus: timesheetTask.taskStatus,
+        doneOn: timesheetTask.doneOn,
+        timerStartSince: timesheetTask.timerStartSince,
+        hours: timesheetTask.hours);
+
+    _update(UpdateTimesheetParams(oldTask: oldInfo, updatedTask: updatedInfo));
+  }
+
+  void _onHourChanged(Duration newHour) {
+    final UpdateTimesheetStatusParam updatedInfo = UpdateTimesheetStatusParam(
+        timesheetId: timesheetTask.timesheetId,
+        taskId: timesheetTask.taskId,
+        taskStatus: timesheetTask.taskStatus,
+        doneOn: timesheetTask.doneOn,
+        timerStartSince: timesheetTask.timerStartSince,
+        hours: newHour);
 
     final UpdateTimesheetStatusParam oldInfo = UpdateTimesheetStatusParam(
         timesheetId: timesheetTask.timesheetId,
