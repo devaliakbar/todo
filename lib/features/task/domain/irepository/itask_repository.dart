@@ -14,4 +14,6 @@ abstract class ItaskRepository {
   Future<Either<Failure, List<TaskInfo>>> getTasks(GetTasksParams params);
 
   Future<Either<Failure, String>> exportTasksToCsv(List<TaskInfo> tasks);
+
+  Future<Either<Failure, void>> deleteTask(String taskId);
 }

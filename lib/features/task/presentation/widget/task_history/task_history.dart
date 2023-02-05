@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/error/failures.dart';
+import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/main_screen_app_bar.dart';
 import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
 import 'package:todo/features/task/presentation/view_controller/task_edit_controller.dart';
@@ -32,9 +33,16 @@ class TaskHistory extends StatelessWidget {
                       RepositoryProvider.of<TaskEditController>(context,
                           listen: false);
 
+                  final AppLoaderBloc appLoaderBloc =
+                      BlocProvider.of<AppLoaderBloc>(context, listen: false);
+
+                  appLoaderBloc.add(ShowLoader());
+
                   final dartz.Either<Failure, String> result =
                       await taskEditController
                           .exportTasksToCsv(tasksState.tasks);
+
+                  appLoaderBloc.add(HideLoader());
 
                   result.fold(
                       (l) => Fluttertoast.showToast(msg: "Failed to export."),

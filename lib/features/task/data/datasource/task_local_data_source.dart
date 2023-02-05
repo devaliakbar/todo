@@ -11,9 +11,9 @@ abstract class ITaskLocalDataSource {
 }
 
 class TaskLocalDataSource extends ITaskLocalDataSource {
-  final Logger _logger;
+  final Logger logger;
 
-  TaskLocalDataSource({required Logger logger}) : _logger = logger;
+  TaskLocalDataSource({required this.logger});
 
   @override
   Future<String> exportTasksToCsv(List<TaskInfo> tasks) async {

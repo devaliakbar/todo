@@ -55,4 +55,13 @@ class TaskRepository extends ItaskRepository {
 
     return Left(UnexpectedFailure());
   }
+
+  @override
+  Future<Either<Failure, void>> deleteTask(String taskId) async {
+    try {
+      return Right(await _taskRemoteDataSource.deleteTask(taskId));
+    } catch (_) {}
+
+    return Left(UnexpectedFailure());
+  }
 }

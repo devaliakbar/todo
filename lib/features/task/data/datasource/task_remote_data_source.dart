@@ -20,6 +20,9 @@ abstract class ITaskRemoteDataSource {
   Future<TaskInfoModel> updateTask(UpdateTaskParams updateTaskParams);
 
   Future<List<TaskInfoModel>> getTasks(GetTasksParams params);
+
+  /// Throws a [FirestoreException] for any failure.
+  Future<void> deleteTask(String taskId);
 }
 
 class TaskRemoteDataSource extends ITaskRemoteDataSource {
@@ -217,5 +220,36 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
     }
 
     return tasksRes;
+  }
+
+  @override
+  Future<void> deleteTask(String taskId) async {
+    CollectionReference tasks =
+        FirebaseFirestore.instance.collection(FirestoreCollectionNames.cTasks);
+
+    CollectionReference timesheetTasks = FirebaseFirestore.instance
+        .collection(FirestoreCollectionNames.cTimesheetTasks);
+
+    try {
+      ///Transaction
+      WriteBatch writeBatch = FirebaseFirestore.instance.batch();
+
+      var taskResult =
+          await tasks.where(FieldPath.documentId, isEqualTo: taskId).get();
+
+      writeBatch.delete(taskResult.docs.single.reference);
+
+      var timesheetQuery =
+          await timesheetTasks.where('taskId', isEqualTo: taskId).get();
+
+      for (var element in timesheetQuery.docs) {
+        writeBatch.delete(element.reference);
+      }
+
+      await writeBatch.commit();
+    } catch (e) {
+      _logger.e("Failed to delete task : $e");
+      throw FirestoreException();
+    }
   }
 }
