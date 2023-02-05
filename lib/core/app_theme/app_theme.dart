@@ -9,8 +9,6 @@ enum AppLanguage { english, german }
 class AppTheme extends ChangeNotifier {
   final Logger _logger;
 
-  AppLanguage appLanguage = AppLanguage.english;
-
   static final List<AppColor> _colors = [];
 
   static int currentThemeIndex = 0;
@@ -53,8 +51,6 @@ class AppTheme extends ChangeNotifier {
   }
 
   void switchLanguage(BuildContext context, AppLanguage language) {
-    appLanguage = language;
-
     if (language == AppLanguage.german) {
       context.setLocale(const Locale('de', 'DE'));
     } else {

@@ -6,7 +6,7 @@ import 'package:tapped/tapped.dart';
 import 'package:todo/core/error/failures.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
-import 'package:todo/core/res/app_theme/app_theme.dart';
+import 'package:todo/core/app_theme/app_theme.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/task/presentation/screen/task_edit_screen.dart';

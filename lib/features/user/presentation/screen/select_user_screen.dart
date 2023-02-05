@@ -4,7 +4,7 @@ import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/presentation/widget/custom_value_notifier.dart';
-import 'package:todo/core/res/app_theme/app_theme.dart';
+import 'package:todo/core/app_theme/app_theme.dart';
 import 'package:todo/features/user/domain/enity/user_info.dart';
 import 'package:todo/features/user/presentation/bloc/get_users/get_users_bloc.dart';
 import 'package:todo/injection_container.dart' as di;

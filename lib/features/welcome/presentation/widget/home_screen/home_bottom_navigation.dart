@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tapped/tapped.dart';
-import 'package:todo/core/res/app_theme/app_theme.dart';
+import 'package:todo/core/app_theme/app_theme.dart';
 import 'package:todo/core/res/app_resources.dart';
 import 'package:provider/provider.dart';
 

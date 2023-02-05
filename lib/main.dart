@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/main_widget.dart';
-import 'package:todo/core/res/app_theme/app_theme.dart';
+import 'package:todo/core/app_theme/app_theme.dart';
 import 'package:todo/core/utils/track_context.dart';
 import 'package:todo/features/task/presentation/view_controller/task_edit_controller.dart';
 import 'package:todo/features/timesheet/presentation/view_controller/timesheet_edit_controller.dart';

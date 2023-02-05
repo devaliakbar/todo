@@ -10,7 +10,7 @@ import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/presentation/widget/common_text_field.dart';
 import 'package:todo/core/presentation/widget/custom_value_notifier.dart';
-import 'package:todo/core/res/app_theme/app_theme.dart';
+import 'package:todo/core/app_theme/app_theme.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/task/domain/usecases/create_task.dart';
 import 'package:todo/features/task/domain/usecases/update_task.dart';

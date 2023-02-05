@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:duration_picker/duration_picker.dart';
 import 'package:tapped/tapped.dart';
-import 'package:todo/core/res/app_theme/app_theme.dart';
+import 'package:todo/core/app_theme/app_theme.dart';
 import 'package:todo/core/utils/utils.dart';
 
 typedef OnHourUpdate = Function(Duration newHour);

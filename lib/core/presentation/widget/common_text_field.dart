@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/core/res/app_theme/app_theme.dart';
+import 'package:todo/core/app_theme/app_theme.dart';
 
 class CommonTextField extends StatelessWidget {
   final String title;
