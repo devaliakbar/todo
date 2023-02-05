@@ -207,10 +207,14 @@ class TaskRemoteDataSource extends ITaskRemoteDataSource {
     if (where != null && isEqualTo != null) {
       result = await tasks
           .where(where, isEqualTo: isEqualTo)
+          .where("creatorId", isEqualTo: params.ownerId)
           .orderBy('createdOn', descending: true)
           .get();
     } else {
-      result = await tasks.orderBy('createdOn', descending: true).get();
+      result = await tasks
+          .where("creatorId", isEqualTo: params.ownerId)
+          .orderBy('createdOn', descending: true)
+          .get();
     }
 
     List<TaskInfoModel> tasksRes = [];

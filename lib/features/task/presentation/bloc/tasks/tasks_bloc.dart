@@ -21,8 +21,9 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       GetTasksEvent event, Emitter<TasksState> emit) async {
     emit(TasksLoading());
 
-    final Either<Failure, List<TaskInfo>> result =
-        await _getTasks(GetTasksParams(getCompltedTask: event.getCompltedTask));
+    final Either<Failure, List<TaskInfo>> result = await _getTasks(
+        GetTasksParams(
+            ownerId: event.ownerId, getCompltedTask: event.getCompltedTask));
 
     result.fold((l) => emit(TasksLoadFail()),
         (List<TaskInfo> r) => emit(TasksLoaded(tasks: r)));

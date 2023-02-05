@@ -18,10 +18,11 @@ class GetTasks extends UseCase<List<TaskInfo>, GetTasksParams> {
 }
 
 class GetTasksParams extends Equatable {
+  final String ownerId;
   final bool? getCompltedTask;
 
-  const GetTasksParams({required this.getCompltedTask});
+  const GetTasksParams({required this.ownerId, required this.getCompltedTask});
 
   @override
-  List<Object?> get props => [getCompltedTask];
+  List<Object?> get props => [ownerId, getCompltedTask];
 }
