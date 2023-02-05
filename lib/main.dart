@@ -56,8 +56,8 @@ void main() async {
         ],
 
         /// Defining global Provider
-        child: ChangeNotifierProvider(
-          create: (context) => di.sl<AppTheme>(),
+        child: ChangeNotifierProvider.value(
+          value: di.sl<AppTheme>(),
           child: const MyApp(),
         ),
       ),
