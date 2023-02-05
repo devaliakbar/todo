@@ -45,7 +45,7 @@ class HomeBottomNavigation extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Home",
+                        AppString.home,
                         style: AppStyle.bottomNavText(currentIndex == 0),
                       )
                     ],
@@ -65,7 +65,7 @@ class HomeBottomNavigation extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Task",
+                        AppString.task,
                         style: AppStyle.bottomNavText(currentIndex == 1),
                       )
                     ],
@@ -85,7 +85,7 @@ class HomeBottomNavigation extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "History",
+                        AppString.history,
                         style: AppStyle.bottomNavText(currentIndex == 2),
                       )
                     ],
@@ -105,7 +105,7 @@ class HomeBottomNavigation extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Profile",
+                        AppString.profile,
                         style: AppStyle.bottomNavText(currentIndex == 3),
                       )
                     ],

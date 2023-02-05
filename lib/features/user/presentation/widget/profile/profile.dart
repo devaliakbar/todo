@@ -63,12 +63,22 @@ class Profile extends StatelessWidget {
                     Expanded(
                         flex: 3,
                         child: Row(
-                          children: const [
+                          children: [
                             _LanguageFlag(
-                                isSelect: false, flag: AppAssets.usFlagImg),
-                            SizedBox(width: 20),
+                                onSelect: () => appTheme.switchLanguage(
+                                    context, AppLanguage.english),
+                                isSelect:
+                                    appTheme.getCurrentAppLanguage(context) ==
+                                        AppLanguage.english,
+                                flag: AppAssets.usFlagImg),
+                            const SizedBox(width: 20),
                             _LanguageFlag(
-                                isSelect: true, flag: AppAssets.deFlagImg)
+                                onSelect: () => appTheme.switchLanguage(
+                                    context, AppLanguage.german),
+                                isSelect:
+                                    appTheme.getCurrentAppLanguage(context) ==
+                                        AppLanguage.german,
+                                flag: AppAssets.deFlagImg)
                           ],
                         ))
                   ],
@@ -186,15 +196,17 @@ class _ThemeColors extends StatelessWidget {
 }
 
 class _LanguageFlag extends StatelessWidget {
+  final Function onSelect;
   final bool isSelect;
   final String flag;
 
-  const _LanguageFlag({required this.isSelect, required this.flag});
+  const _LanguageFlag(
+      {required this.onSelect, required this.isSelect, required this.flag});
 
   @override
   Widget build(BuildContext context) {
     return Tapped(
-      onTap: () {},
+      onTap: onSelect,
       child: Container(
         decoration: isSelect
             ? BoxDecoration(
