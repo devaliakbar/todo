@@ -29,6 +29,12 @@ class TaskHistory extends StatelessWidget {
                     BlocProvider.of<TasksBloc>(context, listen: false).state;
 
                 if (tasksState is TasksLoaded) {
+                  if (tasksState.tasks.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: "You don't have any tasks top export");
+                    return;
+                  }
+
                   final TaskEditController taskEditController =
                       RepositoryProvider.of<TaskEditController>(context,
                           listen: false);
@@ -50,7 +56,8 @@ class TaskHistory extends StatelessWidget {
                     _showSuccessExportDialogue(context, filename);
                   });
                 } else {
-                  Fluttertoast.showToast(msg: "Please try after data loadede");
+                  Fluttertoast.showToast(
+                      msg: "Please try after data is loaded");
                 }
               },
               child: const Padding(
