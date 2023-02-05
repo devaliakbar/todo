@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/widget/failed_view.dart';
+import 'package:todo/core/res/app_resources.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/presentation/bloc/tasks/tasks_bloc.dart';
 import 'package:todo/features/task/presentation/screen/task_detail_screen.dart';
@@ -62,29 +63,34 @@ class TaskList extends StatelessWidget {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(5)),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: Text(
-                                state.tasks[index].taskName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              )),
-                              const SizedBox(width: 15),
-                              Text(
-                                  "${Utils.getFormattedDuration(state.tasks[index].totalHours)} HRS"),
-                            ],
+                          Text(
+                            state.tasks[index].taskName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppStyle.mainInfo,
+                          ),
+                          const SizedBox(height: 15),
+                          Text(
+                            "Created on : ${Utils.getFormattedDate(state.tasks[index].createdOn)}",
+                            style: AppStyle.subInfo(),
                           ),
                           const SizedBox(height: 15),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                  "Created on : ${Utils.getFormattedDate(state.tasks[index].createdOn)}"),
-                              Text(state.tasks[index].isCompleted
-                                  ? "Completed"
-                                  : "Not completed"),
+                                state.tasks[index].isCompleted
+                                    ? "Completed"
+                                    : "Not completed",
+                                style: AppStyle.subInfo(),
+                              ),
+                              const SizedBox(width: 15),
+                              Text(
+                                "${Utils.getFormattedDuration(state.tasks[index].totalHours)} HRS",
+                                style: AppStyle.subInfo(),
+                              ),
                             ],
                           )
                         ],

@@ -8,6 +8,7 @@ import 'package:todo/core/error/failures.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
+import 'package:todo/core/res/app_resources.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
@@ -64,18 +65,24 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
               children: [
                 Text(
                   timesheetTask.taskName,
-                  style: const TextStyle(fontSize: 17),
+                  style: AppStyle.mainInfo,
                 ),
                 Divider(
                   color: AppTheme.color.dividerColor,
                 ),
-                Text("Created by : ${timesheetTask.creatorName}"),
+                Text(
+                  "Created by : ${timesheetTask.creatorName}",
+                  style: AppStyle.subInfo(),
+                ),
                 Divider(
                   color: AppTheme.color.dividerColor,
                 ),
                 Row(
                   children: [
-                    const Text("Status"),
+                    Text(
+                      "Status",
+                      style: AppStyle.subInfo(),
+                    ),
                     const SizedBox(width: 15),
                     Tapped(
                       onTap: () => _updateTaskStatus(TimesheetTaskStatus.todo),
@@ -109,7 +116,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                 if (timesheetTask.taskStatus == TimesheetTaskStatus.done)
                   Text(
                     "Total Hours : ${Utils.getFormattedDuration(timesheetTask.hours)}",
-                    style: const TextStyle(fontSize: 15),
+                    style: AppStyle.subInfo(),
                   ),
                 if (timesheetTask.taskStatus == TimesheetTaskStatus.inProgress)
                   Row(
@@ -121,6 +128,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                           isTimerOn
                               ? Icons.stop_rounded
                               : Icons.play_arrow_rounded,
+                          color: AppTheme.color.primaryColor,
                           size: 25,
                         ),
                       ),
@@ -131,7 +139,7 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                             isTimerOn
                                 ? Text(
                                     Utils.getFormattedDuration(taskHours),
-                                    style: const TextStyle(fontSize: 15),
+                                    style: AppStyle.subInfo(),
                                   )
                                 : TimesheetTimeSelector(
                                     hours: taskHours,
@@ -149,10 +157,13 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Created on"),
+                        Text(
+                          "Created on",
+                          style: AppStyle.subInfo(),
+                        ),
                         Text(
                           Utils.getFormattedDate(timesheetTask.createdOn),
-                          style: const TextStyle(fontStyle: FontStyle.italic),
+                          style: AppStyle.subInfo(isItalic: true),
                         ),
                       ],
                     ),
@@ -160,11 +171,9 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const Text("Done on"),
-                          Text(
-                            Utils.getFormattedDate(timesheetTask.doneOn!),
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
+                          Text("Done on", style: AppStyle.subInfo()),
+                          Text(Utils.getFormattedDate(timesheetTask.doneOn!),
+                              style: AppStyle.subInfo(isItalic: true)),
                         ],
                       )
                   ],
@@ -172,10 +181,13 @@ class _TimsheetTaskDetailScreenState extends State<TimsheetTaskDetailScreen> {
                 Divider(
                   color: AppTheme.color.dividerColor,
                 ),
-                const Text("Description"),
+                Text(
+                  "Description",
+                  style: AppStyle.subInfo(),
+                ),
                 Text(
                   timesheetTask.taskDescription,
-                  style: const TextStyle(fontStyle: FontStyle.italic),
+                  style: AppStyle.subInfo(isItalic: true),
                 ),
               ],
             ),

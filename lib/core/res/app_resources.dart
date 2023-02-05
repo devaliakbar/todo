@@ -11,3 +11,4 @@ part 'app_style.dart';
 part 'app_assets.dart';
 part 'firestore_collection_names.dart';
 part 'app_string.dart';
+part 'app_font.dart';

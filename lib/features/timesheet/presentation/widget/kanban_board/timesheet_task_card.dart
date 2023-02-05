@@ -7,6 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:tapped/tapped.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
+import 'package:todo/core/res/app_resources.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/domain/usecases/update_timesheet_status.dart';
@@ -87,7 +88,7 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
                 widget.timesheetTask.taskName,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 17),
+                style: AppStyle.mainInfo,
               ),
             ),
             if (widget.timesheetTask.taskStatus == TimesheetTaskStatus.done)
@@ -95,7 +96,7 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
                 child: Center(
                   child: Text(
                     "Total Hours : ${Utils.getFormattedDuration(widget.timesheetTask.hours)}",
-                    style: const TextStyle(fontSize: 15),
+                    style: AppStyle.subInfo(),
                   ),
                 ),
               ),
@@ -111,6 +112,7 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
                         isTimerOn
                             ? Icons.stop_rounded
                             : Icons.play_arrow_rounded,
+                        color: AppTheme.color.primaryColor,
                         size: 25,
                       ),
                     ),
@@ -119,10 +121,21 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
                       valueListenable: _taskHours,
                       builder: (context, Duration taskHours, child) => Text(
                         Utils.getFormattedDuration(taskHours),
-                        style: const TextStyle(fontSize: 15),
+                        style: AppStyle.subInfo(),
                       ),
                     )
                   ],
+                ),
+              ),
+            if (widget.timesheetTask.taskStatus == TimesheetTaskStatus.todo)
+              Expanded(
+                child: Center(
+                  child: Text(
+                    "Created by ${widget.timesheetTask.creatorName}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppStyle.subInfo(),
+                  ),
                 ),
               ),
             Expanded(
@@ -135,13 +148,13 @@ class _TimesheetTaskCardState extends State<TimesheetTaskCard> {
                   Text(
                       Utils.getFormattedShortDate(
                           widget.timesheetTask.createdOn),
-                      style: const TextStyle(fontSize: 13)),
-                  if (showDoneDate) const Text("to"),
+                      style: AppStyle.subInfo()),
+                  if (showDoneDate) Text("to", style: AppStyle.subInfo()),
                   if (showDoneDate)
                     Text(
                         Utils.getFormattedShortDate(
                             widget.timesheetTask.doneOn!),
-                        style: const TextStyle(fontSize: 13)),
+                        style: AppStyle.subInfo()),
                 ],
               ),
             ),

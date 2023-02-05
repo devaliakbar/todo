@@ -8,6 +8,7 @@ import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/cached_image.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
 import 'package:todo/core/presentation/widget/failed_view.dart';
+import 'package:todo/core/res/app_resources.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
@@ -27,9 +28,9 @@ class TasksTimesheetSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
+        Text(
           "Members status",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          style: AppStyle.mainInfo,
         ),
         BlocBuilder<TasksTimesheetBloc, TasksTimesheetState>(
           builder: (context, state) {
@@ -144,7 +145,7 @@ class _MemberProgressState extends State<_MemberProgress> {
               ),
               Text(
                 widget.userInfo.fullName,
-                style: const TextStyle(fontSize: 16),
+                style: AppStyle.title,
               ),
             ],
           ),
@@ -180,8 +181,10 @@ class _MemberProgressState extends State<_MemberProgress> {
               const Spacer(),
               ValueListenableBuilder(
                 valueListenable: _taskHours,
-                builder: (context, Duration taskHours, child) =>
-                    Text("${Utils.getFormattedDuration(taskHours)} HRS"),
+                builder: (context, Duration taskHours, child) => Text(
+                  "${Utils.getFormattedDuration(taskHours)} HRS",
+                  style: AppStyle.subInfo(),
+                ),
               )
             ],
           ),

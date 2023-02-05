@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/core/res/app_resources.dart';
 
 class FailedView extends StatelessWidget {
   final String failMsg;
@@ -16,7 +17,10 @@ class FailedView extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(failMsg),
+        Text(
+          failMsg,
+          style: AppStyle.mainInfo,
+        ),
         if (addRetryBtn)
           ElevatedButton(
               onPressed: () {

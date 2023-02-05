@@ -5,4 +5,20 @@ class AppStyle {
         fontSize: 11,
         color: isSelect ? AppTheme.color.primaryColor : AppTheme.color.black,
       );
+
+  static TextStyle title = TextStyle(
+    fontSize: 16,
+    color: AppTheme.color.primaryColor,
+  );
+
+  static TextStyle mainInfo = TextStyle(
+    fontSize: 15,
+    color: AppTheme.color.primaryColor,
+  );
+
+  static TextStyle subInfo({bool isItalic = false}) => TextStyle(
+        fontSize: 14,
+        color: AppTheme.color.black.withOpacity(0.6),
+        fontStyle: isItalic ? FontStyle.italic : null,
+      );
 }

@@ -7,6 +7,7 @@ import 'package:todo/core/error/failures.dart';
 import 'package:todo/core/presentation/bloc/app_loader/app_loader_bloc.dart';
 import 'package:todo/core/presentation/widget/common_app_bar.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
+import 'package:todo/core/res/app_resources.dart';
 import 'package:todo/core/utils/utils.dart';
 import 'package:todo/features/task/domain/entity/task_info.dart';
 import 'package:todo/features/task/presentation/screen/task_edit_screen.dart';
@@ -99,26 +100,31 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                 children: [
                   Text(
                     taskInfo.taskName,
-                    style: const TextStyle(fontSize: 17),
+                    style: AppStyle.mainInfo,
                   ),
                   Divider(
                     color: AppTheme.color.dividerColor,
                   ),
                   Text(
-                      "Status : ${taskInfo.isCompleted ? "Completed" : "Not completed"}"),
+                    "Status : ${taskInfo.isCompleted ? "Completed" : "Not completed"}",
+                    style: AppStyle.subInfo(),
+                  ),
                   Divider(
                     color: AppTheme.color.dividerColor,
                   ),
                   Text(
-                      "Total Hour Spend : ${Utils.getFormattedDuration(taskInfo.totalHours)}"),
+                    "Total Hour Spend : ${Utils.getFormattedDuration(taskInfo.totalHours)}",
+                    style: AppStyle.subInfo(),
+                  ),
                   Divider(
                     color: AppTheme.color.dividerColor,
                   ),
-                  const Text("Description"),
                   Text(
-                    taskInfo.taskDescription,
-                    style: const TextStyle(fontStyle: FontStyle.italic),
+                    "Description",
+                    style: AppStyle.subInfo(),
                   ),
+                  Text(taskInfo.taskDescription,
+                      style: AppStyle.subInfo(isItalic: true)),
                   Divider(
                     color: AppTheme.color.dividerColor,
                   ),
@@ -128,10 +134,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Created on"),
+                          Text(
+                            "Created on",
+                            style: AppStyle.subInfo(),
+                          ),
                           Text(
                             Utils.getFormattedDate(taskInfo.createdOn),
-                            style: const TextStyle(fontStyle: FontStyle.italic),
+                            style: AppStyle.subInfo(isItalic: true),
                           ),
                         ],
                       ),
@@ -139,11 +148,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            const Text("Completed on"),
+                            Text(
+                              "Completed on",
+                              style: AppStyle.subInfo(),
+                            ),
                             Text(
                               Utils.getFormattedDate(taskInfo.completedOn!),
-                              style:
-                                  const TextStyle(fontStyle: FontStyle.italic),
+                              style: AppStyle.subInfo(isItalic: true),
                             ),
                           ],
                         )

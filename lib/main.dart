@@ -70,7 +70,8 @@ class MyApp extends StatelessWidget {
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
-          theme: ThemeData(useMaterial3: true),
+          theme: ThemeData(
+              useMaterial3: true, fontFamily: AppFont.plusJakartaSansRegular),
           debugShowCheckedModeBanner: false,
           onGenerateRoute: AppRouter.onGenerateRoute,
           builder: MainWidget.widget,

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/core/app_theme/app_theme.dart';
 import 'package:todo/core/presentation/widget/failed_view.dart';
+import 'package:todo/core/res/app_resources.dart';
 import 'package:todo/features/timesheet/domain/entity/timesheet_task.dart';
 import 'package:todo/features/timesheet/presentation/widget/kanban_board/timesheet_task_card.dart';
 
@@ -71,7 +72,10 @@ class _TimesheetTaskSectionState extends State<TimesheetTaskSection> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-            child: Text("${widget.title} ${widget.tasks.length}"),
+            child: Text(
+              "${widget.title} ${widget.tasks.length}",
+              style: AppStyle.title,
+            ),
           ),
           ValueListenableBuilder(
             valueListenable: _showMoveEffect,
